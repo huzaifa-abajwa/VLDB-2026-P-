@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-11-03T21:23:02.858Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-23-02-856Z_kaplanmeier_workflow_for_melanoma_patients_with_5.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-23-02-856Z_kaplanmeier_workflow_for_melanoma_patients_with_5.xml",
+  "userQuery": "Kaplan-Meier workflow for melanoma patients with 5-year follow-up",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"Workflow Complete\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Generate Kaplan-Meier Plot using kaplan_meier_model@2020.py\" is a dead end (no outgoing flow).",
+    "Node \"Workflow Complete\" is not reachable from start event."
+  ]
+}

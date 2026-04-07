@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1o0w1c7</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessPima" name="Access Pima_Indians_Diabetes_USA">
+      <bpmn:incoming>Flow_0y1g2x8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qj4y5p</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_AccessSylhet" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>Flow_1d4v3f9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0a2b3c4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_RunMLPPima" name="Run mlp_cancer_classifier@2025.py on Pima Data">
+      <bpmn:incoming>Flow_1a2b3c4</bpmn:incoming>
+      <bpmn:outgoing>Flow_1g8h9i0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_RunRFPima" name="Run random_survival_forest@2025.py on Pima Data">
+      <bpmn:incoming>Flow_1d5e6f7</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j1k2l3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_RunMLPSylhet" name="Run mlp_cancer_classifier@2025.py on Sylhet Data">
+      <bpmn:incoming>Flow_0p7q8r9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0v3w4x5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_RunRFSylhet" name="Run random_survival_forest@2025.py on Sylhet Data">
+      <bpmn:incoming>Flow_0s0t1u2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0y6z7a8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_CompareResults" name="Compare Prediction Results Across Populations and Models">
+      <bpmn:incoming>Flow_0e2f3g4</bpmn:incoming>
+      <bpmn:outgoing>Flow_0h5i6j7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_SplitDatasets">
+      <bpmn:incoming>Flow_1o0w1c7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0y1g2x8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1d4v3f9</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_SplitModelsPima">
+      <bpmn:incoming>Flow_1qj4y5p</bpmn:incoming>
+      <bpmn:outgoing>Flow_1a2b3c4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1d5e6f7</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_JoinModelsPima">
+      <bpmn:incoming>Flow_1g8h9i0</bpmn:incoming>
+      <bpmn:incoming>Flow_1j1k2l3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m4n5o6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_SplitModelsSylhet">
+      <bpmn:incoming>Flow_0a2b3c4</bpmn:incoming>
+      <bpmn:outgoing>Flow_0p7q8r9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0s0t1u2</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_JoinModelsSylhet">
+      <bpmn:incoming>Flow_0v3w4x5</bpmn:incoming>
+      <bpmn:incoming>Flow_0y6z7a8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0b9c0d1</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_JoinAllResults">
+      <bpmn:incoming>Flow_1m4n5o6</bpmn:incoming>
+      <bpmn:incoming>Flow_0b9c0d1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e2f3g4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1o0w1c7" sourceRef="StartEvent_1" targetRef="Gateway_SplitDatasets"/>
+    <bpmn:sequenceFlow id="Flow_0y1g2x8" sourceRef="Gateway_SplitDatasets" targetRef="Task_AccessPima"/>
+    <bpmn:sequenceFlow id="Flow_1d4v3f9" sourceRef="Gateway_SplitDatasets" targetRef="Task_AccessSylhet"/>
+    <bpmn:sequenceFlow id="Flow_1qj4y5p" sourceRef="Task_AccessPima" targetRef="Gateway_SplitModelsPima"/>
+    <bpmn:sequenceFlow id="Flow_1a2b3c4" sourceRef="Gateway_SplitModelsPima" targetRef="Task_RunMLPPima"/>
+    <bpmn:sequenceFlow id="Flow_1d5e6f7" sourceRef="Gateway_SplitModelsPima" targetRef="Task_RunRFPima"/>
+    <bpmn:sequenceFlow id="Flow_1g8h9i0" sourceRef="Task_RunMLPPima" targetRef="Gateway_JoinModelsPima"/>
+    <bpmn:sequenceFlow id="Flow_1j1k2l3" sourceRef="Task_RunRFPima" targetRef="Gateway_JoinModelsPima"/>
+    <bpmn:sequenceFlow id="Flow_0a2b3c4" sourceRef="Task_AccessSylhet" targetRef="Gateway_SplitModelsSylhet"/>
+    <bpmn:sequenceFlow id="Flow_0p7q8r9" sourceRef="Gateway_SplitModelsSylhet" targetRef="Task_RunMLPSylhet"/>
+    <bpmn:sequenceFlow id="Flow_0s0t1u2" sourceRef="Gateway_SplitModelsSylhet" targetRef="Task_RunRFSylhet"/>
+    <bpmn:sequenceFlow id="Flow_0v3w4x5" sourceRef="Task_RunMLPSylhet" targetRef="Gateway_JoinModelsSylhet"/>
+    <bpmn:sequenceFlow id="Flow_0y6z7a8" sourceRef="Task_RunRFSylhet" targetRef="Gateway_JoinModelsSylhet"/>
+    <bpmn:sequenceFlow id="Flow_1m4n5o6" sourceRef="Gateway_JoinModelsPima" targetRef="Gateway_JoinAllResults"/>
+    <bpmn:sequenceFlow id="Flow_0b9c0d1" sourceRef="Gateway_JoinModelsSylhet" targetRef="Gateway_JoinAllResults"/>
+    <bpmn:sequenceFlow id="Flow_0e2f3g4" sourceRef="Gateway_JoinAllResults" targetRef="Task_CompareResults"/>
+    <bpmn:sequenceFlow id="Flow_0h5i6j7" sourceRef="Task_CompareResults" targetRef="EndEvent_1"/>
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_0h5i6j7</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1700" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccessPima_di" bpmnElement="Task_AccessPima">
+        <dc:Bounds x="500" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccessSylhet_di" bpmnElement="Task_AccessSylhet">
+        <dc:Bounds x="500" y="220" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunMLPPima_di" bpmnElement="Task_RunMLPPima">
+        <dc:Bounds x="900" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunRFPima_di" bpmnElement="Task_RunRFPima">
+        <dc:Bounds x="900" y="220" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunMLPSylhet_di" bpmnElement="Task_RunMLPSylhet">
+        <dc:Bounds x="900" y="340" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunRFSylhet_di" bpmnElement="Task_RunRFSylhet">
+        <dc:Bounds x="900" y="460" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CompareResults_di" bpmnElement="Task_CompareResults">
+        <dc:Bounds x="1500" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitDatasets_di" bpmnElement="Gateway_SplitDatasets">
+        <dc:Bounds x="300" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitModelsPima_di" bpmnElement="Gateway_SplitModelsPima">
+        <dc:Bounds x="700" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinModelsPima_di" bpmnElement="Gateway_JoinModelsPima">
+        <dc:Bounds x="1100" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_SplitModelsSylhet_di" bpmnElement="Gateway_SplitModelsSylhet">
+        <dc:Bounds x="700" y="220" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinModelsSylhet_di" bpmnElement="Gateway_JoinModelsSylhet">
+        <dc:Bounds x="1100" y="220" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_JoinAllResults_di" bpmnElement="Gateway_JoinAllResults">
+        <dc:Bounds x="1300" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1o0w1c7_di" bpmnElement="Flow_1o0w1c7">
+        <di:waypoint x="136" y="118"/>
+        <di:waypoint x="300" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y1g2x8_di" bpmnElement="Flow_0y1g2x8">
+        <di:waypoint x="350" y="125"/>
+        <di:waypoint x="500" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d4v3f9_di" bpmnElement="Flow_1d4v3f9">
+        <di:waypoint x="350" y="125"/>
+        <di:waypoint x="500" y="260"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qj4y5p_di" bpmnElement="Flow_1qj4y5p">
+        <di:waypoint x="600" y="140"/>
+        <di:waypoint x="700" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a2b3c4_di" bpmnElement="Flow_1a2b3c4">
+        <di:waypoint x="750" y="125"/>
+        <di:waypoint x="900" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d5e6f7_di" bpmnElement="Flow_1d5e6f7">
+        <di:waypoint x="750" y="125"/>
+        <di:waypoint x="900" y="260"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1g8h9i0_di" bpmnElement="Flow_1g8h9i0">
+        <di:waypoint x="1000" y="140"/>
+        <di:waypoint x="1100" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j1k2l3_di" bpmnElement="Flow_1j1k2l3">
+        <di:waypoint x="1000" y="260"/>
+        <di:waypoint x="1100" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0a2b3c4_di" bpmnElement="Flow_0a2b3c4">
+        <di:waypoint x="600" y="260"/>
+        <di:waypoint x="700" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0p7q8r9_di" bpmnElement="Flow_0p7q8r9">
+        <di:waypoint x="750" y="245"/>
+        <di:waypoint x="900" y="380"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s0t1u2_di" bpmnElement="Flow_0s0t1u2">
+        <di:waypoint x="750" y="245"/>
+        <di:waypoint x="900" y="500"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0v3w4x5_di" bpmnElement="Flow_0v3w4x5">
+        <di:waypoint x="1000" y="380"/>
+        <di:waypoint x="1100" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y6z7a8_di" bpmnElement="Flow_0y6z7a8">
+        <di:waypoint x="1000" y="500"/>
+        <di:waypoint x="1100" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m4n5o6_di" bpmnElement="Flow_1m4n5o6">
+        <di:waypoint x="1150" y="125"/>
+        <di:waypoint x="1300" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b9c0d1_di" bpmnElement="Flow_0b9c0d1">
+        <di:waypoint x="1150" y="245"/>
+        <di:waypoint x="1300" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e2f3g4_di" bpmnElement="Flow_0e2f3g4">
+        <di:waypoint x="1350" y="125"/>
+        <di:waypoint x="1500" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0h5i6j7_di" bpmnElement="Flow_0h5i6j7">
+        <di:waypoint x="1600" y="140"/>
+        <di:waypoint x="1700" y="118"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

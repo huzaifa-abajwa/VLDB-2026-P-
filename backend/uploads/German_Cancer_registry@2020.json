@@ -1,0 +1,9 @@
+{
+    "datasetAgreementTitle": "German Cancer Registry 2020",
+    "datasetAgreementGeneral": "The German Cancer Registry 2020 dataset is provided under the governance of the German Centre for Cancer Registry Data (ZfKD) and is subject to strict data protection laws including the GDPR. Access is granted exclusively for oncological research purposes.",
+    "term1": "You acknowledge that this dataset is intended solely for cancer research and epidemiological studies.",
+    "term2": "You agree not to use this dataset for any commercial, non-research, or unauthorised purposes.",
+    "term3": "You agree not to attempt re-identification of individuals or link the dataset with external sources in a way that compromises patient privacy.",
+    "term4": "You must properly attribute the German Centre for Cancer Registry Data (ZfKD) in all publications, reports, or presentations.",
+    "term5": "You accept full responsibility for ensuring compliance with all applicable institutional, national, and EU data protection regulations including GDPR."
+}

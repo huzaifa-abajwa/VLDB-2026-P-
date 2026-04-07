@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-04T12:05:09.154Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-04T12-05-09-152Z_create_a_kaplanmeier_survival_analysis_for_breast.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-04T12-05-09-152Z_create_a_kaplanmeier_survival_analysis_for_breast.xml",
+  "userQuery": "Create a Kaplan-Meier survival analysis for breast cancer patients using SEER data",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"End Analysis\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Generate Survival Plot Image\" is a dead end (no outgoing flow).",
+    "Node \"End Analysis\" is not reachable from start event."
+  ]
+}

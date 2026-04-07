@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-10T21:57:47.411Z",
+  "isValid": true,
+  "filename": "valid_2025-11-10T21-57-47-410Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-10T21-57-47-410Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "userQuery": "Create a Kaplan-Meier survival analysis for lung cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "corrected": true
+}

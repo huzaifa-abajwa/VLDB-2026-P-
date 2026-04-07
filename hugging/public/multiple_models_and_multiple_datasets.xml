@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_MM_MD" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_MM_MD" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_MM_MD" name="Start">
+      <bpmn:outgoing>Flow_MM_MD_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_MM_MD">
+      <bpmn:incoming>Flow_MM_MD_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_MM_MD_3</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Dataset1_MM_MD" name="SEER_Cancer_Registry_of_USA.csv">
+      <bpmn:incoming>Flow_MM_MD_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Model1_MM_MD" name="cox_model@2020.py/kaplan_meier_model@2020.py">
+      <bpmn:incoming>Flow_MM_MD_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Dataset2_MM_MD" name="German_Cancer_registry@2020.csv">
+      <bpmn:incoming>Flow_MM_MD_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Model2_MM_MD" name="cox_model@2020.py/kaplan_meier_model@2020.py">
+      <bpmn:incoming>Flow_MM_MD_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_MM_MD">
+      <bpmn:incoming>Flow_MM_MD_6</bpmn:incoming>
+      <bpmn:incoming>Flow_MM_MD_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_8</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Compare_MM_MD" name="Compare Results">
+      <bpmn:incoming>Flow_MM_MD_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_MM_MD_9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_MM_MD" name="End">
+      <bpmn:incoming>Flow_MM_MD_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_MM_MD_1" sourceRef="StartEvent_MM_MD" targetRef="Gateway_Fork_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_2" sourceRef="Gateway_Fork_MM_MD" targetRef="Task_Dataset1_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_3" sourceRef="Gateway_Fork_MM_MD" targetRef="Task_Dataset2_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_4" sourceRef="Task_Dataset1_MM_MD" targetRef="Task_Model1_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_5" sourceRef="Task_Dataset2_MM_MD" targetRef="Task_Model2_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_6" sourceRef="Task_Model1_MM_MD" targetRef="Gateway_Join_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_7" sourceRef="Task_Model2_MM_MD" targetRef="Gateway_Join_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_8" sourceRef="Gateway_Join_MM_MD" targetRef="Task_Compare_MM_MD" />
+    <bpmn:sequenceFlow id="Flow_MM_MD_9" sourceRef="Task_Compare_MM_MD" targetRef="EndEvent_MM_MD" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_MM_MD">
+    <bpmndi:BPMNPlane id="BPMNPlane_MM_MD" bpmnElement="Process_MM_MD">
+      <bpmndi:BPMNShape id="StartEvent_MM_MD_di" bpmnElement="StartEvent_MM_MD">
+        <dc:Bounds x="150" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Fork_MM_MD_di" bpmnElement="Gateway_Fork_MM_MD" isMarkerVisible="true">
+        <dc:Bounds x="235" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Dataset1_MM_MD_di" bpmnElement="Task_Dataset1_MM_MD">
+        <dc:Bounds x="330" y="80" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Model1_MM_MD_di" bpmnElement="Task_Model1_MM_MD">
+        <dc:Bounds x="570" y="80" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Dataset2_MM_MD_di" bpmnElement="Task_Dataset2_MM_MD">
+        <dc:Bounds x="330" y="280" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Model2_MM_MD_di" bpmnElement="Task_Model2_MM_MD">
+        <dc:Bounds x="570" y="280" width="280" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_MM_MD_di" bpmnElement="Gateway_Join_MM_MD" isMarkerVisible="true">
+        <dc:Bounds x="895" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Compare_MM_MD_di" bpmnElement="Task_Compare_MM_MD">
+        <dc:Bounds x="990" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_MM_MD_di" bpmnElement="EndEvent_MM_MD">
+        <dc:Bounds x="1140" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_1_di" bpmnElement="Flow_MM_MD_1">
+        <di:waypoint x="186" y="220" />
+        <di:waypoint x="235" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_2_di" bpmnElement="Flow_MM_MD_2">
+        <di:waypoint x="260" y="195" />
+        <di:waypoint x="260" y="120" />
+        <di:waypoint x="330" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_3_di" bpmnElement="Flow_MM_MD_3">
+        <di:waypoint x="260" y="245" />
+        <di:waypoint x="260" y="320" />
+        <di:waypoint x="330" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_4_di" bpmnElement="Flow_MM_MD_4">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="570" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_5_di" bpmnElement="Flow_MM_MD_5">
+        <di:waypoint x="530" y="320" />
+        <di:waypoint x="570" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_6_di" bpmnElement="Flow_MM_MD_6">
+        <di:waypoint x="850" y="120" />
+        <di:waypoint x="920" y="120" />
+        <di:waypoint x="920" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_7_di" bpmnElement="Flow_MM_MD_7">
+        <di:waypoint x="850" y="320" />
+        <di:waypoint x="920" y="320" />
+        <di:waypoint x="920" y="245" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_8_di" bpmnElement="Flow_MM_MD_8">
+        <di:waypoint x="945" y="220" />
+        <di:waypoint x="990" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_MM_MD_9_di" bpmnElement="Flow_MM_MD_9">
+        <di:waypoint x="1090" y="220" />
+        <di:waypoint x="1140" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

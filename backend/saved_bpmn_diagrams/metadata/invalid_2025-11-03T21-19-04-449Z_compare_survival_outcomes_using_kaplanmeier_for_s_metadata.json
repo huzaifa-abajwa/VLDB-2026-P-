@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-11-03T21:19:04.451Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-19-04-449Z_compare_survival_outcomes_using_kaplanmeier_for_s.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-19-04-449Z_compare_survival_outcomes_using_kaplanmeier_for_s.xml",
+  "userQuery": "Compare survival outcomes using Kaplan-Meier for stage 1 vs stage 4 cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"Survival Plot Generated\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Execute kaplan_meier_model@2020.py with filtered datasets\" is a dead end (no outgoing flow).",
+    "Node \"Survival Plot Generated\" is not reachable from start event."
+  ]
+}

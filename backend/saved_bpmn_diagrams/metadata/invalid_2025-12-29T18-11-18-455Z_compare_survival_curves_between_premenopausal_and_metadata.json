@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-12-29T18:11:18.457Z",
+  "isValid": false,
+  "filename": "invalid_2025-12-29T18-11-18-455Z_compare_survival_curves_between_premenopausal_and.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-12-29T18-11-18-455Z_compare_survival_curves_between_premenopausal_and.xml",
+  "userQuery": "Compare survival curves between pre-menopausal and post-menopausal breast cancer patients using Kaplan-Meier analysis on the German cancer registry",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py",
+    "cox_model@2020.py",
+    "random_survival_forest@2025.py"
+  ],
+  "validationErrors": [
+    "XML Parsing Error: Invalid characters in closing tag\nLine: 17\nColumn: 35\nChar: o"
+  ]
+}

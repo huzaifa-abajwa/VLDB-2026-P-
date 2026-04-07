@@ -1,0 +1,126 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="CancerAnalysisWorkflow" isExecutable="false">
+    <bpmn:startEvent id="startEvent" name="Start Analysis">
+      <bpmn:outgoing>flow1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="taskAccessData" name="Access Compliant Datasets (German, SEER, Pakistan)">
+      <bpmn:incoming>flow1</bpmn:incoming>
+      <bpmn:outgoing>flow2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow1" sourceRef="startEvent" targetRef="taskAccessData" />
+    <bpmn:task id="taskFilterData" name="Filter Patients (Age 40-60, Grade 2-3)">
+      <bpmn:incoming>flow2</bpmn:incoming>
+      <bpmn:outgoing>flow3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow2" sourceRef="taskAccessData" targetRef="taskFilterData" />
+    <bpmn:parallelGateway id="gatewaySplit">
+      <bpmn:incoming>flow3</bpmn:incoming>
+      <bpmn:outgoing>flow4</bpmn:outgoing>
+      <bpmn:outgoing>flow5</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow3" sourceRef="taskFilterData" targetRef="gatewaySplit" />
+    <bpmn:task id="taskNN" name="Analyze Outcomes with Neural Network (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>flow4</bpmn:incoming>
+      <bpmn:outgoing>flow6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow4" sourceRef="gatewaySplit" targetRef="taskNN" />
+    <bpmn:task id="taskSurvival" name="Compare Survival Rates (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>flow5</bpmn:incoming>
+      <bpmn:outgoing>flow7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow5" sourceRef="gatewaySplit" targetRef="taskSurvival" />
+    <bpmn:parallelGateway id="gatewayMerge">
+      <bpmn:incoming>flow6</bpmn:incoming>
+      <bpmn:incoming>flow7</bpmn:incoming>
+      <bpmn:outgoing>flow8</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow6" sourceRef="taskNN" targetRef="gatewayMerge" />
+    <bpmn:sequenceFlow id="flow7" sourceRef="taskSurvival" targetRef="gatewayMerge" />
+    <bpmn:task id="taskSynthesize" name="Synthesize and Report Findings">
+      <bpmn:incoming>flow8</bpmn:incoming>
+      <bpmn:outgoing>flow9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow8" sourceRef="gatewayMerge" targetRef="taskSynthesize" />
+    <bpmn:endEvent id="endEvent" name="Analysis Complete">
+      <bpmn:incoming>flow9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow9" sourceRef="taskSynthesize" targetRef="endEvent" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CancerAnalysisWorkflow">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="startEvent">
+        <dc:Bounds x="152" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="139" y="325" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x7y8z9_di" bpmnElement="taskAccessData">
+        <dc:Bounds x="240" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1" bpmnElement="flow1">
+        <di:waypoint x="188" y="300" />
+        <di:waypoint x="240" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1a2b3c4_di" bpmnElement="taskFilterData">
+        <dc:Bounds x="390" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_2" bpmnElement="flow2">
+        <di:waypoint x="340" y="300" />
+        <di:waypoint x="390" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0d1e2f3_di" bpmnElement="gatewaySplit">
+        <dc:Bounds x="545" y="275" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_3" bpmnElement="flow3">
+        <di:waypoint x="490" y="300" />
+        <di:waypoint x="545" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_4g5h6i7_di" bpmnElement="taskNN">
+        <dc:Bounds x="650" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_4" bpmnElement="flow4">
+        <di:waypoint x="570" y="275" />
+        <di:waypoint x="570" y="210" />
+        <di:waypoint x="650" y="210" />
+      </bpmndiBPMNEdge>
+      <bpmndi:BPMNShape id="Activity_8j9k0l1_di" bpmnElement="taskSurvival">
+        <dc:Bounds x="650" y="350" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_5" bpmnElement="flow5">
+        <di:waypoint x="570" y="325" />
+        <di:waypoint x="570" y="390" />
+        <di:waypoint x="650" y="390" />
+      </bpmndi BPNEdge>
+      <bpmndi:BPMNShape id="Gateway_1m2n3o4_di" bpmnElement="gatewayMerge">
+        <dc:Bounds x="805" y="275" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_6" bpmnElement="flow6">
+        <di:waypoint x="750" y="210" />
+        <di:waypoint x="830" y="210" />
+        <di:waypoint x="830" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7" bpmnElement="flow7">
+        <di:waypoint x="750" y="390" />
+        <di:waypoint x="830" y="390" />
+        <di:waypoint x="830" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_5p6q7r8_di" bpmnElement="taskSynthesize">
+        <dc:Bounds x="910" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_8" bpmnElement="flow8">
+        <di:waypoint x="855" y="300" />
+        <di:waypoint x="910" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0s9t8u7_di" bpmnElement="endEvent">
+        <dc:Bounds x="1072" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1051" y="325" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_9" bpmnElement="flow9">
+        <di:waypoint x="1010" y="300" />
+        <di:waypoint x="1072" y="300" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

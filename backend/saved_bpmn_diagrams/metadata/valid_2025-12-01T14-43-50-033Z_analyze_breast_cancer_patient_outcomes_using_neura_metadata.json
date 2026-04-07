@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-12-01T14:43:50.035Z",
+  "isValid": true,
+  "filename": "valid_2025-12-01T14-43-50-033Z_analyze_breast_cancer_patient_outcomes_using_neura.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-01T14-43-50-033Z_analyze_breast_cancer_patient_outcomes_using_neura.xml",
+  "userQuery": "Analyze breast cancer patient outcomes using neural network classification. Compare survival rates between German and Pakistani cancer registry patients aged 40-60 with tumor grade 2-3.",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "mlp_cancer_classifier@2025.py",
+    "kaplan_meier_model@2020.py",
+    "cox_model@2020.py",
+    "random_survival_forest@2025.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "validationErrors": []
+}

@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-12-28T19:45:56.026Z",
+  "isValid": true,
+  "filename": "valid_2025-12-28T19-45-56-024Z_compare_survival_outcomes_between_premenopausal_a.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-28T19-45-56-024Z_compare_survival_outcomes_between_premenopausal_a.xml",
+  "userQuery": "Compare survival outcomes between pre-menopausal and post-menopausal breast cancer patients using Random Survival Forest on the German and Pakistani cancer registries. Apply filters for age 30-50 and tumor grade 1-2.",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "National_Cancer_Registry_of_Pakistan.csv",
+    "SEER_Cancer_Registry_of_USA.csv"
+  ],
+  "recommendedModels": [
+    "random_survival_forest@2025.py",
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py",
+    "xgboost_risk_model@2025.py",
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

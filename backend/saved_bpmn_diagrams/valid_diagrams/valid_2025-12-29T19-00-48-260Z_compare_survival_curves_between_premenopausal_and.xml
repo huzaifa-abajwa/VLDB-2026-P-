@@ -1,0 +1,157 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessData" name="Access Compliant Cancer Registries">
+      <bpmn:documentation>Access German_Cancer_registry@2020, SEER_Cancer_Registry_of_USA, and National_Cancer_Registry_of_Pakistan based on policy compliance for cancer research.</bpmn:documentation>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:userTask id="Task_FilterData" name="Filter Patients by Menopausal Status">
+      <bpmn:documentation>Create two cohorts from the accessed data: pre-menopausal and post-menopausal breast cancer patients.</bpmn:documentation>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessData" targetRef="Task_FilterData" />
+    <bpmn:serviceTask id="Task_RunKaplanMeier" name="Run Kaplan-Meier Analysis">
+      <bpmn:documentation>Execute kaplan_meier_model@2020.py on the two patient cohorts to generate comparative survival curves.</bpmn:documentation>
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_FilterData" targetRef="Gateway_Fork" />
+    <bpmn:parallelGateway id="Gateway_Fork" name="Run Survival Analyses">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Fork" targetRef="Task_RunKaplanMeier" />
+    <bpmn:serviceTask id="Task_RunCox" name="Run Cox Proportional Hazards Model">
+      <bpmn:documentation>Execute cox_model@2020.py to assess covariate impact on survival between the two cohorts.</bpmn:documentation>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Gateway_Fork" targetRef="Task_RunCox" />
+    <bpmn:serviceTask id="Task_RunRSF" name="Run Random Survival Forest">
+      <bpmn:documentation>Execute random_survival_forest@2025.py for an ensemble-based survival prediction and feature importance analysis.</bpmn:documentation>
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Gateway_Fork" targetRef="Task_RunRSF" />
+    <bpmn:parallelGateway id="Gateway_Join" name="Combine Results">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_RunKaplanMeier" targetRef="Gateway_Join" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_RunCox" targetRef="Gateway_Join" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_RunRSF" targetRef="Gateway_Join" />
+    <bpmn:task id="Task_GenerateOutput" name="Generate Comparative Survival Report">
+      <bpmn:documentation>Consolidate outputs: Kaplan-Meier plot, hazard ratios from Cox model, and C-index/feature importance from RSF into a final report.</bpmn:documentation>
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Gateway_Join" targetRef="Task_GenerateOutput" />
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_GenerateOutput" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="258" />
+        <di:waypoint x="240" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="258" />
+        <di:waypoint x="390" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="490" y="258" />
+        <di:waypoint x="545" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="570" y="233" />
+        <di:waypoint x="570" y="150" />
+        <di:waypoint x="630" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="595" y="258" />
+        <di:waypoint x="630" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="570" y="283" />
+        <di:waypoint x="570" y="360" />
+        <di:waypoint x="630" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="730" y="150" />
+        <di:waypoint x="790" y="150" />
+        <di:waypoint x="790" y="233" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="730" y="258" />
+        <di:waypoint x="765" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="730" y="360" />
+        <di:waypoint x="790" y="360" />
+        <di:waypoint x="790" y="283" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="815" y="258" />
+        <di:waypoint x="870" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="970" y="258" />
+        <di:waypoint x="1032" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="240" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="142" y="283" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccessData_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="240" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FilterData_di" bpmnElement="Task_FilterData">
+        <dc:Bounds x="390" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Fork_di" bpmnElement="Gateway_Fork" isMarkerVisible="true">
+        <dc:Bounds x="545" y="233" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="526" y="203" width="88" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunKaplanMeier_di" bpmnElement="Task_RunKaplanMeier">
+        <dc:Bounds x="630" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunCox_di" bpmnElement="Task_RunCox">
+        <dc:Bounds x="630" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RunRSF_di" bpmnElement="Task_RunRSF">
+        <dc:Bounds x="630" y="320" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_di" bpmnElement="Gateway_Join" isMarkerVisible="true">
+        <dc:Bounds x="765" y="233" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="747" y="290" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GenerateOutput_di" bpmnElement="Task_GenerateOutput">
+        <dc:Bounds x="870" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1032" y="240" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1016" y="283" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,173 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessData" name="Access UCI_diabetic_dataset">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>DataObjectReference_DiabeticData</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:dataObject id="diabetic_data_csv" name="diabetic_data.csv" />
+    <bpmn:dataObjectReference id="DataObjectReference_DiabeticData" dataObjectRef="diabetic_data_csv" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:parallelGateway id="Gateway_Split" name="Split">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessData" targetRef="Gateway_Split" />
+    <bpmn:task id="Task_RunLSTM" name="Run Readmission Prediction (LSTM)">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:property id="Property_LSTM" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_LSTM">
+        <bpmn:sourceRef>DataObjectReference_DiabeticData</bpmn:sourceRef>
+        <bpmn:targetRef>Property_LSTM</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_LSTM">
+        <bpmn:targetRef>DataObjectReference_LSTM_Results</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_Split" targetRef="Task_RunLSTM" />
+    <bpmn:task id="Task_RunXGBoost" name="Run Readmission Prediction (XGBoost)">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+      <bpmn:property id="Property_XGBoost" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_XGBoost">
+        <bpmn:sourceRef>DataObjectReference_DiabeticData</bpmn:sourceRef>
+        <bpmn:targetRef>Property_XGBoost</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_XGBoost">
+        <bpmn:targetRef>DataObjectReference_XGBoost_Results</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Split" targetRef="Task_RunXGBoost" />
+    <bpmn:dataObject id="lstm_results_json" name="lstm_results.json" />
+    <bpmn:dataObjectReference id="DataObjectReference_LSTM_Results" dataObjectRef="lstm_results_json" />
+    <bpmn:dataObject id="xgboost_results_json" name="xgboost_results.json" />
+    <bpmn:dataObjectReference id="DataObjectReference_XGBoost_Results" dataObjectRef="xgboost_results_json" />
+    <bpmn:parallelGateway id="Gateway_Join" name="Join">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_RunLSTM" targetRef="Gateway_Join" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_RunXGBoost" targetRef="Gateway_Join" />
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Gateway_Join" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="202" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q8b9y4_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0vwev9z_di" bpmnElement="DataObjectReference_DiabeticData">
+        <dc:Bounds x="302" y="255" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="281" y="312" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="320" y="217" />
+        <di:waypoint x="320" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0o5k0f2_di" bpmnElement="Gateway_Split" isMarkerVisible="true">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438" y="128" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0f8i8o5_di" bpmnElement="Task_RunLSTM">
+        <dc:Bounds x="530" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="450" y="152" />
+        <di:waypoint x="450" y="117" />
+        <di:waypoint x="530" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1c1j1qg_di" bpmnElement="Task_RunXGBoost">
+        <dc:Bounds x="530" y="177" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="217" />
+        <di:waypoint x="530" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_0c8qg2s_di" bpmnElement="DataInputAssociation_LSTM">
+        <di:waypoint x="338" y="255" />
+        <di:waypoint x="338" y="137" />
+        <di:waypoint x="530" y="137" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_1u8y2u6_di" bpmnElement="DataObjectReference_LSTM_Results">
+        <dc:Bounds x="652" y="75" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="630" y="132" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0x4y45x_di" bpmnElement="DataOutputAssociation_LSTM">
+        <di:waypoint x="630" y="100" />
+        <di:waypoint x="652" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1v2w9x8_di" bpmnElement="DataInputAssociation_XGBoost">
+        <di:waypoint x="338" y="255" />
+        <di:waypoint x="338" y="237" />
+        <di:waypoint x="530" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_0f4y45x_di" bpmnElement="DataObjectReference_XGBoost_Results">
+        <dc:Bounds x="652" y="175" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="622" y="232" width="96" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1c1j1qg_di" bpmnElement="DataOutputAssociation_XGBoost">
+        <di:waypoint x="630" y="200" />
+        <di:waypoint x="652" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1c1j1qg_di" bpmnElement="Gateway_Join" isMarkerVisible="true">
+        <dc:Bounds x="735" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="748" y="208" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="630" y="117" />
+        <di:waypoint x="760" y="117" />
+        <di:waypoint x="760" y="152" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="630" y="217" />
+        <di:waypoint x="760" y="217" />
+        <di:waypoint x="760" y="202" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0f4y45x_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="842" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="850" y="202" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="785" y="177" />
+        <di:waypoint x="842" y="177" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

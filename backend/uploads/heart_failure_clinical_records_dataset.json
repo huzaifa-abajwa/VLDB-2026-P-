@@ -1,0 +1,9 @@
+{
+    "datasetAgreementTitle": "Heart Failure Clinical Records Dataset",
+    "datasetAgreementGeneral": "This dataset contains clinical records of heart failure patients collected from a medical centre. It is provided for academic and research use only. Users must comply with all patient data protection standards.",
+    "term1": "You acknowledge that this dataset is intended solely for cardiovascular and clinical research and must not be used for any commercial or unauthorised purpose.",
+    "term2": "You agree not to attempt re-identification of any individuals or link this dataset with external sources in a way that compromises patient privacy.",
+    "term3": "You must properly attribute the original data collectors and contributors in all publications, reports, or presentations.",
+    "term4": "You accept full responsibility for ensuring the ethical use of this dataset in compliance with all applicable institutional and patient data protection regulations.",
+    "term5": "You agree not to redistribute this dataset to third parties without explicit written permission from the data custodians."
+}

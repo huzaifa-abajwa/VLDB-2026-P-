@@ -1,0 +1,126 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="CancerAnalysisWorkflow" isExecutable="false">
+    <bpmn:startEvent id="start_event" name="Start Analysis Request">
+      <bpmn:outgoing>flow_start_to_access</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="task_access_data" name="Access Compliant Cancer Registries (German, SEER, Pakistan)">
+      <bpmn:incoming>flow_start_to_access</bpmn:incoming>
+      <bpmn:outgoing>flow_access_to_filter</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_start_to_access" sourceRef="start_event" targetRef="task_access_data" />
+    <bpmn:task id="task_filter_data" name="Filter Datasets (Age: 40-60, Grade: 2-3)">
+      <bpmn:incoming>flow_access_to_filter</bpmn:incoming>
+      <bpmn:outgoing>flow_filter_to_fork</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_access_to_filter" sourceRef="task_access_data" targetRef="task_filter_data" />
+    <bpmn:parallelGateway id="gateway_fork">
+      <bpmn:incoming>flow_filter_to_fork</bpmn:incoming>
+      <bpmn:outgoing>flow_fork_to_nn</bpmn:outgoing>
+      <bpmn:outgoing>flow_fork_to_survival</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow_filter_to_fork" sourceRef="task_filter_data" targetRef="gateway_fork" />
+    <bpmn:task id="task_run_nn" name="Analyze Outcomes with Neural Network (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>flow_fork_to_nn</bpmn:incoming>
+      <bpmn:outgoing>flow_nn_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_fork_to_nn" sourceRef="gateway_fork" targetRef="task_run_nn" />
+    <bpmn:task id="task_run_survival" name="Compare Survival Rates (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>flow_fork_to_survival</bpmn:incoming>
+      <bpmn:outgoing>flow_survival_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_fork_to_survival" sourceRef="gateway_fork" targetRef="task_run_survival" />
+    <bpmn:parallelGateway id="gateway_join">
+      <bpmn:incoming>flow_nn_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_survival_to_join</bpmn:incoming>
+      <bpmn:outgoing>flow_join_to_report</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow_nn_to_join" sourceRef="task_run_nn" targetRef="gateway_join" />
+    <bpmn:sequenceFlow id="flow_survival_to_join" sourceRef="task_run_survival" targetRef="gateway_join" />
+    <bpmn:task id="task_generate_report" name="Synthesize Results and Generate Report">
+      <bpmn:incoming>flow_join_to_report</bpmn:incoming>
+      <bpmn:outgoing>flow_report_to_end</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_join_to_report" sourceRef="gateway_join" targetRef="task_generate_report" />
+    <bpmn:endEvent id="end_event" name="Analysis Complete">
+      <bpmn:incoming>flow_report_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_report_to_end" sourceRef="task_generate_report" targetRef="end_event" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CancerAnalysisWorkflow">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_event">
+        <dc:Bounds x="179" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="325" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0w1h1g1_di" bpmnElement="task_access_data">
+        <dc:Bounds x="270" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1o8a2z1_di" bpmnElement="flow_start_to_access">
+        <di:waypoint x="215" y="300" />
+        <di:waypoint x="270" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1v3yq0n_di" bpmnElement="task_filter_data">
+        <dc:Bounds x="430" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0f0j3y3_di" bpmnElement="flow_access_to_filter">
+        <di:waypoint x="370" y="300" />
+        <di:waypoint x="430" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1c2x8p1_di" bpmnElement="gateway_fork">
+        <dc:Bounds x="585" y="275" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0x0j3y3_di" bpmnElement="flow_filter_to_fork">
+        <di:waypoint x="530" y="300" />
+        <di:waypoint x="585" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1a5m8q7_di" bpmnElement="task_run_nn">
+        <dc:Bounds x="690" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1p0j3y3_di" bpmnElement="flow_fork_to_nn">
+        <di:waypoint x="610" y="275" />
+        <di:waypoint x="610" y="210" />
+        <di:waypoint x="690" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0b1n2e3_di" bpmnElement="task_run_survival">
+        <dc:Bounds x="690" y="350" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0q1j3y3_di" bpmnElement="flow_fork_to_survival">
+        <di:waypoint x="610" y="325" />
+        <di:waypoint x="610" y="390" />
+        <di:waypoint x="690" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0g9h8i7_di" bpmnElement="gateway_join">
+        <dc:Bounds x="845" y="275" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1r2j3y3_di" bpmnElement="flow_nn_to_join">
+        <di:waypoint x="790" y="210" />
+        <di:waypoint x="870" y="210" />
+        <di:waypoint x="870" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s3j3y3_di" bpmnElement="flow_survival_to_join">
+        <di:waypoint x="790" y="390" />
+        <di:waypoint x="870" y="390" />
+        <di:waypoint x="870" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1k4l5m6_di" bpmnElement="task_generate_report">
+        <dc:Bounds x="950" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0t4j3y3_di" bpmnElement="flow_join_to_report">
+        <di:waypoint x="895" y="300" />
+        <di:waypoint x="950" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1w2x3y4_di" bpmnElement="end_event">
+        <dc:Bounds x="1112" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1090" y="325" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0u5j3y3_di" bpmnElement="flow_report_to_end">
+        <di:waypoint x="1050" y="300" />
+        <di:waypoint x="1112" y="300" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

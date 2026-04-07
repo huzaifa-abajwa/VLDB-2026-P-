@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_SM_MD_F1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_SM_MD_F1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_SM_MD_F1" name="Start">
+      <bpmn:outgoing>Flow_SM_MD_F1_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_SM_MD_F1">
+      <bpmn:incoming>Flow_SM_MD_F1_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_SM_MD_F1_3</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Dataset1_SM_MD_F1" name="SEER_Cancer_Registry_of_USA.csv">
+      <bpmn:incoming>Flow_SM_MD_F1_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Filter1_SM_MD_F1" name="Filter by Age">
+      <bpmn:incoming>Flow_SM_MD_F1_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Model1_SM_MD_F1" name="cox_model@2020.py">
+      <bpmn:incoming>Flow_SM_MD_F1_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Dataset2_SM_MD_F1" name="German_Cancer_registry@2020.csv">
+      <bpmn:incoming>Flow_SM_MD_F1_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Filter2_SM_MD_F1" name="Filter by Age">
+      <bpmn:incoming>Flow_SM_MD_F1_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Model2_SM_MD_F1" name="cox_model@2020.py">
+      <bpmn:incoming>Flow_SM_MD_F1_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_SM_MD_F1">
+      <bpmn:incoming>Flow_SM_MD_F1_8</bpmn:incoming>
+      <bpmn:incoming>Flow_SM_MD_F1_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_10</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Compare_SM_MD_F1" name="Compare Results">
+      <bpmn:incoming>Flow_SM_MD_F1_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_MD_F1_11</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_SM_MD_F1" name="End">
+      <bpmn:incoming>Flow_SM_MD_F1_11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_1" sourceRef="StartEvent_SM_MD_F1" targetRef="Gateway_Fork_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_2" sourceRef="Gateway_Fork_SM_MD_F1" targetRef="Task_Dataset1_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_3" sourceRef="Gateway_Fork_SM_MD_F1" targetRef="Task_Dataset2_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_4" sourceRef="Task_Dataset1_SM_MD_F1" targetRef="Task_Filter1_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_5" sourceRef="Task_Dataset2_SM_MD_F1" targetRef="Task_Filter2_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_6" sourceRef="Task_Filter1_SM_MD_F1" targetRef="Task_Model1_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_7" sourceRef="Task_Filter2_SM_MD_F1" targetRef="Task_Model2_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_8" sourceRef="Task_Model1_SM_MD_F1" targetRef="Gateway_Join_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_9" sourceRef="Task_Model2_SM_MD_F1" targetRef="Gateway_Join_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_10" sourceRef="Gateway_Join_SM_MD_F1" targetRef="Task_Compare_SM_MD_F1" />
+    <bpmn:sequenceFlow id="Flow_SM_MD_F1_11" sourceRef="Task_Compare_SM_MD_F1" targetRef="EndEvent_SM_MD_F1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_SM_MD_F1">
+    <bpmndi:BPMNPlane id="BPMNPlane_SM_MD_F1" bpmnElement="Process_SM_MD_F1">
+      <bpmndi:BPMNShape id="StartEvent_SM_MD_F1_di" bpmnElement="StartEvent_SM_MD_F1">
+        <dc:Bounds x="150" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Fork_SM_MD_F1_di" bpmnElement="Gateway_Fork_SM_MD_F1" isMarkerVisible="true">
+        <dc:Bounds x="235" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Dataset1_SM_MD_F1_di" bpmnElement="Task_Dataset1_SM_MD_F1">
+        <dc:Bounds x="330" y="80" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Filter1_SM_MD_F1_di" bpmnElement="Task_Filter1_SM_MD_F1">
+        <dc:Bounds x="570" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Model1_SM_MD_F1_di" bpmnElement="Task_Model1_SM_MD_F1">
+        <dc:Bounds x="710" y="80" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Dataset2_SM_MD_F1_di" bpmnElement="Task_Dataset2_SM_MD_F1">
+        <dc:Bounds x="330" y="280" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Filter2_SM_MD_F1_di" bpmnElement="Task_Filter2_SM_MD_F1">
+        <dc:Bounds x="570" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Model2_SM_MD_F1_di" bpmnElement="Task_Model2_SM_MD_F1">
+        <dc:Bounds x="710" y="280" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_SM_MD_F1_di" bpmnElement="Gateway_Join_SM_MD_F1" isMarkerVisible="true">
+        <dc:Bounds x="915" y="195" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Compare_SM_MD_F1_di" bpmnElement="Task_Compare_SM_MD_F1">
+        <dc:Bounds x="1010" y="180" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SM_MD_F1_di" bpmnElement="EndEvent_SM_MD_F1">
+        <dc:Bounds x="1160" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_1_di" bpmnElement="Flow_SM_MD_F1_1">
+        <di:waypoint x="186" y="220" />
+        <di:waypoint x="235" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_2_di" bpmnElement="Flow_SM_MD_F1_2">
+        <di:waypoint x="260" y="195" />
+        <di:waypoint x="260" y="120" />
+        <di:waypoint x="330" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_3_di" bpmnElement="Flow_SM_MD_F1_3">
+        <di:waypoint x="260" y="245" />
+        <di:waypoint x="260" y="320" />
+        <di:waypoint x="330" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_4_di" bpmnElement="Flow_SM_MD_F1_4">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="570" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_5_di" bpmnElement="Flow_SM_MD_F1_5">
+        <di:waypoint x="530" y="320" />
+        <di:waypoint x="570" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_6_di" bpmnElement="Flow_SM_MD_F1_6">
+        <di:waypoint x="670" y="120" />
+        <di:waypoint x="710" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_7_di" bpmnElement="Flow_SM_MD_F1_7">
+        <di:waypoint x="670" y="320" />
+        <di:waypoint x="710" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_8_di" bpmnElement="Flow_SM_MD_F1_8">
+        <di:waypoint x="870" y="120" />
+        <di:waypoint x="940" y="120" />
+        <di:waypoint x="940" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_9_di" bpmnElement="Flow_SM_MD_F1_9">
+        <di:waypoint x="870" y="320" />
+        <di:waypoint x="940" y="320" />
+        <di:waypoint x="940" y="245" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_10_di" bpmnElement="Flow_SM_MD_F1_10">
+        <di:waypoint x="965" y="220" />
+        <di:waypoint x="1010" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_MD_F1_11_di" bpmnElement="Flow_SM_MD_F1_11">
+        <di:waypoint x="1110" y="220" />
+        <di:waypoint x="1160" y="220" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

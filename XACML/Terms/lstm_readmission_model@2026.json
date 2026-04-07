@@ -1,0 +1,10 @@
+{
+    "datasetAgreementTitle": "LSTM Hospital Readmission Model 2026",
+    "datasetAgreementGeneral": "This LSTM-based readmission prediction model is developed for predicting hospital readmissions in diabetic patient populations. Access is restricted to qualified medical researchers operating under HIPAA-compliant institutional frameworks.",
+    "term1": "You acknowledge that this model is designed exclusively for hospital readmission prediction research and must not be applied to clinical decisions without appropriate validation.",
+    "term2": "You agree that all usage will comply with HIPAA and all applicable patient data protection regulations.",
+    "term3": "You are required to provide proper attribution to the model developers in all publications and presentations.",
+    "term4": "You accept that all outcomes are solely at your discretion and the developers disclaim any liability.",
+    "term5": "You agree to share any improvements or modifications with the original developers.",
+    "term6": "You agree not to redistribute this model to third parties without explicit written permission."
+}

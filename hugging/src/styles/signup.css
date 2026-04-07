@@ -1,0 +1,105 @@
+/* General Page Styles */
+body.signup-page {
+  background-image: url('blur.png');
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container Styles */
+.signup-container {
+  max-width: 500px;
+  width: 100%;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* Title Styles */
+.signup-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  animation: slideIn 0.5s ease-in-out forwards;
+}
+
+/* Form Styles */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Input Styles */
+.signup-input,
+.signup-password {
+  padding: 12px;
+  border: 2px solid #3572EF;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  color: #333;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  text-align: center;
+}
+
+.signup-input:focus,
+.signup-password:focus {
+  border-color: #004494;
+  outline: none;
+}
+
+/* Button Styles */
+.signup-button {
+  padding: 12px;
+  background-color: #3572EF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.signup-button:hover {
+  background-color: #285bb5;
+  transform: translateY(-3px);
+}
+
+/* Success Message Styles */
+.signup-success {
+  background-color: #e7f7e2;
+  padding: 20px;
+  border-radius: 8px;
+  color: #3c763d;
+  font-weight: bold;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.signup-error {
+  background-color: #f8d7da;
+  padding: 20px;
+  border-radius: 8px;
+  color: #721c24;
+  font-weight: bold;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

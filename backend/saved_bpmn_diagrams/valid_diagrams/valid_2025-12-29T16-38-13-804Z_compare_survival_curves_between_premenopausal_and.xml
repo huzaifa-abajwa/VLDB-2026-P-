@@ -1,0 +1,124 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_SurvivalAnalysis" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Workflow">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessData" name="Access Compliant Cancer Registries">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>DataObjectReference_German</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>DataObjectReference_SEER</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn:targetRef>DataObjectReference_Pakistan</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:task id="Task_FilterData" name="Filter Data for Pre- and Post-Menopausal Cohorts">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessData" targetRef="Task_FilterData" />
+    <bpmn:task id="Task_RunKM" name="Execute Kaplan-Meier Analysis (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_FilterData" targetRef="Task_RunKM" />
+    <bpmn:task id="Task_GeneratePlot" name="Generate and Compare Survival Curves">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_RunKM" targetRef="Task_GeneratePlot" />
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_GeneratePlot" targetRef="EndEvent_1" />
+    <bpmn:dataObject id="DataObject_German" name="German_Cancer_registry@2020" />
+    <bpmn:dataObjectReference id="DataObjectReference_German" dataObjectRef="DataObject_German" />
+    <bpmn:dataObject id="DataObject_SEER" name="SEER_Cancer_Registry_of_USA" />
+    <bpmn:dataObjectReference id="DataObjectReference_SEER" dataObjectRef="DataObject_SEER" />
+    <bpmn:dataObject id="DataObject_Pakistan" name="National_Cancer_Registry_of_Pakistan" />
+    <bpmn:dataObjectReference id="DataObjectReference_Pakistan" dataObjectRef="DataObject_Pakistan" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_SurvivalAnalysis">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="166" y="145" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x3g1z2_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y2w5r4_di" bpmnElement="Task_FilterData">
+        <dc:Bounds x="430" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v1n3o5_di" bpmnElement="Task_RunKM">
+        <dc:Bounds x="590" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c2d4e6_di" bpmnElement="Task_GeneratePlot">
+        <dc:Bounds x="750" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0f7b3y4_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="912" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="899" y="145" width="62" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="430" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="590" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="690" y="120" />
+        <di:waypoint x="750" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="850" y="120" />
+        <di:waypoint x="912" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_German_di" bpmnElement="DataObjectReference_German">
+        <dc:Bounds x="292" y="185" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="270" y="242" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="320" y="160" />
+        <di:waypoint x="310" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_SEER_di" bpmnElement="DataObjectReference_SEER">
+        <dc:Bounds x="342" y="185" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="320" y="242" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="350" y="160" />
+        <di:waypoint x="360" y="185" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_Pakistan_di" bpmnElement="DataObjectReference_Pakistan">
+        <dc:Bounds x="392" y="185" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="370" y="242" width="81" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_3_di" bpmnElement="DataOutputAssociation_3">
+        <di:waypoint x="370" y="158" />
+        <di:waypoint x="400" y="185" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

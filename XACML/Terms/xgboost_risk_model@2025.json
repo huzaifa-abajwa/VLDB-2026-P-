@@ -1,0 +1,10 @@
+{
+    "datasetAgreementTitle": "XGBoost Risk Stratification Model 2025",
+    "datasetAgreementGeneral": "This XGBoost-based risk stratification model is developed for predicting patient risk scores across cancer and diabetes research contexts. Access is open to all qualified researchers regardless of domain.",
+    "term1": "You acknowledge that this model is designed for research-based risk stratification and must not be used for clinical risk assessment without institutional validation.",
+    "term2": "You agree not to use this model for any illegal, unethical, or harmful activities.",
+    "term3": "You are required to provide proper attribution to the model developers in all publications and presentations.",
+    "term4": "You accept that all outcomes are solely at your discretion and the developers disclaim any liability.",
+    "term5": "You agree to report any significant modifications to the original developers.",
+    "term6": "You agree not to redistribute this model to third parties without explicit written permission."
+}

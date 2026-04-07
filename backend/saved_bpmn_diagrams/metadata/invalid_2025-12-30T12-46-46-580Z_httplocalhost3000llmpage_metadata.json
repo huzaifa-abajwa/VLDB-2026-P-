@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-12-30T12:46:46.582Z",
+  "isValid": false,
+  "filename": "invalid_2025-12-30T12-46-46-580Z_httplocalhost3000llmpage.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-12-30T12-46-46-580Z_httplocalhost3000llmpage.xml",
+  "userQuery": "http://localhost:3000/LLMPage",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py",
+    "xgboost_risk_model@2025.py",
+    "random_survival_forest@2025.py",
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "validationErrors": [
+    "XML Parsing Error: Unexpected close tag\nLine: 112\nColumn: 24\nChar: >"
+  ]
+}

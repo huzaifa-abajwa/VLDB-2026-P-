@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Comparison">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split_Populations">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Branch</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_Branch</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Split_US_Models">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_XGB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_RF</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_MLP</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Join_US_Models">
+      <bpmn:incoming>Flow_Join_US_XGB</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_US_RF</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_US_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Split_BD_Models">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_XGB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_RF</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_MLP</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Join_BD_Models">
+      <bpmn:incoming>Flow_Join_BD_XGB</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_BD_RF</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_BD_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Join_Populations">
+      <bpmn:incoming>Flow_Join_Populations_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Populations_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Split_Populations"/>
+    <bpmn:sequenceFlow id="Flow_US_Branch" sourceRef="Gateway_Split_Populations" targetRef="Task_Access_US_Data"/>
+    <bpmn:sequenceFlow id="Flow_BD_Branch" sourceRef="Gateway_Split_Populations" targetRef="Task_Access_BD_Data"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Access_US_Data" targetRef="Gateway_Split_US_Models"/>
+    <bpmn:sequenceFlow id="Flow_US_XGB" sourceRef="Gateway_Split_US_Models" targetRef="Task_Run_US_XGB"/>
+    <bpmn:sequenceFlow id="Flow_US_RF" sourceRef="Gateway_Split_US_Models" targetRef="Task_Run_US_RF"/>
+    <bpmn:sequenceFlow id="Flow_US_MLP" sourceRef="Gateway_Split_US_Models" targetRef="Task_Run_US_MLP"/>
+    <bpmn:sequenceFlow id="Flow_Join_US_XGB" sourceRef="Task_Run_US_XGB" targetRef="Gateway_Join_US_Models"/>
+    <bpmn:sequenceFlow id="Flow_Join_US_RF" sourceRef="Task_Run_US_RF" targetRef="Gateway_Join_US_Models"/>
+    <bpmn:sequenceFlow id="Flow_Join_US_MLP" sourceRef="Task_Run_US_MLP" targetRef="Gateway_Join_US_Models"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Join_US_Models" targetRef="Task_Collect_US_Results"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Access_BD_Data" targetRef="Gateway_Split_BD_Models"/>
+    <bpmn:sequenceFlow id="Flow_BD_XGB" sourceRef="Gateway_Split_BD_Models" targetRef="Task_Run_BD_XGB"/>
+    <bpmn:sequenceFlow id="Flow_BD_RF" sourceRef="Gateway_Split_BD_Models" targetRef="Task_Run_BD_RF"/>
+    <bpmn:sequenceFlow id="Flow_BD_MLP" sourceRef="Gateway_Split_BD_Models" targetRef="Task_Run_BD_MLP"/>
+    <bpmn:sequenceFlow id="Flow_Join_BD_XGB" sourceRef="Task_Run_BD_XGB" targetRef="Gateway_Join_BD_Models"/>
+    <bpmn:sequenceFlow id="Flow_Join_BD_RF" sourceRef="Task_Run_BD_RF" targetRef="Gateway_Join_BD_Models"/>
+    <bpmn:sequenceFlow id="Flow_Join_BD_MLP" sourceRef="Task_Run_BD_MLP" targetRef="Gateway_Join_BD_Models"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Gateway_Join_BD_Models" targetRef="Task_Collect_BD_Results"/>
+    <bpmn:sequenceFlow id="Flow_Join_Populations_1" sourceRef="Task_Collect_US_Results" targetRef="Gateway_Join_Populations"/>
+    <bpmn:sequenceFlow id="Flow_Join_Populations_2" sourceRef="Task_Collect_BD_Results" targetRef="Gateway_Join_Populations"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Gateway_Join_Populations" targetRef="Task_Compare_Results"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Compare_Results" targetRef="EndEvent_1"/>
+    <bpmn:task id="Task_Access_US_Data" name="Access US Patient Data (diabetic_data)">
+      <bpmn:incoming>Flow_US_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_BD_Data" name="Access Bangladeshi Patient Data (Sylhet_Diabetes_Hospital_Bangladesh)">
+      <bpmn:incoming>Flow_BD_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_US_XGB" name="Run XGBoost Model (xgboost_risk_model@2025)">
+      <bpmn:incoming>Flow_US_XGB</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_XGB</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_US_RF" name="Run Random Forest Model (random_survival_forest@2025)">
+      <bpmn:incoming>Flow_US_RF</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_RF</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_US_MLP" name="Run MLP Model (mlp_cancer_classifier@2025)">
+      <bpmn:incoming>Flow_US_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_MLP</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Collect_US_Results" name="Collect US Prediction Results">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Populations_1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_BD_XGB" name="Run XGBoost Model (xgboost_risk_model@2025)">
+      <bpmn:incoming>Flow_BD_XGB</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_XGB</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_BD_RF" name="Run Random Forest Model (random_survival_forest@2025)">
+      <bpmn:incoming>Flow_BD_RF</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_RF</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_BD_MLP" name="Run MLP Model (mlp_cancer_classifier@2025)">
+      <bpmn:incoming>Flow_BD_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_MLP</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Collect_BD_Results" name="Collect Bangladeshi Prediction Results">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Populations_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Compare_Results" name="Compare Prediction Results Across Populations">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End Comparison">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1900" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Access_US_Data_di" bpmnElement="Task_Access_US_Data">
+        <dc:Bounds x="500" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Access_BD_Data_di" bpmnElement="Task_Access_BD_Data">
+        <dc:Bounds x="500" y="220" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_US_XGB_di" bpmnElement="Task_Run_US_XGB">
+        <dc:Bounds x="900" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_US_RF_di" bpmnElement="Task_Run_US_RF">
+        <dc:Bounds x="900" y="220" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_US_MLP_di" bpmnElement="Task_Run_US_MLP">
+        <dc:Bounds x="900" y="340" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Collect_US_Results_di" bpmnElement="Task_Collect_US_Results">
+        <dc:Bounds x="1300" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_BD_XGB_di" bpmnElement="Task_Run_BD_XGB">
+        <dc:Bounds x="900" y="460" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_BD_RF_di" bpmnElement="Task_Run_BD_RF">
+        <dc:Bounds x="900" y="580" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_BD_MLP_di" bpmnElement="Task_Run_BD_MLP">
+        <dc:Bounds x="900" y="700" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Collect_BD_Results_di" bpmnElement="Task_Collect_BD_Results">
+        <dc:Bounds x="1300" y="220" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Compare_Results_di" bpmnElement="Task_Compare_Results">
+        <dc:Bounds x="1700" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_Populations_di" bpmnElement="Gateway_Split_Populations">
+        <dc:Bounds x="300" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_US_Models_di" bpmnElement="Gateway_Split_US_Models">
+        <dc:Bounds x="700" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_US_Models_di" bpmnElement="Gateway_Join_US_Models">
+        <dc:Bounds x="1100" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_BD_Models_di" bpmnElement="Gateway_Split_BD_Models">
+        <dc:Bounds x="700" y="220" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_BD_Models_di" bpmnElement="Gateway_Join_BD_Models">
+        <dc:Bounds x="1100" y="220" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_Populations_di" bpmnElement="Gateway_Join_Populations">
+        <dc:Bounds x="1500" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="136" y="118"/>
+        <di:waypoint x="300" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_Branch_di" bpmnElement="Flow_US_Branch">
+        <di:waypoint x="350" y="125"/>
+        <di:waypoint x="500" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_Branch_di" bpmnElement="Flow_BD_Branch">
+        <di:waypoint x="350" y="125"/>
+        <di:waypoint x="500" y="260"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="600" y="140"/>
+        <di:waypoint x="700" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_XGB_di" bpmnElement="Flow_US_XGB">
+        <di:waypoint x="750" y="125"/>
+        <di:waypoint x="900" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_RF_di" bpmnElement="Flow_US_RF">
+        <di:waypoint x="750" y="125"/>
+        <di:waypoint x="900" y="260"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_MLP_di" bpmnElement="Flow_US_MLP">
+        <di:waypoint x="750" y="125"/>
+        <di:waypoint x="900" y="380"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_US_XGB_di" bpmnElement="Flow_Join_US_XGB">
+        <di:waypoint x="1000" y="140"/>
+        <di:waypoint x="1100" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_US_RF_di" bpmnElement="Flow_Join_US_RF">
+        <di:waypoint x="1000" y="260"/>
+        <di:waypoint x="1100" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_US_MLP_di" bpmnElement="Flow_Join_US_MLP">
+        <di:waypoint x="1000" y="380"/>
+        <di:waypoint x="1100" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="1150" y="125"/>
+        <di:waypoint x="1300" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="600" y="260"/>
+        <di:waypoint x="700" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_XGB_di" bpmnElement="Flow_BD_XGB">
+        <di:waypoint x="750" y="245"/>
+        <di:waypoint x="900" y="500"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_RF_di" bpmnElement="Flow_BD_RF">
+        <di:waypoint x="750" y="245"/>
+        <di:waypoint x="900" y="620"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_MLP_di" bpmnElement="Flow_BD_MLP">
+        <di:waypoint x="750" y="245"/>
+        <di:waypoint x="900" y="740"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_BD_XGB_di" bpmnElement="Flow_Join_BD_XGB">
+        <di:waypoint x="1000" y="500"/>
+        <di:waypoint x="1100" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_BD_RF_di" bpmnElement="Flow_Join_BD_RF">
+        <di:waypoint x="1000" y="620"/>
+        <di:waypoint x="1100" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_BD_MLP_di" bpmnElement="Flow_Join_BD_MLP">
+        <di:waypoint x="1000" y="740"/>
+        <di:waypoint x="1100" y="245"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="1150" y="245"/>
+        <di:waypoint x="1300" y="260"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_Populations_1_di" bpmnElement="Flow_Join_Populations_1">
+        <di:waypoint x="1400" y="140"/>
+        <di:waypoint x="1500" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_Populations_2_di" bpmnElement="Flow_Join_Populations_2">
+        <di:waypoint x="1400" y="260"/>
+        <di:waypoint x="1500" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="1550" y="125"/>
+        <di:waypoint x="1700" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1800" y="140"/>
+        <di:waypoint x="1900" y="118"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

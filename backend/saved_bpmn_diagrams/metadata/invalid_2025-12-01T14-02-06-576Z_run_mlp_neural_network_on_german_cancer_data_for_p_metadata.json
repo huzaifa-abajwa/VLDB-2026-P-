@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-12-01T14:02:06.578Z",
+  "isValid": false,
+  "filename": "invalid_2025-12-01T14-02-06-576Z_run_mlp_neural_network_on_german_cancer_data_for_p.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-12-01T14-02-06-576Z_run_mlp_neural_network_on_german_cancer_data_for_p.xml",
+  "userQuery": "Run MLP neural network on German cancer data for patients aged 40-50.",
+  "recommendedDatasets": [
+    "German_Cancer_registry"
+  ],
+  "recommendedModels": [
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "validationErrors": [
+    "Semantic Warning: Task \"Run MLP Cancer Classifier\" appears to reference a non-existent model."
+  ]
+}

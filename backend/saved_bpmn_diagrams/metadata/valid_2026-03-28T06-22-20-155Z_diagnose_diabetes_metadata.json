@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-28T06:22:20.157Z",
+  "isValid": true,
+  "filename": "valid_2026-03-28T06-22-20-155Z_diagnose_diabetes.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-28T06-22-20-155Z_diagnose_diabetes.xml",
+  "userQuery": "Diagnose diabetes",
+  "recommendedDatasets": [
+    "Sylhet_Diabetes_Hospital_Bangladesh.csv",
+    "Pima_Indians_Diabetes_USA.csv"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

@@ -1,0 +1,9 @@
+{
+  "ignore": [
+    "saved_bpmn_diagrams/**/*",
+    "whole_response.json",
+    "models_datasets_names_*.json",
+    "*.json"
+  ],
+  "delay": 2000
+}

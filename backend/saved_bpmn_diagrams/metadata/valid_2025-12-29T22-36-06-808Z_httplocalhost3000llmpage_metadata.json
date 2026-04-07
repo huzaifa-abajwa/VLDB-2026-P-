@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-12-29T22:36:06.812Z",
+  "isValid": true,
+  "filename": "valid_2025-12-29T22-36-06-808Z_httplocalhost3000llmpage.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-29T22-36-06-808Z_httplocalhost3000llmpage.xml",
+  "userQuery": "http://localhost:3000/LLMPage",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

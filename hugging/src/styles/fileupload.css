@@ -1,0 +1,294 @@
+/* src/styles/fileupload.css */
+
+/* Define CSS variables for light and dark themes */
+:root {
+  --primary-color: #4B0082; /* Indigo */
+  --secondary-color: #008080; /* Teal */
+  --background-color: #FFFFFF; /* White */
+  --text-color: #333333; /* Dark Gray */
+  --card-background: #FFFFFF; /* For cards and containers */
+  --card-text-color: #333333; /* For text inside cards */
+  --input-background: #E6E6FA; /* Lavender */
+  --input-border-color: #4B0082; /* Indigo */
+  --input-hover-background: #D1EEEE; /* Slightly different color on hover */
+  --input-hover-border-color: #008080; /* Teal border on hover */
+  --button-background: #FF6F61; /* Coral */
+  --button-hover-background: #FF4B4B; /* Darker Coral */
+  --button-text-color: #FFFFFF;
+  --notification-background: #A7E6FF; /* Light blue background */
+  --notification-text-color: #050C9C; /* Dark blue text */
+  --error-background: #FFCCCC; /* Light red background */
+  --error-text-color: #FF0000; /* Red text */
+}
+
+body.dark-mode {
+  --primary-color: #BB86FC; /* Light Purple */
+  --secondary-color: #03DAC6; /* Teal */
+  --background-color: #121212; /* Almost Black */
+  --text-color: #E0E0E0; /* Light Gray */
+  --card-background: #1E1E1E; /* Dark Gray */
+  --card-text-color: #E0E0E0; /* Light Gray */
+  --input-background: #2C2C2C; /* Darker Gray */
+  --input-border-color: #BB86FC; /* Light Purple */
+  --input-hover-background: #3C3C3C; /* Slightly lighter Gray */
+  --input-hover-border-color: #BB86FC; /* Light Purple */
+  --button-background: #BB86FC; /* Light Purple */
+  --button-hover-background: #985EFF; /* Darker Purple */
+  --button-text-color: #FFFFFF;
+  --notification-background: #333333; /* Dark Gray */
+  --notification-text-color: #BB86FC; /* Light Purple */
+  --error-background: #B00020; /* Dark Red */
+  --error-text-color: #FFFFFF;
+}
+
+/* Container styles */
+.fileupload-container {
+  max-width: 800px;
+  width: 90%; /* Ensure responsiveness */
+  margin: 0 auto;
+  padding: 30px 25px;
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--card-text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1s ease-in-out;
+  overflow: hidden; /* Prevent child elements from overflowing */
+}
+
+/* Title styles */
+.fileupload-title {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-size: 2em;
+  font-weight: 700;
+  animation: slideIn 1s ease-in-out;
+}
+
+/* Form styles */
+.fileupload-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Input Group */
+.input-group {
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Label styles */
+.file-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Dropzone styles */
+.dropzone {
+  width: 95%;
+  max-width: 100%;
+  padding: 20px;
+  border: 2px dashed var(--input-border-color);
+  border-radius: 10px;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  font-size: 1em;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  word-wrap: break-word; /* Allow long text to wrap */
+  overflow: hidden; /* Prevent internal overflow */
+}
+
+.dropzone.active {
+  background-color: var(--input-hover-background);
+  border-color: var(--input-hover-border-color);
+}
+
+/* Selected file container */
+.selected-file-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between file name and remove button */
+  width: 96%;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #f0f8ff; /* Alice Blue */
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+}
+
+body.dark-mode .selected-file-container {
+  background-color: #2C2C2C;
+}
+
+.selected-file-name {
+  flex-grow: 1;
+  font-size: 1.1em; /* Increased font size */
+  color: var(--card-text-color);
+  margin-right: 10px; /* Space between file name and remove button */
+  word-break: break-all; /* Break long filenames */
+}
+
+.remove-file-button {
+  background: none;
+  border: none;
+  color: #DC143C; /* Crimson */
+  font-size: 1.5em; /* Larger remove button */
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+body.dark-mode .remove-file-button {
+  color: #FF6F61; /* Coral */
+}
+
+.remove-file-button:hover {
+  color: #8B0000; /* Darker red on hover */
+}
+
+body.dark-mode .remove-file-button:hover {
+  color: #FF4B4B; /* Lighter Coral on hover */
+}
+
+/* Progress Bar */
+.progress-bar-container {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 20px;
+  overflow: hidden;
+}
+
+body.dark-mode .progress-bar-container {
+  background-color: #2C2C2C;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--secondary-color);
+  width: 0%;
+  transition: width 0.4s ease;
+  color: var(--button-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+}
+
+/* Upload Button */
+.upload-button {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--button-background);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.upload-button:hover {
+  background-color: var(--button-hover-background);
+}
+
+/* Upload Status Message */
+.upload-status-message {
+  margin-top: 20px;
+  font-size: 1em;
+  text-align: center;
+}
+
+.upload-status-message.error {
+  color: var(--error-text-color);
+}
+
+.upload-status-message.success {
+  color: var(--secondary-color);
+}
+
+/* Navigation Button Container */
+.navigation-button-container {
+  margin-top: 25px;
+}
+
+.navigation-button {
+  padding: 12px 25px;
+  background-color: var(--primary-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 30px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navigation-button:hover {
+  background-color: #3A0DAB; /* Darker Indigo on hover */
+}
+
+body.dark-mode .navigation-button:hover {
+  background-color: #333333; /* Darker background on hover */
+}
+
+/* Toastify overrides */
+.toast-container {
+  font-size: 1em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .fileupload-container {
+      padding: 25px 20px;
+  }
+
+  .fileupload-title {
+      font-size: 1.8em;
+  }
+
+  .upload-button, .navigation-button {
+      font-size: 1em;
+      padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fileupload-container {
+      padding: 20px 15px;
+  }
+
+  .fileupload-title {
+      font-size: 1.5em;
+  }
+
+  .upload-button, .navigation-button {
+      font-size: 0.9em;
+      padding: 8px 15px;
+  }
+}

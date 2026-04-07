@@ -1,0 +1,149 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Workflow">
+      <bpmn:outgoing>Flow_1o0d7x1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_Datasets" name="Fork for Parallel Dataset Processing">
+      <bpmn:incoming>Flow_1o0d7x1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1a5i7j3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0q8w5y2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0f3x4z1</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1o0d7x1" sourceRef="StartEvent_1" targetRef="Gateway_Fork_Datasets" />
+    <bpmn:task id="Task_Access_German" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>Flow_1a5i7j3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w2e3r4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1a5i7j3" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_German" />
+    <bpmn:task id="Task_Access_SEER" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>Flow_0q8w5y2</bpmn:incoming>
+      <bpmn:outgoing>Flow_5t6y7u8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0q8w5y2" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_SEER" />
+    <bpmn:task id="Task_Access_Pakistan" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>Flow_0f3x4z1</bpmn:incoming>
+      <bpmn:outgoing>Flow_9i0o1p2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0f3x4z1" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_Pakistan" />
+    <bpmn:task id="Task_Filter_German" name="Filter German Data (age 40-60, grade 2-3)">
+      <bpmn:incoming>Flow_1w2e3r4</bpmn:incoming>
+      <bpmn:outgoing>Flow_3s4d5f6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1w2e3r4" sourceRef="Task_Access_German" targetRef="Task_Filter_German" />
+    <bpmn:task id="Task_Filter_SEER" name="Filter SEER Data (age 40-60, grade 2-3)">
+      <bpmn:incoming>Flow_5t6y7u8</bpmn:incoming>
+      <bpmn:outgoing>Flow_7g8h9j0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5t6y7u8" sourceRef="Task_Access_SEER" targetRef="Task_Filter_SEER" />
+    <bpmn:task id="Task_Filter_Pakistan" name="Filter Pakistan Data (age 40-60, grade 2-3)">
+      <bpmn:incoming>Flow_9i0o1p2</bpmn:incoming>
+      <bpmn:outgoing>Flow_1k2l3m4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_9i0o1p2" sourceRef="Task_Access_Pakistan" targetRef="Task_Filter_Pakistan" />
+    <bpmn:parallelGateway id="Gateway_Fork_Analysis_German">
+      <bpmn:incoming>Flow_3s4d5f6</bpmn:incoming>
+      <bpmn:outgoing>Flow_German_NN</bpmn:outgoing>
+      <bpmn:outgoing>Flow_German_Survival</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_3s4d5f6" sourceRef="Task_Filter_German" targetRef="Gateway_Fork_Analysis_German" />
+    <bpmn:parallelGateway id="Gateway_Fork_Analysis_SEER">
+      <bpmn:incoming>Flow_7g8h9j0</bpmn:incoming>
+      <bpmn:outgoing>Flow_SEER_NN</bpmn:outgoing>
+      <bpmn:outgoing>Flow_SEER_Survival</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_7g8h9j0" sourceRef="Task_Filter_SEER" targetRef="Gateway_Fork_Analysis_SEER" />
+    <bpmn:parallelGateway id="Gateway_Fork_Analysis_Pakistan">
+      <bpmn:incoming>Flow_1k2l3m4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pakistan_NN</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Pakistan_Survival</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1k2l3m4" sourceRef="Task_Filter_Pakistan" targetRef="Gateway_Fork_Analysis_Pakistan" />
+    <bpmn:task id="Task_NN_German" name="Run Neural Network Classification (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>Flow_German_NN</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_German_1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_German_NN" sourceRef="Gateway_Fork_Analysis_German" targetRef="Task_NN_German" />
+    <bpmn:task id="Task_Survival_German" name="Compare Survival Rates (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>Flow_German_Survival</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_German_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_German_Survival" sourceRef="Gateway_Fork_Analysis_German" targetRef="Task_Survival_German" />
+    <bpmn:parallelGateway id="Gateway_Join_Analysis_German">
+      <bpmn:incoming>Flow_Join_German_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_German_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Aggregate_German</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_German_1" sourceRef="Task_NN_German" targetRef="Gateway_Join_Analysis_German" />
+    <bpmn:sequenceFlow id="Flow_Join_German_2" sourceRef="Task_Survival_German" targetRef="Gateway_Join_Analysis_German" />
+    <bpmn:task id="Task_NN_SEER" name="Run Neural Network Classification (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>Flow_SEER_NN</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_SEER_1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_SEER_NN" sourceRef="Gateway_Fork_Analysis_SEER" targetRef="Task_NN_SEER" />
+    <bpmn:task id="Task_Survival_SEER" name="Compare Survival Rates (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>Flow_SEER_Survival</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_SEER_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_SEER_Survival" sourceRef="Gateway_Fork_Analysis_SEER" targetRef="Task_Survival_SEER" />
+    <bpmn:parallelGateway id="Gateway_Join_Analysis_SEER">
+      <bpmn:incoming>Flow_Join_SEER_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_SEER_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Aggregate_SEER</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_SEER_1" sourceRef="Task_NN_SEER" targetRef="Gateway_Join_Analysis_SEER" />
+    <bpmn:sequenceFlow id="Flow_Join_SEER_2" sourceRef="Task_Survival_SEER" targetRef="Gateway_Join_Analysis_SEER" />
+    <bpmn:task id="Task_NN_Pakistan" name="Run Neural Network Classification (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>Flow_Pakistan_NN</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Pakistan_1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Pakistan_NN" sourceRef="Gateway_Fork_Analysis_Pakistan" targetRef="Task_NN_Pakistan" />
+    <bpmn:task id="Task_Survival_Pakistan" name="Compare Survival Rates (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>Flow_Pakistan_Survival</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Pakistan_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Pakistan_Survival" sourceRef="Gateway_Fork_Analysis_Pakistan" targetRef="Task_Survival_Pakistan" />
+    <bpmn:parallelGateway id="Gateway_Join_Analysis_Pakistan">
+      <bpmn:incoming>Flow_Join_Pakistan_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Pakistan_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Aggregate_Pakistan</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_Pakistan_1" sourceRef="Task_NN_Pakistan" targetRef="Gateway_Join_Analysis_Pakistan" />
+    <bpmn:sequenceFlow id="Flow_Join_Pakistan_2" sourceRef="Task_Survival_Pakistan" targetRef="Gateway_Join_Analysis_Pakistan" />
+    <bpmn:task id="Task_Aggregate_German" name="Aggregate German Results">
+      <bpmn:incoming>Flow_Aggregate_German</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Datasets_1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Aggregate_German" sourceRef="Gateway_Join_Analysis_German" targetRef="Task_Aggregate_German" />
+    <bpmn:task id="Task_Aggregate_SEER" name="Aggregate SEER Results">
+      <bpmn:incoming>Flow_Aggregate_SEER</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Datasets_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Aggregate_SEER" sourceRef="Gateway_Join_Analysis_SEER" targetRef="Task_Aggregate_SEER" />
+    <bpmn:task id="Task_Aggregate_Pakistan" name="Aggregate Pakistan Results">
+      <bpmn:incoming>Flow_Aggregate_Pakistan</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Datasets_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Aggregate_Pakistan" sourceRef="Gateway_Join_Analysis_Pakistan" targetRef="Task_Aggregate_Pakistan" />
+    <bpmn:parallelGateway id="Gateway_Join_Datasets" name="Join Dataset Results">
+      <bpmn:incoming>Flow_Join_Datasets_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Datasets_2</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Datasets_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_Final_Report</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_Datasets_1" sourceRef="Task_Aggregate_German" targetRef="Gateway_Join_Datasets" />
+    <bpmn:sequenceFlow id="Flow_Join_Datasets_2" sourceRef="Task_Aggregate_SEER" targetRef="Gateway_Join_Datasets" />
+    <bpmn:sequenceFlow id="Flow_Join_Datasets_3" sourceRef="Task_Aggregate_Pakistan" targetRef="Gateway_Join_Datasets" />
+    <bpmn:task id="Task_Final_Report" name="Compile Final Report">
+      <bpmn:incoming>Flow_To_Final_Report</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_End</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_To_Final_Report" sourceRef="Gateway_Join_Datasets" targetRef="Task_Final_Report" />
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow">
+      <bpmn:incoming>Flow_To_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_To_End" sourceRef="Task_Final_Report" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1" />
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

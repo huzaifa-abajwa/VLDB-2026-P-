@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-02-02T18:54:53.755Z",
+  "isValid": true,
+  "filename": "valid_2026-02-02T18-54-53-751Z_predict_diabetic_readmission_using_temporal_data.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-02-02T18-54-53-751Z_predict_diabetic_readmission_using_temporal_data.xml",
+  "userQuery": "Predict diabetic readmission using temporal data",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "validationErrors": []
+}

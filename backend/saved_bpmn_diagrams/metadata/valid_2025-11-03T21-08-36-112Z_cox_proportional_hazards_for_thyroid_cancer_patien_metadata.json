@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T21:08:36.114Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-08-36-112Z_cox_proportional_hazards_for_thyroid_cancer_patien.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-08-36-112Z_cox_proportional_hazards_for_thyroid_cancer_patien.xml",
+  "userQuery": "Cox proportional hazards for thyroid cancer patients by demographic factors",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

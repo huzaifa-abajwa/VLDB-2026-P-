@@ -1,0 +1,11 @@
+{
+    "datasetAgreementTitle": "MLP Classifier 2025",
+    "datasetAgreementGeneral": "This Multi-Layer Perceptron model supports both cancer classification and diabetes readmission prediction depending on the dataset provided. Access is open to all qualified researchers regardless of domain.",
+    "term1": "You acknowledge that this model is designed for research classification tasks and must not be applied to clinical decisions without appropriate institutional validation.",
+    "term2": "You agree not to use this model for any illegal, unethical, or harmful activities.",
+    "term3": "You are required to provide proper attribution to the model developers in all publications and presentations.",
+    "term4": "You accept that all outcomes are solely at your discretion and the developers disclaim any liability.",
+    "term5": "You agree to share any modifications or enhancements with the model developers.",
+    "term6": "You agree not to redistribute this model to third parties without explicit written permission.",
+    "term7": "You acknowledge that model outputs must be validated before any clinical or practical application."
+}

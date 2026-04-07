@@ -1,0 +1,151 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_DataInput" name="Select Datasets">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_AccessGerman" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_AccessSEER" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_AccessPakistan" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_DataMerge" name="Merge Data Streams">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Preprocess" name="Pre-process Data (Select age, grade, hormone receptor status)">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_ExecuteModel" name="Execute xgboost_risk_model@2025">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_GenerateOutput" name="Generate Patient Risk Categories">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_DataInput" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Gateway_DataInput" targetRef="Task_AccessGerman" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_DataInput" targetRef="Task_AccessSEER" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_DataInput" targetRef="Task_AccessPakistan" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_AccessGerman" targetRef="Gateway_DataMerge" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_AccessSEER" targetRef="Gateway_DataMerge" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_AccessPakistan" targetRef="Gateway_DataMerge" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_DataMerge" targetRef="Task_Preprocess" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_Preprocess" targetRef="Task_ExecuteModel" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Task_ExecuteModel" targetRef="Task_GenerateOutput" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_GenerateOutput" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="315" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="178" y="358" width="27" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0u9g35x_di" bpmnElement="Gateway_DataInput">
+        <dc:Bounds x="255" y="308" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="242" y="284" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x3g1yq_di" bpmnElement="Task_AccessGerman">
+        <dc:Bounds x="350" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1d2r3s4_di" bpmnElement="Task_AccessSEER">
+        <dc:Bounds x="350" y="293" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_5t6y7u8_di" bpmnElement="Task_AccessPakistan">
+        <dc:Bounds x="350" y="396" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1h5j6k7_di" bpmnElement="Gateway_DataMerge">
+        <dc:Bounds x="495" y="308" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="478" y="365" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0w9e8r7_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="590" y="293" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q2w3e4_di" bpmnElement="Task_ExecuteModel">
+        <dc:Bounds x="730" y="293" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_9a8s7d6_di" bpmnElement="Task_GenerateOutput">
+        <dc:Bounds x="870" y="293" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0f5g6h7_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1012" y="315" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1018" y="358" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="209" y="333" />
+        <di:waypoint x="255" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="308" />
+        <di:waypoint x="280" y="230" />
+        <di:waypoint x="350" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="305" y="333" />
+        <di:waypoint x="350" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="280" y="358" />
+        <di:waypoint x="280" y="436" />
+        <di:waypoint x="350" y="436" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="450" y="230" />
+        <di:waypoint x="520" y="230" />
+        <di:waypoint x="520" y="308" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="450" y="333" />
+        <di:waypoint x="495" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="450" y="436" />
+        <di:waypoint x="520" y="436" />
+        <di:waypoint x="520" y="358" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="545" y="333" />
+        <di:waypoint x="590" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="690" y="333" />
+        <di:waypoint x="730" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="830" y="333" />
+        <di:waypoint x="870" y="333" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="970" y="333" />
+        <di:waypoint x="1012" y="333" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

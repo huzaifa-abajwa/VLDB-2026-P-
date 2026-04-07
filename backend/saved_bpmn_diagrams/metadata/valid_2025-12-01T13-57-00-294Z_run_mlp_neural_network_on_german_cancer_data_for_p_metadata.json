@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-12-01T13:57:00.295Z",
+  "isValid": true,
+  "filename": "valid_2025-12-01T13-57-00-294Z_run_mlp_neural_network_on_german_cancer_data_for_p.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-01T13-57-00-294Z_run_mlp_neural_network_on_german_cancer_data_for_p.xml",
+  "userQuery": "Run MLP neural network on German cancer data for patients aged 40-50.",
+  "recommendedDatasets": [
+    "German_Cancer_registry"
+  ],
+  "recommendedModels": [
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "validationErrors": []
+}

@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-03-11T10:44:30.837Z",
+  "isValid": true,
+  "filename": "valid_2026-03-11T10-44-30-835Z_use_xgboost_to_classify_breast_cancer_patients_int.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-11T10-44-30-835Z_use_xgboost_to_classify_breast_cancer_patients_int.xml",
+  "userQuery": "Use XGBoost to classify breast cancer patients into risk categories based on age, grade, and hormone receptor status",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

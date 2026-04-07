@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-11-10T22:05:13.224Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-10T22-05-13-222Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-10T22-05-13-222Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "userQuery": "Create a Kaplan-Meier survival analysis for lung cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": [
+    "Gateway \"Fork Data Processing\" forks into 2 paths but has no join gateway."
+  ]
+}

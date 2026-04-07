@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T20:32:24.991Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-32-24-974Z_analyze_breast_cancer_outcomes_using_all_available.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-32-24-974Z_analyze_breast_cancer_outcomes_using_all_available.xml",
+  "userQuery": "Analyze breast cancer outcomes using all available registries with Kaplan-Meier",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

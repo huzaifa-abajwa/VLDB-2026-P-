@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_SM_SD_F2" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_SM_SD_F2" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_SM_SD_F2" name="Start">
+      <bpmn:outgoing>Flow_SM_SD_F2_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_Dataset_SM_SD_F2" name="SEER_Cancer_Registry_of_USA.csv">
+      <bpmn:incoming>Flow_SM_SD_F2_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_SD_F2_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Filter1_SM_SD_F2" name="Filter by Age">
+      <bpmn:incoming>Flow_SM_SD_F2_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_SD_F2_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Filter2_SM_SD_F2" name="Filter by Size">
+      <bpmn:incoming>Flow_SM_SD_F2_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_SD_F2_4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Model_SM_SD_F2" name="cox_model@2020.py">
+      <bpmn:incoming>Flow_SM_SD_F2_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_SM_SD_F2_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_SM_SD_F2" name="End">
+      <bpmn:incoming>Flow_SM_SD_F2_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_SM_SD_F2_1" sourceRef="StartEvent_SM_SD_F2" targetRef="Task_Dataset_SM_SD_F2" />
+    <bpmn:sequenceFlow id="Flow_SM_SD_F2_2" sourceRef="Task_Dataset_SM_SD_F2" targetRef="Task_Filter1_SM_SD_F2" />
+    <bpmn:sequenceFlow id="Flow_SM_SD_F2_3" sourceRef="Task_Filter1_SM_SD_F2" targetRef="Task_Filter2_SM_SD_F2" />
+    <bpmn:sequenceFlow id="Flow_SM_SD_F2_4" sourceRef="Task_Filter2_SM_SD_F2" targetRef="Task_Model_SM_SD_F2" />
+    <bpmn:sequenceFlow id="Flow_SM_SD_F2_5" sourceRef="Task_Model_SM_SD_F2" targetRef="EndEvent_SM_SD_F2" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_SM_SD_F2">
+    <bpmndi:BPMNPlane id="BPMNPlane_SM_SD_F2" bpmnElement="Process_SM_SD_F2">
+      <bpmndi:BPMNShape id="StartEvent_SM_SD_F2_di" bpmnElement="StartEvent_SM_SD_F2">
+        <dc:Bounds x="150" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Dataset_SM_SD_F2_di" bpmnElement="Task_Dataset_SM_SD_F2">
+        <dc:Bounds x="250" y="80" width="200" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Filter1_SM_SD_F2_di" bpmnElement="Task_Filter1_SM_SD_F2">
+        <dc:Bounds x="510" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Filter2_SM_SD_F2_di" bpmnElement="Task_Filter2_SM_SD_F2">
+        <dc:Bounds x="670" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Model_SM_SD_F2_di" bpmnElement="Task_Model_SM_SD_F2">
+        <dc:Bounds x="830" y="80" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_SM_SD_F2_di" bpmnElement="EndEvent_SM_SD_F2">
+        <dc:Bounds x="1050" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_SM_SD_F2_1_di" bpmnElement="Flow_SM_SD_F2_1">
+        <di:waypoint x="186" y="120" />
+        <di:waypoint x="250" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_SD_F2_2_di" bpmnElement="Flow_SM_SD_F2_2">
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="510" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_SD_F2_3_di" bpmnElement="Flow_SM_SD_F2_3">
+        <di:waypoint x="610" y="120" />
+        <di:waypoint x="670" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_SD_F2_4_di" bpmnElement="Flow_SM_SD_F2_4">
+        <di:waypoint x="770" y="120" />
+        <di:waypoint x="830" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_SM_SD_F2_5_di" bpmnElement="Flow_SM_SD_F2_5">
+        <di:waypoint x="990" y="120" />
+        <di:waypoint x="1050" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

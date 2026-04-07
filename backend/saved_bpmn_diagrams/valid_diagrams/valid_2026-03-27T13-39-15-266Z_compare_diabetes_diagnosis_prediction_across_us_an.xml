@@ -1,0 +1,230 @@
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Diagnosis Comparison">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split_1">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Access_US_Data" name="Access US Diabetes Data (Pima_Indians_Diabetes_USA)">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>DataObjectReference_US_Data</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_BD_Data" name="Access Bangladeshi Diabetes Data (Sylhet_Diabetes_Hospital_Bangladesh)">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>DataObjectReference_BD_Data</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_Model_US" name="Run XGBoost Diagnosis Model on US Data">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+      <bpmn:property id="Property_1" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn:sourceRef>DataObjectReference_US_Data</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn:targetRef>DataObjectReference_US_Results</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_Model_BD" name="Run XGBoost Diagnosis Model on Bangladeshi Data">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+      <bpmn:property id="Property_2" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn:sourceRef>DataObjectReference_BD_Data</bpmn:sourceRef>
+        <bpmn:targetRef>Property_2</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_4">
+        <bpmn:targetRef>DataObjectReference_BD_Results</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_1">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Compare_Results" name="Compare Prediction Results">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+      <bpmn:property id="Property_3" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn:sourceRef>DataObjectReference_US_Results</bpmn:sourceRef>
+        <bpmn:targetRef>Property_3</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:property id="Property_4" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn:sourceRef>DataObjectReference_BD_Results</bpmn:sourceRef>
+        <bpmn:targetRef>Property_4</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End Comparison">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Split_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Gateway_Split_1" targetRef="Task_Access_US_Data" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_Split_1" targetRef="Task_Access_BD_Data" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_Access_US_Data" targetRef="Task_Run_Model_US" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_Access_BD_Data" targetRef="Task_Run_Model_BD" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_Run_Model_US" targetRef="Gateway_Join_1" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Run_Model_BD" targetRef="Gateway_Join_1" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_Join_1" targetRef="Task_Compare_Results" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_Compare_Results" targetRef="EndEvent_1" />
+    <bpmn:dataObject id="DataObject_US_Data" name="US Data" />
+    <bpmn:dataObjectReference id="DataObjectReference_US_Data" name="US Data" dataObjectRef="DataObject_US_Data" />
+    <bpmn:dataObject id="DataObject_BD_Data" name="BD Data" />
+    <bpmn:dataObjectReference id="DataObjectReference_BD_Data" name="BD Data" dataObjectRef="DataObject_BD_Data" />
+    <bpmn:dataObject id="DataObject_US_Results" name="US Results" />
+    <bpmn:dataObjectReference id="DataObjectReference_US_Results" name="US Results" dataObjectRef="DataObject_US_Results" />
+    <bpmn:dataObject id="DataObject_BD_Results" name="BD Results" />
+    <bpmn:dataObjectReference id="DataObjectReference_BD_Results" name="BD Results" dataObjectRef="DataObject_BD_Results" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1130" y="257" />
+        <di:waypoint x="1192" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="975" y="257" />
+        <di:waypoint x="1030" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="870" y="340" />
+        <di:waypoint x="950" y="340" />
+        <di:waypoint x="950" y="282" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="870" y="170" />
+        <di:waypoint x="950" y="170" />
+        <di:waypoint x="950" y="232" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="610" y="340" />
+        <di:waypoint x="770" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="610" y="170" />
+        <di:waypoint x="770" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="355" y="282" />
+        <di:waypoint x="355" y="340" />
+        <di:waypoint x="510" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="355" y="232" />
+        <di:waypoint x="355" y="170" />
+        <di:waypoint x="510" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="218" y="257" />
+        <di:waypoint x="330" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="239" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="282" width="87" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_1_di" bpmnElement="Gateway_Split_1">
+        <dc:Bounds x="330" y="232" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Access_US_Data_di" bpmnElement="Task_Access_US_Data">
+        <dc:Bounds x="510" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Access_BD_Data_di" bpmnElement="Task_Access_BD_Data">
+        <dc:Bounds x="510" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_Model_US_di" bpmnElement="Task_Run_Model_US">
+        <dc:Bounds x="770" y="130" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Run_Model_BD_di" bpmnElement="Task_Run_Model_BD">
+        <dc:Bounds x="770" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_1_di" bpmnElement="Gateway_Join_1">
+        <dc:Bounds x="925" y="232" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Compare_Results_di" bpmnElement="Task_Compare_Results">
+        <dc:Bounds x="1030" y="217" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1192" y="239" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1172" y="282" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_US_Data_di" bpmnElement="DataObjectReference_US_Data">
+        <dc:Bounds x="632" y="45" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="632" y="102" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_BD_Data_di" bpmnElement="DataObjectReference_BD_Data">
+        <dc:Bounds x="632" y="415" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="633" y="472" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_US_Results_di" bpmnElement="DataObjectReference_US_Results">
+        <dc:Bounds x="892" y="45" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="885" y="102" width="51" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_BD_Results_di" bpmnElement="DataObjectReference_BD_Results">
+        <dc:Bounds x="892" y="415" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="886" y="472" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="560" y="130" />
+        <di:waypoint x="560" y="70" />
+        <di:waypoint x="632" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="560" y="380" />
+        <di:waypoint x="560" y="440" />
+        <di:waypoint x="632" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1_di" bpmnElement="DataInputAssociation_1">
+        <di:waypoint x="668" y="70" />
+        <di:waypoint x="820" y="70" />
+        <di:waypoint x="820" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_3_di" bpmnElement="DataOutputAssociation_3">
+        <di:waypoint x="820" y="130" />
+        <di:waypoint x="820" y="70" />
+        <di:waypoint x="892" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_2_di" bpmnElement="DataInputAssociation_2">
+        <di:waypoint x="668" y="440" />
+        <di:waypoint x="820" y="440" />
+        <di:waypoint x="820" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_4_di" bpmnElement="DataOutputAssociation_4">
+        <di:waypoint x="820" y="380" />
+        <di:waypoint x="820" y="440" />
+        <di:waypoint x="892" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_3_di" bpmnElement="DataInputAssociation_3">
+        <di:waypoint x="928" y="70" />
+        <di:waypoint x="1080" y="70" />
+        <di:waypoint x="1080" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_4_di" bpmnElement="DataInputAssociation_4">
+        <di:waypoint x="928" y="440" />
+        <di:waypoint x="1080" y="440" />
+        <di:waypoint x="1080" y="297" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,9 @@
+{
+    "datasetAgreementTitle": "Kaplan-Meier Survival Model 2020",
+    "datasetAgreementGeneral": "This Kaplan-Meier survival curve model is developed for non-parametric survival analysis in cancer research. Access is restricted to qualified senior researchers with a background in biostatistics or oncology.",
+    "term1": "You acknowledge that this model is designed exclusively for survival analysis and must not be used for clinical decisions without validation by a qualified medical professional.",
+    "term2": "You agree not to use this model for any illegal, unethical, or harmful activities.",
+    "term3": "You are required to provide proper attribution to the model developers in any publications, reports, or presentations.",
+    "term4": "You accept that all outcomes based on results from this model are solely at your discretion and the developers disclaim any liability.",
+    "term5": "You agree not to redistribute or share this model to third parties without explicit written permission from the developers."
+}

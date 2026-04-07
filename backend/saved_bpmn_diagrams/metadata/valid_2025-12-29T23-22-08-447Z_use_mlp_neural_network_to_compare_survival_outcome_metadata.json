@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-12-29T23:22:08.449Z",
+  "isValid": true,
+  "filename": "valid_2025-12-29T23-22-08-447Z_use_mlp_neural_network_to_compare_survival_outcome.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-29T23-22-08-447Z_use_mlp_neural_network_to_compare_survival_outcome.xml",
+  "userQuery": "Use MLP neural network to compare survival outcomes between ER status groups in the SEER cancer dataset",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py",
+    "xgboost_risk_model@2025.py",
+    "random_survival_forest@2025.py",
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

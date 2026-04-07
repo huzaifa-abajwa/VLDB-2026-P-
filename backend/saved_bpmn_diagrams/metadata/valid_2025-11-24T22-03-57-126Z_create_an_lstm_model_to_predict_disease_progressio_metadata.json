@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-11-24T22:03:57.128Z",
+  "isValid": true,
+  "filename": "valid_2025-11-24T22-03-57-126Z_create_an_lstm_model_to_predict_disease_progressio.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-24T22-03-57-126Z_create_an_lstm_model_to_predict_disease_progressio.xml",
+  "userQuery": "Create an LSTM model to predict disease progression over time for lung cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "lstm_temporal_model@2025.py",
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py",
+    "random_survival_forest@2025.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "validationErrors": []
+}

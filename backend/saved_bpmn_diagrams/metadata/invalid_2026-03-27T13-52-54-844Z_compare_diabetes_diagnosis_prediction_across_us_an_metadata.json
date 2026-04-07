@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-03-27T13:52:54.846Z",
+  "isValid": false,
+  "filename": "invalid_2026-03-27T13-52-54-844Z_compare_diabetes_diagnosis_prediction_across_us_an.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2026-03-27T13-52-54-844Z_compare_diabetes_diagnosis_prediction_across_us_an.xml",
+  "userQuery": "Compare diabetes diagnosis prediction across US and Bangladeshi patient populations using RSF, MLP and XGBoost",
+  "recommendedDatasets": [
+    "Pima_Indians_Diabetes_USA.csv",
+    "Sylhet_Diabetes_Hospital_Bangladesh.csv"
+  ],
+  "recommendedModels": [
+    "random_survival_forest@2025.py",
+    "mlp_cancer_classifier@2025.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "validationErrors": [
+    "Layout Error: BPMNDiagram section is empty (no BPMNShape elements). Diagram will not render visually."
+  ]
+}

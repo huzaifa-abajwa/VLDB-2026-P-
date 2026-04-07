@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-03-18T03:29:54.876Z",
+  "isValid": true,
+  "filename": "valid_2026-03-18T03-29-54-869Z_predict_hospital_readmission_risk_for_diabetic_pat.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-18T03-29-54-869Z_predict_hospital_readmission_risk_for_diabetic_pat.xml",
+  "userQuery": "Predict hospital readmission risk for diabetic patients using RSF and MLP",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "random_survival_forest@2025.py",
+    "mlp_cancer_classifier@2025.py",
+    "lstm_readmission_model@2026.py"
+  ],
+  "validationErrors": []
+}

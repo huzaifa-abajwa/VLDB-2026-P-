@@ -1,0 +1,181 @@
+{
+  "datasets": [
+    {
+      "name": "SEER_Cancer_Registry_of_USA.csv",
+      "file_path": "SEER_Cancer_Registry_of_USA.csv",
+      "description": "Updated cancer registry data from SEER (USA).",
+      "attributes": [
+        "pid: integer, unique id",
+        "age: integer, patient age",
+        "meno: integer, menopausal (0 pre, 1 post)",
+        "size: float, tumor size",
+        "grade: integer, tumor grade",
+        "nodes: integer, positive lymph nodes count",
+        "pgr: integer, progesterone receptor",
+        "er: integer, estrogen receptor",
+        "hormon: integer, hormone therapy status",
+        "rfstime: integer, follow-up (months)",
+        "status: integer, event indicator (1 event, 0 censored)"
+      ]
+    },
+    {
+      "name": "German_Cancer_registry@2020.csv",
+      "file_path": "German_Cancer_registry@2020.csv",
+      "description": "Cancer registry data from Germany.",
+      "attributes": [
+        "pid: integer, unique id",
+        "age: integer, patient age",
+        "meno: integer, menopausal (0 pre, 1 post)",
+        "size: float, tumor size (mm)",
+        "grade: integer, tumor grade",
+        "nodes: integer, positive lymph nodes count",
+        "pgr: integer, progesterone receptor",
+        "er: integer, estrogen receptor",
+        "hormon: integer, hormone therapy status",
+        "rfstime: integer, follow-up (days)",
+        "status: integer, event indicator (1 event, 0 censored)"
+      ]
+    },
+    {
+      "name": "National_Cancer_Registry_of_Pakistan.csv",
+      "file_path": "National_Cancer_Registry_of_Pakistan.csv",
+      "description": "Cancer diagnosis data from Pakistan's National Registry.",
+      "attributes": [
+        "pid: integer, unique id",
+        "age: integer, patient age",
+        "meno: string, menopausal status",
+        "size: float, tumor size",
+        "grade: string, tumor grade",
+        "nodes: integer, affected lymph nodes count",
+        "pgr: float, progesterone receptor level",
+        "er: float, estrogen receptor level",
+        "hormon: float, hormone treatment indicator",
+        "rfstime: float, follow-up (months)",
+        "status: integer, event status (1 event, 0 censored)"
+      ]
+    },
+    {
+      "name": "diabetic_data.csv",
+      "file_path": "diabetic_data.csv",
+      "description": "PRIMARY diabetic patient readmission dataset — use this as the DEFAULT for any general readmission prediction query. 101,767 encounters. Only use race-split subsets instead when user EXPLICITLY asks about racial/cross-race/ethnic comparison.",
+      "attributes": [
+        "encounter_id: integer, unique encounter",
+        "patient_nbr: integer, patient identifier",
+        "age: categorical, patient age bracket",
+        "time_in_hospital: integer, days",
+        "num_lab_procedures: integer, count",
+        "num_medications: integer, count",
+        "number_diagnoses: integer, count",
+        "readmitted: categorical (<30, >30, NO)"
+      ]
+    },
+    {
+      "name": "Sylhet_Diabetes_Hospital_Bangladesh.csv",
+      "file_path": "Sylhet_Diabetes_Hospital_Bangladesh.csv",
+      "description": "Early-stage diabetes DIAGNOSIS dataset from Sylhet Diabetes Hospital, Bangladesh. 251 patients with symptom-based features for binary classification (Positive/Negative). Task: predict whether a patient has diabetes. Only use for diagnosis-related queries, NOT for readmission prediction.",
+      "attributes": [
+        "Age: integer, patient age (16-90)",
+        "Gender: categorical (Male/Female)",
+        "Polyuria: categorical (Yes/No)",
+        "Polydipsia: categorical (Yes/No)",
+        "sudden weight loss: categorical (Yes/No)",
+        "weakness: categorical (Yes/No)",
+        "Polyphagia: categorical (Yes/No)",
+        "Genital thrush: categorical (Yes/No)",
+        "visual blurring: categorical (Yes/No)",
+        "Itching: categorical (Yes/No)",
+        "Irritability: categorical (Yes/No)",
+        "delayed healing: categorical (Yes/No)",
+        "partial paresis: categorical (Yes/No)",
+        "muscle stiffness: categorical (Yes/No)",
+        "Alopecia: categorical (Yes/No)",
+        "Obesity: categorical (Yes/No)",
+        "class: categorical (Positive/Negative), diabetes diagnosis"
+      ]
+    },
+    {
+      "name": "Pima_Indians_Diabetes_USA.csv",
+      "file_path": "Pima_Indians_Diabetes_USA.csv",
+      "description": "Pima Indians diabetes DIAGNOSIS dataset from the National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK), USA. 768 female patients aged 21+ of Pima Indian heritage with clinical/lab features for binary classification (1=diabetic, 0=non-diabetic). Task: predict whether a patient has diabetes. Only use for diagnosis-related queries, NOT for readmission prediction.",
+      "attributes": [
+        "Pregnancies: integer, number of pregnancies",
+        "Glucose: integer, plasma glucose concentration (mg/dL)",
+        "BloodPressure: integer, diastolic blood pressure (mm Hg)",
+        "SkinThickness: integer, triceps skin fold thickness (mm)",
+        "Insulin: integer, 2-hour serum insulin (mu U/ml)",
+        "BMI: float, body mass index (kg/m²)",
+        "DiabetesPedigreeFunction: float, diabetes pedigree function score",
+        "Age: integer, patient age (21-81)",
+        "Outcome: integer, diabetes diagnosis (1=positive, 0=negative)"
+      ]
+    },
+    {
+      "name": "UCI_AfricanAmerican_Readmission.csv",
+      "file_path": "UCI_AfricanAmerican_Readmission.csv",
+      "description": "Race-split subset of UCI Diabetes 130-US Hospitals: African American patients only (19,210 encounters). Task: predict hospital readmission. ONLY select this dataset when the user EXPLICITLY requests cross-race, racial, or ethnic comparison of readmission outcomes. For general readmission queries, use diabetic_data.csv instead. When selected, ALL 4 race-split datasets must be selected together (AfricanAmerican, Caucasian, Hispanic, Asian) and diabetic_data.csv must NOT be included.",
+      "attributes": [
+        "encounter_id: integer, unique encounter",
+        "patient_nbr: integer, patient identifier",
+        "age: categorical, patient age bracket",
+        "time_in_hospital: integer, days",
+        "num_lab_procedures: integer, count",
+        "num_medications: integer, count",
+        "number_diagnoses: integer, count",
+        "A1Cresult: categorical (None, Norm, >7, >8)",
+        "diag_1: string, primary diagnosis ICD-9 code",
+        "readmitted: categorical (<30, >30, NO)"
+      ]
+    },
+    {
+      "name": "UCI_Caucasian_Readmission.csv",
+      "file_path": "UCI_Caucasian_Readmission.csv",
+      "description": "Race-split subset of UCI Diabetes 130-US Hospitals: Caucasian patients only (76,099 encounters). Task: predict hospital readmission. ONLY select this dataset when the user EXPLICITLY requests cross-race, racial, or ethnic comparison of readmission outcomes. For general readmission queries, use diabetic_data.csv instead. When selected, ALL 4 race-split datasets must be selected together (AfricanAmerican, Caucasian, Hispanic, Asian) and diabetic_data.csv must NOT be included.",
+      "attributes": [
+        "encounter_id: integer, unique encounter",
+        "patient_nbr: integer, patient identifier",
+        "age: categorical, patient age bracket",
+        "time_in_hospital: integer, days",
+        "num_lab_procedures: integer, count",
+        "num_medications: integer, count",
+        "number_diagnoses: integer, count",
+        "A1Cresult: categorical (None, Norm, >7, >8)",
+        "diag_1: string, primary diagnosis ICD-9 code",
+        "readmitted: categorical (<30, >30, NO)"
+      ]
+    },
+    {
+      "name": "UCI_Hispanic_Readmission.csv",
+      "file_path": "UCI_Hispanic_Readmission.csv",
+      "description": "Race-split subset of UCI Diabetes 130-US Hospitals: Hispanic patients only (2,037 encounters). Task: predict hospital readmission. ONLY select this dataset when the user EXPLICITLY requests cross-race, racial, or ethnic comparison of readmission outcomes. For general readmission queries, use diabetic_data.csv instead. When selected, ALL 4 race-split datasets must be selected together (AfricanAmerican, Caucasian, Hispanic, Asian) and diabetic_data.csv must NOT be included.",
+      "attributes": [
+        "encounter_id: integer, unique encounter",
+        "patient_nbr: integer, patient identifier",
+        "age: categorical, patient age bracket",
+        "time_in_hospital: integer, days",
+        "num_lab_procedures: integer, count",
+        "num_medications: integer, count",
+        "number_diagnoses: integer, count",
+        "A1Cresult: categorical (None, Norm, >7, >8)",
+        "diag_1: string, primary diagnosis ICD-9 code",
+        "readmitted: categorical (<30, >30, NO)"
+      ]
+    },
+    {
+      "name": "UCI_Asian_Readmission.csv",
+      "file_path": "UCI_Asian_Readmission.csv",
+      "description": "Race-split subset of UCI Diabetes 130-US Hospitals: Asian patients only (641 encounters). Task: predict hospital readmission. ONLY select this dataset when the user EXPLICITLY requests cross-race, racial, or ethnic comparison of readmission outcomes. For general readmission queries, use diabetic_data.csv instead. When selected, ALL 4 race-split datasets must be selected together (AfricanAmerican, Caucasian, Hispanic, Asian) and diabetic_data.csv must NOT be included.",
+      "attributes": [
+        "encounter_id: integer, unique encounter",
+        "patient_nbr: integer, patient identifier",
+        "age: categorical, patient age bracket",
+        "time_in_hospital: integer, days",
+        "num_lab_procedures: integer, count",
+        "num_medications: integer, count",
+        "number_diagnoses: integer, count",
+        "A1Cresult: categorical (None, Norm, >7, >8)",
+        "diag_1: string, primary diagnosis ICD-9 code",
+        "readmitted: categorical (<30, >30, NO)"
+      ]
+    }
+  ]
+}

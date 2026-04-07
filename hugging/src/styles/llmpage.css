@@ -1,0 +1,211 @@
+/* Define CSS variables for the color scheme */
+:root {
+    --primary-color: #4B0082; /* Indigo */
+    --secondary-color: #008080; /* Teal */
+    --background-color: #FFFFFF; /* White */
+    --text-color: #333333; /* Dark Gray */
+    --card-background: #FFFFFF; /* White */
+    --card-text-color: #333333; /* Dark Gray */
+    --input-background: #E6E6FA; /* Lavender */
+    --input-border-color: #4B0082; /* Indigo */
+    --input-focus-border-color: #008080; /* Teal */
+    --button-background: #FF6F61; /* Coral */
+    --button-hover-background: #FF4B4B; /* Darker Coral */
+    --button-text-color: #FFFFFF;
+    --user-message-background: #E6E6FA; /* Lavender */
+    --bot-message-background: #FFFFFF; /* White */
+  }
+
+
+/* Dark Theme Overrides */
+body.dark-mode {
+    --primary-color: #FF79C6; /* Pink */
+    --secondary-color: #6272A4; /* Bluish Gray */
+    --background-color: #282A36; /* Dark Gray */
+    --text-color: #F8F8F2; /* Near White */
+    --card-background: #282A36; /* Dark Gray */
+    --card-text-color: #F8F8F2; /* Near White */
+    --input-background: #44475A; /* Darker Gray */
+    --input-border-color: #FF79C6; /* Pink */
+    --input-hover-background: #6272A4; /* Bluish Gray */
+    --input-focus-border-color: #FF79C6; /* Pink */
+    --button-background: #FF79C6; /* Pink */
+    --button-hover-background: #BD93F9; /* Light Purple */
+    --button-text-color: #FFFFFF;
+    --notification-background: #44475A; /* Darker Gray */
+    --notification-text-color: #F8F8F2; /* Near White */
+    --error-background: #FF5555; /* Red */
+    --error-text-color: #FFFFFF;
+    --modal-background: #282A36; /* Dark Gray */
+    --modal-overlay-background: rgba(0, 0, 0, 0.8);
+    --term-result-background: #44475A; /* Darker Gray */
+  }
+  
+  /* General Styles */
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* LLM Page Container */
+  .llm-LLMPageContainer {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 15px;
+  }
+  
+  /* Chat Container */
+  .llm-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* Chat Header */
+  .llm-chat-header {
+    padding: 15px;
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+  }
+  
+  .llm-chat-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+  }
+  
+  /* Chat Content */
+  .llm-chat-content {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background-color: var(--background-color);
+  }
+  
+  .llm-chat-message {
+    display: flex;
+    margin-bottom: 15px;
+  }
+  
+  .llm-chat-message .llm-message-content {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1em;
+    line-height: 1.4;
+  }
+  
+  .llm-user-message {
+    justify-content: flex-end;
+  }
+  
+  .llm-user-message .llm-message-content {
+    background-color: var(--user-message-background);
+    align-self: flex-end;
+  }
+  
+  .llm-bot-message {
+    justify-content: flex-start;
+  }
+  
+  .llm-bot-message .llm-message-content {
+    background-color: var(--bot-message-background);
+  }
+  
+  .llm-chat-input {
+    padding: 15px;
+    background-color: var(--card-background);
+    border-top: 1px solid #E0E0E0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .llm-chat-input textarea {
+    flex: 1;
+    resize: none;
+    padding: 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: inherit;
+    background-color: var(--input-background);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .llm-chat-input textarea:focus {
+    border-color: var(--input-focus-border-color);
+  }
+  
+  .llm-chat-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: var(--button-background);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .llm-chat-input button:hover {
+    background-color: var(--button-hover-background);
+  }
+  
+  .llm-chat-input button:disabled {
+    background-color: #CCCCCC;
+    cursor: not-allowed;
+  }
+  
+  /* Loader */
+  .llm-loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: llm-spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes llm-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Animations */
+  .llm-chat-message {
+    animation: llm-fadeInUp 0.3s ease-out;
+  }
+  
+  @keyframes llm-fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .llm-chat-header h2 {
+      font-size: 1.2em;
+    }
+    .llm-chat-input button {
+      padding: 8px 16px;
+    }
+  }
+  

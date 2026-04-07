@@ -1,0 +1,170 @@
+/* General Styles */
+body.landing-page {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background: url('blur.png') no-repeat center center/cover; /* Keep the original background image */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Navbar */
+.LandingPageNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: rgba(0, 86, 179, 0.8); /* Slightly transparent blue to match design */
+  color: #fff;
+}
+
+.NavBrand {
+  display: flex;
+  align-items: center;
+}
+
+.NavLogo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.NavTitle {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.NavLinks {
+  display: flex;
+  gap: 20px;
+}
+
+.NavLink {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.NavLink:hover {
+  background-color: #004494;
+}
+
+/* Header */
+.LandingHeader {
+  text-align: center;
+  padding: 100px 20px;
+  color: white;
+}
+
+.LandingTitle {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.LandingSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+}
+
+.LandingButtons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.PrimaryButton,
+.SecondaryButton {
+  padding: 15px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.PrimaryButton {
+  background-color: #28a745;
+  color: white;
+}
+
+.PrimaryButton:hover {
+  background-color: #218838;
+}
+
+.SecondaryButton {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.SecondaryButton:hover {
+  background-color: rgba(216, 25, 25, 0.2);
+}
+
+/* Features Section */
+.FeaturesSection {
+  display: flex;
+  justify-content: space-around;
+  padding: 60px 20px;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker section to contrast with the bright icons */
+  color: white;
+}
+
+.FeatureCard {
+  background-color: rgba(255, 255, 255, 0.9); /* Light background with slight transparency */
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.FeatureCard:hover {
+  transform: translateY(-10px);
+}
+
+.FeatureIcon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+}
+
+.FeatureTitle {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.FeatureDescription {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Footer */
+.LandingFooter {
+  background-color: rgba(0, 86, 179, 0.8); /* Match with the navbar color */
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.FooterLinks {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.FooterLink {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.FooterLink:hover {
+  text-decoration: underline;
+}

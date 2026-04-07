@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-02-02T20:07:01.556Z",
+  "isValid": true,
+  "filename": "valid_2026-02-02T20-07-01-553Z_predict_hospital_readmission_for_diabetic_patients.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-02-02T20-07-01-553Z_predict_hospital_readmission_for_diabetic_patients.xml",
+  "userQuery": "Predict hospital readmission for diabetic patients",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [],
+  "validationErrors": []
+}

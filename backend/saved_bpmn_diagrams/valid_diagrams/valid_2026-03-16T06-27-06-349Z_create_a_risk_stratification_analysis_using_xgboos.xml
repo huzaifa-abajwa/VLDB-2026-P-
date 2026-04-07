@@ -1,0 +1,67 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="start_event" name="Risk Stratification Request Received">
+      <bpmn:outgoing>flow1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="task_access_data" name="Access SEER Cancer Registry">
+      <bpmn:incoming>flow1</bpmn:incoming>
+      <bpmn:outgoing>flow2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow1" sourceRef="start_event" targetRef="task_access_data" />
+    <bpmn:task id="task_run_model" name="Run XGBoost Risk Model">
+      <bpmn:incoming>flow2</bpmn:incoming>
+      <bpmn:outgoing>flow3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow2" sourceRef="task_access_data" targetRef="task_run_model" />
+    <bpmn:task id="task_generate_report" name="Generate High-Risk Patient Report">
+      <bpmn:incoming>flow3</bpmn:incoming>
+      <bpmn:outgoing>flow4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow3" sourceRef="task_run_model" targetRef="task_generate_report" />
+    <bpmn:endEvent id="end_event" name="Analysis Complete">
+      <bpmn:incoming>flow4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow4" sourceRef="task_generate_report" targetRef="end_event" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_event">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="145" width="78" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q7x5yq_di" bpmnElement="task_access_data">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1o6a2n1_di" bpmnElement="flow1">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0x3j7b2_di" bpmnElement="task_run_model">
+        <dc:Bounds x="430" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0f8y3t1_di" bpmnElement="flow2">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="430" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1y2x7s3_di" bpmnElement="task_generate_report">
+        <dc:Bounds x="590" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0c7j2s1_di" bpmnElement="flow3">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="590" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1v6w8d4_di" bpmnElement="end_event">
+        <dc:Bounds x="752" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="725" y="145" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1c2x3d4_di" bpmnElement="flow4">
+        <di:waypoint x="690" y="120" />
+        <di:waypoint x="752" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

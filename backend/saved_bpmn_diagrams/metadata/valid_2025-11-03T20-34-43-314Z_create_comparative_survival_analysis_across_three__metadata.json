@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T20:34:43.321Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-34-43-314Z_create_comparative_survival_analysis_across_three_.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-34-43-314Z_create_comparative_survival_analysis_across_three_.xml",
+  "userQuery": "Create comparative survival analysis across three cancer registries using Kaplan-Meier",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

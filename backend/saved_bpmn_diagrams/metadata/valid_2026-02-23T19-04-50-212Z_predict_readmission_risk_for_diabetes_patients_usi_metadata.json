@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-02-23T19:04:50.216Z",
+  "isValid": true,
+  "filename": "valid_2026-02-23T19-04-50-212Z_predict_readmission_risk_for_diabetes_patients_usi.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-02-23T19-04-50-212Z_predict_readmission_risk_for_diabetes_patients_usi.xml",
+  "userQuery": "Predict readmission risk for diabetes patients using LSTM",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "lstm_readmission_model@2026"
+  ],
+  "validationErrors": []
+}

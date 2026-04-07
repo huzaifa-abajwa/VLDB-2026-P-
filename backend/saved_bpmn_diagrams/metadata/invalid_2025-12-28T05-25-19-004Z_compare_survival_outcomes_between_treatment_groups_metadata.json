@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-12-28T05:25:19.008Z",
+  "isValid": false,
+  "filename": "invalid_2025-12-28T05-25-19-004Z_compare_survival_outcomes_between_treatment_groups.xml",
+  "diagramPath": "C:\\Users\\qayyu_skttomt\\Documents\\blockchain_llm\\updated2\\Blockchain-Based-Access-Control\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-12-28T05-25-19-004Z_compare_survival_outcomes_between_treatment_groups.xml",
+  "userQuery": "Compare survival outcomes between treatment groups using Cox and Kaplan-Meier models on SEER data",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA",
+    "German_Cancer_registry",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "FAIL",
+    "score": 0,
+    "errors": 2,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

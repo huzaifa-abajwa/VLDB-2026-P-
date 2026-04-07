@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-24T20:12:56.375Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-24T20-12-56-374Z_create_a_random_survival_forest_ensemble_analysis_.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-24T20-12-56-374Z_create_a_random_survival_forest_ensemble_analysis_.xml",
+  "userQuery": "Create a Random Survival Forest ensemble analysis for cancer patients across all registries",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "random_survival_forest@2025.py"
+  ],
+  "validationErrors": [
+    "Semantic Warning: Task \"Access Cancer Registries\" appears to reference a non-existent dataset."
+  ]
+}

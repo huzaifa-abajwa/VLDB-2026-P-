@@ -1,0 +1,9 @@
+{
+    "datasetAgreementTitle": "Cox Proportional Hazards Model 2020",
+    "datasetAgreementGeneral": "This Cox Proportional Hazards model is developed for survival analysis in oncological research. Access is restricted to qualified senior researchers with demonstrated experience in biostatistics and cancer research.",
+    "term1": "You acknowledge that this model is designed exclusively for survival analysis research and must not be applied to clinical decision-making without appropriate validation.",
+    "term2": "You agree not to use this model for any illegal, unethical, or harmful activities.",
+    "term3": "You are required to provide proper attribution to the model developers in any publications, reports, or presentations.",
+    "term4": "You accept that all outcomes based on results from this model are solely at your discretion and the developers disclaim any liability.",
+    "term5": "You agree to share any modifications or enhancements made to the model with the original developers."
+}

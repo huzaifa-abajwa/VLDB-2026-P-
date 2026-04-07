@@ -1,0 +1,129 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_PancreaticCancerAnalysis" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Workflow">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessGermanData" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>DataObjectReference_GermanData</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessGermanData" />
+    <bpmn:task id="Task_AccessSEERData" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>DataObjectReference_SEERData</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessGermanData" targetRef="Task_AccessSEERData" />
+    <bpmn:dataObjectReference id="DataObjectReference_GermanData" name="German_Cancer_registry@2020.csv" dataObjectRef="DataObject_GermanData" />
+    <bpmn:dataObject id="DataObject_GermanData" />
+    <bpmn:dataObjectReference id="DataObjectReference_SEERData" name="SEER_Cancer_Registry_of_USA.csv" dataObjectRef="DataObject_SEERData" />
+    <bpmn:dataObject id="DataObject_SEERData" />
+    <bpmn:task id="Task_RunKaplanMeier" name="Execute kaplan_meier_model@2020.py">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn:sourceRef>DataObjectReference_GermanData</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn:sourceRef>DataObjectReference_SEERData</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn:targetRef>DataObjectReference_SurvivalPlot</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_AccessSEERData" targetRef="Task_RunKaplanMeier" />
+    <bpmn:property id="Property_1" name="__targetRef_placeholder" />
+    <bpmn:dataObjectReference id="DataObjectReference_SurvivalPlot" name="survival_plot.png" dataObjectRef="DataObject_SurvivalPlot" />
+    <bpmn:dataObject id="DataObject_SurvivalPlot" />
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_RunKaplanMeier" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_PancreaticCancerAnalysis">
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="390" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="490" y="120" />
+        <di:waypoint x="540" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="640" y="120" />
+        <di:waypoint x="692" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="134" y="145" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccessGermanData_di" bpmnElement="Task_AccessGermanData">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccessSEERData_di" bpmnElement="Task_AccessSEERData">
+        <dc:Bounds x="390" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_GermanData_di" bpmnElement="DataObjectReference_GermanData">
+        <dc:Bounds x="272" y="195" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="248" y="252" width="85" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="290" y="160" />
+        <di:waypoint x="290" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_SEERData_di" bpmnElement="DataObjectReference_SEERData">
+        <dc:Bounds x="422" y="195" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="398" y="252" width="85" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="440" y="160" />
+        <di:waypoint x="440" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_RunKaplanMeier_di" bpmnElement="Task_RunKaplanMeier">
+        <dc:Bounds x="540" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1_di" bpmnElement="DataInputAssociation_1">
+        <di:waypoint x="308" y="220" />
+        <di:waypoint x="540" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_2_di" bpmnElement="DataInputAssociation_2">
+        <di:waypoint x="458" y="220" />
+        <di:waypoint x="540" y="151" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_SurvivalPlot_di" bpmnElement="DataObjectReference_SurvivalPlot">
+        <dc:Bounds x="572" y="195" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="549" y="252" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_3_di" bpmnElement="DataOutputAssociation_3">
+        <di:waypoint x="590" y="160" />
+        <di:waypoint x="590" y="195" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="692" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="677" y="145" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

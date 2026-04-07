@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-03-19T02:48:06.873Z",
+  "isValid": true,
+  "filename": "valid_2026-03-19T02-48-06-871Z_compare_diabetes_prediction_across_us_and_banglade.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-19T02-48-06-871Z_compare_diabetes_prediction_across_us_and_banglade.xml",
+  "userQuery": "Compare diabetes prediction across US and Bangladeshi patient populations using XGBoost, Random Forest, and MLP",
+  "recommendedDatasets": [
+    "diabetic_data.csv",
+    "Sylhet_Diabetes_Hospital_Bangladesh.csv"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py",
+    "random_survival_forest@2025.py",
+    "mlp_cancer_classifier@2025.py",
+    "lstm_readmission_model@2026.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

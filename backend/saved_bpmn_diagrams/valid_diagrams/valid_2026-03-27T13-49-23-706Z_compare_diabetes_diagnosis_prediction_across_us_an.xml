@@ -1,0 +1,160 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>SequenceFlow_0a8h3p2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_0f8x1z3" name="Specify User Credentials and Parameters">
+      <bpmn:incoming>SequenceFlow_0a8h3p2</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1y9c4j5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="ParallelGateway_1" name="Fork Data Access">
+      <bpmn:incoming>SequenceFlow_1y9c4j5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0w5m2q1</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1n5p3r7</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_1a" name="Access Pima_Indians_Diabetes_USA">
+      <bpmn:incoming>SequenceFlow_0w5m2q1</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0g4k2d8</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>DataStoreReference_1</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_1b" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>SequenceFlow_1n5p3r7</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1f9d6t0</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>DataStoreReference_2</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:parallelGateway id="ParallelGateway_2" name="Join Data">
+      <bpmn:incoming>SequenceFlow_0g4k2d8</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1f9d6t0</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0z4k1s9</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_2" name="Run Diabetes Diagnosis with xgboost_risk_model@2025.py">
+      <bpmn:incoming>SequenceFlow_0z4k1s9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1v2c3b4</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_3" name="Generate Comparison Report">
+      <bpmn:incoming>SequenceFlow_1v2c3b4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0p9o8i7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>SequenceFlow_0p9o8i7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:dataStoreReference id="DataStoreReference_1" name="Pima_Indians_Diabetes_USA" />
+    <bpmn:dataStoreReference id="DataStoreReference_2" name="Sylhet_Diabetes_Hospital_Bangladesh" />
+    <bpmn:sequenceFlow id="SequenceFlow_0a8h3p2" sourceRef="StartEvent_1" targetRef="Task_0f8x1z3" />
+    <bpmn:sequenceFlow id="SequenceFlow_1y9c4j5" sourceRef="Task_0f8x1z3" targetRef="ParallelGateway_1" />
+    <bpmn:sequenceFlow id="SequenceFlow_0w5m2q1" sourceRef="ParallelGateway_1" targetRef="Task_1a" />
+    <bpmn:sequenceFlow id="SequenceFlow_1n5p3r7" sourceRef="ParallelGateway_1" targetRef="Task_1b" />
+    <bpmn:sequenceFlow id="SequenceFlow_0g4k2d8" sourceRef="Task_1a" targetRef="ParallelGateway_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_1f9d6t0" sourceRef="Task_1b" targetRef="ParallelGateway_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_0z4k1s9" sourceRef="ParallelGateway_2" targetRef="Task_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_1v2c3b4" sourceRef="Task_2" targetRef="Task_3" />
+    <bpmn:sequenceFlow id="SequenceFlow_0p9o8i7" sourceRef="Task_3" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="142" y="285" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_0f8x1z3_di" bpmnElement="Task_0f8x1z3">
+        <dc:Bounds x="240" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0a8h3p2_di" bpmnElement="SequenceFlow_0a8h3p2">
+        <di:waypoint x="188" y="260" />
+        <di:waypoint x="240" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ParallelGateway_1_di" bpmnElement="ParallelGateway_1">
+        <dc:Bounds x="395" y="235" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="377" y="292" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1y9c4j5_di" bpmnElement="SequenceFlow_1y9c4j5">
+        <di:waypoint x="340" y="260" />
+        <di:waypoint x="395" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1a_di" bpmnElement="Task_1a">
+        <dc:Bounds x="500" y="150" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0w5m2q1_di" bpmnElement="SequenceFlow_0w5m2q1">
+        <di:waypoint x="420" y="235" />
+        <di:waypoint x="420" y="190" />
+        <di:waypoint x="500" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1b_di" bpmnElement="Task_1b">
+        <dc:Bounds x="500" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1n5p3r7_di" bpmnElement="SequenceFlow_1n5p3r7">
+        <di:waypoint x="420" y="285" />
+        <di:waypoint x="420" y="340" />
+        <di:waypoint x="500" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ParallelGateway_2_di" bpmnElement="ParallelGateway_2">
+        <dc:Bounds x="655" y="235" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="657" y="292" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0g4k2d8_di" bpmnElement="SequenceFlow_0g4k2d8">
+        <di:waypoint x="600" y="190" />
+        <di:waypoint x="680" y="190" />
+        <di:waypoint x="680" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1f9d6t0_di" bpmnElement="SequenceFlow_1f9d6t0">
+        <di:waypoint x="600" y="340" />
+        <di:waypoint x="680" y="340" />
+        <di:waypoint x="680" y="285" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_2_di" bpmnElement="Task_2">
+        <dc:Bounds x="760" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0z4k1s9_di" bpmnElement="SequenceFlow_0z4k1s9">
+        <di:waypoint x="705" y="260" />
+        <di:waypoint x="760" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_3_di" bpmnElement="Task_3">
+        <dc:Bounds x="920" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1v2c3b4_di" bpmnElement="SequenceFlow_1v2c3b4">
+        <di:waypoint x="860" y="260" />
+        <di:waypoint x="920" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1082" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1089" y="285" width="22" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0p9o8i7_di" bpmnElement="SequenceFlow_0p9o8i7">
+        <di:waypoint x="1020" y="260" />
+        <di:waypoint x="1082" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_1_di" bpmnElement="DataStoreReference_1">
+        <dc:Bounds x="475" y="55" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="456" y="31" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="536" y="150" />
+        <di:waypoint x="511" y="105" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_2_di" bpmnElement="DataStoreReference_2">
+        <dc:Bounds x="475" y="425" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="456" y="482" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="537" y="380" />
+        <di:waypoint x="512" y="425" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

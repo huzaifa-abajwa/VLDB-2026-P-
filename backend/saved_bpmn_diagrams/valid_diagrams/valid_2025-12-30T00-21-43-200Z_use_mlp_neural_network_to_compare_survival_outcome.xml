@@ -1,0 +1,145 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_AccessData" name="Access SEER Cancer Registry">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>DataObject_SEERData</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataObjectReference id="DataObject_SEERData" name="SEER_Cancer_Registry_of_USA" dataObjectRef="DataObject_1" />
+    <bpmn:dataObject id="DataObject_1" />
+    <bpmn:userTask id="Task_Preprocess" name="Filter Data for ER Status Groups">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn:sourceRef>DataObject_SEERData</bpmn:sourceRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>DataObject_FilteredData</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:dataObjectReference id="DataObject_FilteredData" name="Filtered ER Status Data" dataObjectRef="DataObject_2" />
+    <bpmn:dataObject id="DataObject_2" />
+    <bpmn:serviceTask id="Task_RunMLP" name="Run MLP Neural Network Analysis (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn:sourceRef>DataObject_FilteredData</bpmn:sourceRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn:targetRef>DataObject_Results</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:dataObjectReference id="DataObject_Results" name="Survival Outcome Results" dataObjectRef="DataObject_3" />
+    <bpmn:dataObject id="DataObject_3" />
+    <bpmn:userTask id="Task_Review" name="Review Survival Outcome Comparison">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn:sourceRef>DataObject_Results</bpmn:sourceRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessData" targetRef="Task_Preprocess" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Preprocess" targetRef="Task_RunMLP" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_RunMLP" targetRef="Task_Review" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_Review" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="169" y="202" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qg9w2c_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0v2yq5i_di" bpmnElement="DataObject_SEERData">
+        <dc:Bounds x="302" y="255" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="275" y="312" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="320" y="217" />
+        <di:waypoint x="320" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0f8i8o4_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="430" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1_di" bpmnElement="DataInputAssociation_1">
+        <di:waypoint x="338" y="255" />
+        <di:waypoint x="445" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_1c2v82d_di" bpmnElement="DataObject_FilteredData">
+        <dc:Bounds x="462" y="255" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="438" y="312" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="480" y="217" />
+        <di:waypoint x="480" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0w1h2b3_di" bpmnElement="Task_RunMLP">
+        <dc:Bounds x="590" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_2_di" bpmnElement="DataInputAssociation_2">
+        <di:waypoint x="498" y="255" />
+        <di:waypoint x="605" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_0x3y4z5_di" bpmnElement="DataObject_Results">
+        <dc:Bounds x="622" y="255" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="597" y="312" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_3_di" bpmnElement="DataOutputAssociation_3">
+        <di:waypoint x="640" y="217" />
+        <di:waypoint x="640" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1a2b3c4_di" bpmnElement="Task_Review">
+        <dc:Bounds x="750" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_3_di" bpmnElement="DataInputAssociation_3">
+        <di:waypoint x="658" y="255" />
+        <di:waypoint x="765" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1y2z3a4_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="912" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="920" y="202" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="430" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3" bpmnElement="Flow_3">
+        <di:waypoint x="530" y="177" />
+        <di:waypoint x="590" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4" bpmnElement="Flow_4">
+        <di:waypoint x="690" y="177" />
+        <di:waypoint x="750" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5" bpmnElement="Flow_5">
+        <di:waypoint x="850" y="177" />
+        <di:waypoint x="912" y="177" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

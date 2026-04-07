@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-03T21:04:13.862Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-04-13-860Z_create_kaplanmeier_analysis_comparing_male_and_fe.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-04-13-860Z_create_kaplanmeier_analysis_comparing_male_and_fe.xml",
+  "userQuery": "Create Kaplan-Meier analysis comparing male and female cancer survival rates",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

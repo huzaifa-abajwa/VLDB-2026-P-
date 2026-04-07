@@ -1,0 +1,687 @@
+/* src/styles/workflowManipulation.css */
+
+@import "bpmn-js/dist/assets/diagram-js.css";
+@import "bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
+
+/* Define CSS variables for light and dark themes specific to WorkflowManipulation */
+:root {
+  --wm-primary-color: #4b0082; /* Indigo */
+  --wm-secondary-color: #008080; /* Teal */
+  --wm-background-color: #ffffff; /* White */
+  --wm-text-color: #333333; /* Dark Gray */
+  --wm-card-background: #ffffff; /* For cards and containers */
+  --wm-card-text-color: #333333; /* For text inside cards */
+  --wm-input-background: #e6e6fa; /* Lavender */
+  --wm-input-border-color: #4b0082; /* Indigo */
+  --wm-input-hover-background: #f0f0f0; /* Light Gray */
+  --wm-input-focus-border-color: #008080; /* Teal */
+  --wm-button-background: #ff6f61; /* Coral */
+  --wm-button-hover-background: #ff4b4b; /* Darker Coral */
+  --wm-button-text-color: #ffffff;
+  --wm-notification-background: #32cd32; /* Lime Green */
+  --wm-notification-text-color: #ffffff;
+  --wm-error-background: #dc143c; /* Crimson */
+  --wm-error-text-color: #ffffff;
+}
+
+body.dark-mode {
+  --wm-primary-color: #ff79c6; /* Pink */
+  --wm-secondary-color: #6272a4; /* Bluish Gray */
+  --wm-background-color: #282a36; /* Dark Gray */
+  --wm-text-color: #f8f8f2; /* Near White */
+  --wm-card-background: #282a36; /* Dark Gray */
+  --wm-card-text-color: #f8f8f2; /* Near White */
+  --wm-input-background: #44475a; /* Darker Gray */
+  --wm-input-border-color: #ff79c6; /* Pink */
+  --wm-input-hover-background: #6272a4; /* Bluish Gray */
+  --wm-input-focus-border-color: #ff79c6; /* Pink */
+  --wm-button-background: #ff79c6; /* Pink */
+  --wm-button-hover-background: #bd93f9; /* Light Purple */
+  --wm-button-text-color: #ffffff;
+  --wm-notification-background: #44475a; /* Darker Gray */
+  --wm-notification-text-color: #f8f8f2; /* Near White */
+  --wm-error-background: #ff5555; /* Red */
+  --wm-error-text-color: #ffffff;
+}
+
+/* General Styles */
+body {
+  background-color: var(--wm-background-color);
+  color: var(--wm-text-color);
+  font-family: Arial, sans-serif;
+}
+
+/* Container styles */
+.wm-container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 25px;
+  background-color: var(--wm-card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  color: var(--wm-card-text-color);
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 1s ease-in-out;
+  overflow: hidden;
+}
+
+.wm-container h2 {
+  color: var(--wm-primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* BPMN Diagram Section */
+.wm-bpmn-section {
+  width: 100%;
+  margin-bottom: 40px; /* Space below the diagram */
+}
+
+.wm-bpmn-section h3 {
+  color: var(--wm-primary-color);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.wm-bpmn-container {
+  width: 100%;
+  height: 600px; /* Adjust height as needed */
+  border: 1px solid var(--wm-secondary-color);
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+/* Selection Section */
+.wm-main-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wm-selection-section {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.wm-models,
+.wm-datasets {
+  width: 48%;
+}
+
+.wm-models h3,
+.wm-datasets h3 {
+  color: var(--wm-primary-color);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.wm-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.wm-box {
+  background-color: var(--wm-input-background);
+  width: 180px; /* Increased width for better text fitting */
+  height: 180px; /* Increased height */
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; /* Allow vertical alignment */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.3s,
+    border-color 0.3s;
+  border: 2px solid transparent;
+  text-align: center;
+  padding: 10px;
+  overflow: hidden; /* Hide overflowing content */
+}
+
+.wm-box:hover {
+  background-color: var(--wm-input-hover-background);
+  transform: translateY(-5px);
+}
+
+.wm-box.selected {
+  border-color: var(--wm-primary-color);
+  background-color: var(--wm-input-focus-border-color);
+  color: var(--wm-button-text-color);
+}
+
+.wm-box p {
+  font-size: 1em;
+  color: var(--wm-text-color);
+  margin: 0;
+  padding: 0;
+  overflow-wrap: break-word; /* Allow words to break to the next line */
+  word-break: break-word;
+  hyphens: auto;
+  max-height: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* Limit the text to 5 lines */
+  -webkit-box-orient: vertical;
+  font-weight: bold; /* Make the text bold */
+}
+
+body.dark-mode .wm-box p {
+  color: var(--wm-card-text-color);
+}
+
+/* Variable Selection Section */
+.wm-variable-selection {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.wm-variable-selection h3 {
+  color: var(--wm-primary-color);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.wm-variable-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.wm-variable-boxes .wm-box {
+  width: 150px;
+  height: 150px;
+}
+
+/* Run Workflow Button */
+.wm-run-button {
+  padding: 15px 30px;
+  background-color: var(--wm-button-background);
+  color: var(--wm-button-text-color);
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.wm-run-button:hover {
+  background-color: var(--wm-button-hover-background);
+}
+
+.wm-run-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Output Section */
+.wm-output-section {
+  background-color: var(--wm-card-background);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+  color: var(--wm-card-text-color);
+  width: 100%;
+}
+
+.wm-output-section h3 {
+  margin-bottom: 15px;
+  color: var(--wm-primary-color);
+}
+
+.wm-output-section pre {
+  background-color: var(--wm-input-background);
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  color: var(--wm-card-text-color);
+  font-family: "Courier New", Courier, monospace;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+/* Single Output */
+.wm-single-output {
+  margin-bottom: 20px;
+}
+
+.wm-single-output h4 {
+  color: var(--wm-secondary-color);
+  margin-bottom: 10px;
+}
+
+/* Confusion Matrix and Classification Report */
+.wm-confusion-matrix,
+.wm-classification-report {
+  margin-bottom: 15px;
+}
+
+.wm-confusion-matrix h5,
+.wm-classification-report h5 {
+  color: var(--wm-secondary-color);
+  margin-bottom: 5px;
+}
+
+/* Cox Model Results */
+.wm-cox-results {
+  margin-bottom: 20px;
+}
+
+.wm-cox-results h5 {
+  color: var(--wm-secondary-color);
+  margin-bottom: 10px;
+}
+
+.wm-cox-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wm-cox-table th,
+.wm-cox-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.wm-cox-table th {
+  background-color: var(--wm-primary-color);
+  color: var(--wm-button-text-color);
+}
+
+.wm-cox-table tr:nth-child(even) {
+  background-color: var(--wm-input-background);
+}
+
+.wm-cox-table tr:hover {
+  background-color: var(--wm-input-hover-background);
+}
+
+.wm-cox-table td {
+  color: var(--wm-card-text-color);
+  font-size: 1em;
+}
+
+/* Data Sample Section */
+.wm-data-sample {
+  margin-top: 20px;
+}
+
+.wm-data-sample h3 {
+  color: var(--wm-secondary-color);
+  margin-bottom: 10px;
+}
+
+.wm-data-sample-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wm-filter-adder select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 2px solid var(--wm-input-border-color);
+  background: var(--wm-input-background);
+  color: var(--wm-text-color);
+  margin-bottom: 15px;
+}
+
+.wm-filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.wm-filter-box {
+  width: 210px;
+  border: 2px solid var(--wm-secondary-color);
+  border-radius: 8px;
+  padding: 6px;
+}
+
+.wm-filter-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.wm-filter-head button {
+  background: transparent;
+  border: none;
+  color: var(--wm-error-background);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.wm-filter-values {
+  max-height: 140px; /* scrollable value grid */
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 6px;
+}
+
+.wm-filter-value {
+  padding: 4px 0;
+  text-align: center;
+  border-radius: 4px;
+  background: var(--wm-input-background);
+  cursor: pointer;
+  user-select: none;
+}
+
+.wm-filter-value:hover {
+  background: var(--wm-input-hover-background);
+}
+
+.wm-filter-value.active {
+  background: var(--wm-input-focus-border-color);
+  color: var(--wm-button-text-color);
+}
+
+/* ─── TABLE WRAPPER ─────────────────────────────────────────────────────────── */
+.wm-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  background-color: var(--wm-card-background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* ─── GENERIC TABLE STYLING ──────────────────────────────────────────────────── */
+.wm-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.wm-table th,
+.wm-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--wm-input-border-color);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.wm-table thead th {
+  background-color: var(--wm-primary-color);
+  color: var(--wm-button-text-color);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-weight: 600;
+}
+
+.wm-table tbody tr:nth-child(even) {
+  background-color: var(--wm-input-background);
+}
+
+.wm-table tbody tr:hover {
+  background-color: var(--wm-input-hover-background);
+  cursor: pointer;
+}
+
+/* Specific column widths for Model Table */
+.wm-table th:nth-child(6),
+.wm-table td:nth-child(6) {
+  min-width: 600px;
+  white-space: normal;
+  word-wrap: break-word;
+  font-size: 0.9em; /* Slightly smaller font */
+  line-height: 1.4; /* Better line spacing */
+}
+
+/* ─── “PRETTY” TABLE FALLBACK ───────────────────────────────────────────────── */
+.wm-pretty-table pre {
+  background-color: var(--wm-input-background);
+  padding: 1rem;
+  border-radius: 6px;
+  font-family: Menlo, Consolas, monospace;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 0;
+}
+
+.wm-cox-pretty-table th,
+.wm-cox-pretty-table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+.wm-cox-pretty-table th {
+  background-color: #f2f2f2;
+}
+
+.wm-data-sample-table th {
+  background-color: var(--wm-primary-color);
+  color: var(--wm-button-text-color);
+  text-align: left;
+}
+.wm-cox-pretty-table td:empty {
+  border: none;
+  padding: 0;
+}
+
+.wm-table-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.wm-clear-button {
+  padding: 8px 16px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.wm-clear-button:hover {
+  background-color: #d9363e;
+}
+.wm-button-group {
+  display: flex;
+  align-items: center;
+}
+
+.wm-data-sample-table tr:nth-child(even) {
+  background-color: var(--wm-input-background);
+}
+
+.wm-data-sample-table tr:hover {
+  background-color: var(--wm-input-hover-background);
+}
+
+.wm-data-sample-table td {
+  color: var(--wm-card-text-color);
+}
+
+/* Compare Button */
+.wm-compare-button {
+  padding: 10px 20px;
+  background-color: var(--wm-button-background);
+  color: var(--wm-button-text-color);
+  border: none;
+  border-radius: 30px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.wm-compare-button:hover {
+  background-color: var(--wm-button-hover-background);
+}
+
+/* Comparison Section */
+.wm-comparison-section {
+  margin-top: 30px;
+}
+
+.wm-comparison-section h3 {
+  color: var(--wm-secondary-color);
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Scrollable Comparison Container */
+.wm-comparison-container {
+  max-height: 400px; /* Adjust the height as needed */
+  overflow: auto; /* Adds scrollbars when content overflows */
+  border: 1px solid var(--wm-secondary-color);
+  border-radius: 10px;
+  padding: 10px;
+  background-color: var(--wm-input-background);
+}
+
+/* Comparison Table */
+.wm-comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  min-width: 600px; /* Ensures table is wide enough to benefit from scrolling */
+}
+
+.wm-comparison-table th,
+.wm-comparison-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.wm-comparison-table th {
+  background-color: var(--wm-primary-color);
+  color: var(--wm-button-text-color);
+}
+
+.wm-comparison-table tr:nth-child(even) {
+  background-color: var(--wm-input-background);
+}
+
+.wm-comparison-table tr:hover {
+  background-color: var(--wm-input-hover-background);
+}
+
+.wm-comparison-table td {
+  font-size: 0.95em;
+  color: var(--wm-card-text-color);
+}
+
+.wm-comparison-table td p {
+  margin: 5px 0;
+}
+
+/* Notifications */
+.wm-notification-message {
+  background-color: var(--wm-notification-background);
+  color: var(--wm-notification-text-color);
+  padding: 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+.wm-error-message {
+  background-color: var(--wm-error-background);
+  color: var(--wm-error-text-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .wm-selection-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wm-models,
+  .wm-datasets {
+    width: 100%;
+  }
+
+  .wm-container {
+    padding: 15px;
+  }
+
+  .wm-output-section {
+    padding: 15px;
+  }
+
+  .wm-container h2 {
+    font-size: 1.8em;
+  }
+
+  .wm-box {
+    width: 150px;
+    height: 150px;
+  }
+
+  .wm-box p {
+    font-size: 0.9em;
+  }
+
+  .wm-variable-boxes .wm-box {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wm-container {
+    padding: 10px;
+  }
+
+  .wm-output-section {
+    padding: 10px;
+  }
+
+  .wm-container h2 {
+    font-size: 1.5em;
+  }
+
+  .wm-box {
+    width: 120px;
+    height: 120px;
+  }
+
+  .wm-box p {
+    font-size: 0.8em;
+  }
+
+  .wm-bpmn-container {
+    height: 400px; /* Adjust for smaller screens */
+  }
+
+  .wm-variable-boxes .wm-box {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.wm-box.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}

@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-12-29T20:48:49.795Z",
+  "isValid": true,
+  "filename": "valid_2025-12-29T20-48-49-792Z_compare_survival_outcomesusing_cox_proportional_ha.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-29T20-48-49-792Z_compare_survival_outcomesusing_cox_proportional_ha.xml",
+  "userQuery": "Compare survival outcomesusing Cox proportional hazards model",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

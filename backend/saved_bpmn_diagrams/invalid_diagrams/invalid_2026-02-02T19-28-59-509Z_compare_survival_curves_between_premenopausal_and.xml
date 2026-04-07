@@ -1,0 +1,121 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessData" name="Access Cancer Registries">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn:sourceRef>DataObjectReference_SEER</bpmn:sourceRef>
+        <bpmn:targetRef>Task_AccessData_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_2">
+        <bpmn:sourceRef>DataObjectReference_German</bpmn:sourceRef>
+        <bpmn:targetRef>Task_AccessData_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn:sourceRef>DataObjectReference_Pakistan</bpmn:sourceRef>
+        <bpmn:targetRef>Task_AccessData_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:task id="Task_Preprocess" name="Pre-process and Stratify Data by Menopausal Status">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessData" targetRef="Task_Preprocess" />
+    <bpmn:task id="Task_Analyze" name="Generate and Compare Survival Curves">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn:sourceRef>DataObjectReference_KM</bpmn:sourceRef>
+        <bpmn:targetRef>Task_Analyze_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_5">
+        <bpmn:sourceRef>DataObjectReference_Cox</bpmn:sourceRef>
+        <bpmn:targetRef>Task_Analyze_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_6">
+        <bpmn:sourceRef>DataObjectReference_RSF</bpmn:sourceRef>
+        <bpmn:targetRef>Task_Analyze_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_7">
+        <bpmn:sourceRef>DataObjectReference_XGB</bpmn:sourceRef>
+        <bpmn:targetRef>Task_Analyze_Input</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Preprocess" targetRef="Task_Analyze" />
+    <bpmn:task id="Task_Visualize" name="Visualize Survival Curves">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_Analyze" targetRef="Task_Visualize" />
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_Visualize" targetRef="EndEvent_1" />
+    <bpmn:dataObjectReference id="DataObjectReference_SEER" name="SEER_Cancer_Registry_of_USA" dataObjectRef="DataObject_SEER" />
+    <bpmn:dataObject id="DataObject_SEER" />
+    <bpmn:dataObjectReference id="DataObjectReference_German" name="German_Cancer_registry@2020" dataObjectRef="DataObject_German" />
+    <bpmn:dataObject id="DataObject_German" />
+    <bpmn:dataObjectReference id="DataObjectReference_Pakistan" name="National_Cancer_Registry_of_Pakistan" dataObjectRef="DataObject_Pakistan" />
+    <bpmn:dataObject id="DataObject_Pakistan" />
+    <bpmn:dataObjectReference id="DataObjectReference_KM" name="kaplan_meier_model@2020" dataObjectRef="DataObject_KM" />
+    <bpmn:dataObject id="DataObject_KM" />
+    <bpmn:dataObjectReference id="DataObjectReference_Cox" name="cox_model@2020" dataObjectRef="DataObject_Cox" />
+    <bpmn:dataObject id="DataObject_Cox" />
+    <bpmn:dataObjectReference id="DataObjectReference_RSF" name="random_survival_forest@2025" dataObjectRef="DataObject_RSF" />
+    <bpmn:dataObject id="DataObject_RSF" />
+    <bpmn:dataObjectReference id="DataObjectReference_XGB" name="xgboost_risk_model@2025" dataObjectRef="DataObject_XGB" />
+    <bpmn:dataObject id="DataObject_XGB" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="390" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="490" y="120" />
+        <di:waypoint x="540" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="640" y="120" />
+        <di:waypoint x="690" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="790" y="120" />
+        <di:waypoint x="842" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="142" y="145" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x2z0ks_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1v09j5d_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="390" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c22kix_di" bpmnElement="Task_Analyze">
+        <dc:Bounds x="540" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c2j3f0_di" bpmnElement="Task_Visualize">
+        <dc:Bounds x="690" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1y8a6v1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="842" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="850" y="145" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

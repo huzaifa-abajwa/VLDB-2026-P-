@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-24T17:14:38.986Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-24T17-14-38-984Z_i_want_to_predict_cancer_risk_and_identify_importa.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-24T17-14-38-984Z_i_want_to_predict_cancer_risk_and_identify_importa.xml",
+  "userQuery": "I want to predict cancer risk and identify important risk factors for patients aged 40-60 in the SEER dataset",
+  "recommendedDatasets": [
+    "random_survival_forest_2025"
+  ],
+  "recommendedModels": [],
+  "validationErrors": [
+    "Semantic Warning: Task \"Access Dataset: random_survival_forest_2025\" appears to reference a non-existent dataset."
+  ]
+}

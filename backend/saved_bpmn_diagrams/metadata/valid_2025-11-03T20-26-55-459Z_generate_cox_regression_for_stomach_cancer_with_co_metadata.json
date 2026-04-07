@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T20:26:55.464Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-26-55-459Z_generate_cox_regression_for_stomach_cancer_with_co.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-26-55-459Z_generate_cox_regression_for_stomach_cancer_with_co.xml",
+  "userQuery": "Generate Cox regression for stomach cancer with comorbidity factors",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

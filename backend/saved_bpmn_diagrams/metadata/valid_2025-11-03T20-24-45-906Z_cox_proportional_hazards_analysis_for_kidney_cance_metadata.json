@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T20:24:45.908Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-24-45-906Z_cox_proportional_hazards_analysis_for_kidney_cance.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-24-45-906Z_cox_proportional_hazards_analysis_for_kidney_cance.xml",
+  "userQuery": "Cox proportional hazards analysis for kidney cancer with age and stage variables",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

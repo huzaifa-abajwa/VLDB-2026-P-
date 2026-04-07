@@ -1,0 +1,126 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="diabetes_comparison_workflow" isExecutable="false">
+    <bpmn:startEvent id="start_event" name="Start">
+      <bpmn:outgoing>flow_start_to_split</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="gateway_split">
+      <bpmn:incoming>flow_start_to_split</bpmn:incoming>
+      <bpmn:outgoing>flow_split_to_us_data</bpmn:outgoing>
+      <bpmn:outgoing>flow_split_to_bd_data</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="task_access_us_data" name="Access Pima_Indians_Diabetes_USA">
+      <bpmn:incoming>flow_split_to_us_data</bpmn:incoming>
+      <bpmn:outgoing>flow_us_data_to_model</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="task_access_bd_data" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>flow_split_to_bd_data</bpmn:incoming>
+      <bpmn:outgoing>flow_bd_data_to_model</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="task_run_model_us" name="Run Prediction Models (XGBoost, MLP) on US Data">
+      <bpmn:incoming>flow_us_data_to_model</bpmn:incoming>
+      <bpmn:outgoing>flow_us_model_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="task_run_model_bd" name="Run Prediction Models (XGBoost, MLP) on Bangladeshi Data">
+      <bpmn:incoming>flow_bd_data_to_model</bpmn:incoming>
+      <bpmn:outgoing>flow_bd_model_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="gateway_join">
+      <bpmn:incoming>flow_us_model_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_bd_model_to_join</bpmn:incoming>
+      <bpmn:outgoing>flow_join_to_compare</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="task_compare_results" name="Compare US and Bangladeshi Prediction Results">
+      <bpmn:incoming>flow_join_to_compare</bpmn:incoming>
+      <bpmn:outgoing>flow_compare_to_end</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="end_event" name="End">
+      <bpmn:incoming>flow_compare_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_start_to_split" sourceRef="start_event" targetRef="gateway_split" />
+    <bpmn:sequenceFlow id="flow_split_to_us_data" sourceRef="gateway_split" targetRef="task_access_us_data" />
+    <bpmn:sequenceFlow id="flow_split_to_bd_data" sourceRef="gateway_split" targetRef="task_access_bd_data" />
+    <bpmn:sequenceFlow id="flow_us_data_to_model" sourceRef="task_access_us_data" targetRef="task_run_model_us" />
+    <bpmn:sequenceFlow id="flow_bd_data_to_model" sourceRef="task_access_bd_data" targetRef="task_run_model_bd" />
+    <bpmn:sequenceFlow id="flow_us_model_to_join" sourceRef="task_run_model_us" targetRef="gateway_join" />
+    <bpmn:sequenceFlow id="flow_bd_model_to_join" sourceRef="task_run_model_bd" targetRef="gateway_join" />
+    <bpmn:sequenceFlow id="flow_join_to_compare" sourceRef="gateway_join" targetRef="task_compare_results" />
+    <bpmn:sequenceFlow id="flow_compare_to_end" sourceRef="task_compare_results" targetRef="end_event" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="diabetes_comparison_workflow">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_event">
+        <dc:Bounds x="179" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="375" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_1" bpmnElement="gateway_split">
+        <dc:Bounds x="265" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1" bpmnElement="task_access_us_data">
+        <dc:Bounds x="365" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2" bpmnElement="task_access_bd_data">
+        <dc:Bounds x="365" y="400" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_3" bpmnElement="task_run_model_us">
+        <dc:Bounds x="515" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_4" bpmnElement="task_run_model_bd">
+        <dc:Bounds x="515" y="400" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_2" bpmnElement="gateway_join">
+        <dc:Bounds x="665" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_5" bpmnElement="task_compare_results">
+        <dc:Bounds x="765" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1" bpmnElement="end_event">
+        <dc:Bounds x="915" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="923" y="375" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1" bpmnElement="flow_start_to_split">
+        <di:waypoint x="215" y="350" />
+        <di:waypoint x="265" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_2" bpmnElement="flow_split_to_us_data">
+        <di:waypoint x="290" y="325" />
+        <di:waypoint x="290" y="270" />
+        <di:waypoint x="365" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_3" bpmnElement="flow_split_to_bd_data">
+        <di:waypoint x="290" y="375" />
+        <di:waypoint x="290" y="440" />
+        <di:waypoint x="365" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_4" bpmnElement="flow_us_data_to_model">
+        <di:waypoint x="465" y="270" />
+        <di:waypoint x="515" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_5" bpmnElement="flow_bd_data_to_model">
+        <di:waypoint x="465" y="440" />
+        <di:waypoint x="515" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_6" bpmnElement="flow_us_model_to_join">
+        <di:waypoint x="615" y="270" />
+        <di:waypoint x="690" y="270" />
+        <di:waypoint x="690" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_7" bpmnElement="flow_bd_model_to_join">
+        <di:waypoint x="615" y="440" />
+        <di:waypoint x="690" y="440" />
+        <di:waypoint x="690" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_8" bpmnElement="flow_join_to_compare">
+        <di:waypoint x="715" y="350" />
+        <di:waypoint x="765" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_9" bpmnElement="flow_compare_to_end">
+        <di:waypoint x="865" y="350" />
+        <di:waypoint x="915" y="350" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,99 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Diagnosis Comparison">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split_Datasets">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Branch</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_Branch</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Split_Datasets" />
+    <bpmn:task id="Task_Access_US_Data" name="Access Pima_Indians_Diabetes_USA">
+      <bpmn:incoming>Flow_US_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_Branch" sourceRef="Gateway_Split_Datasets" targetRef="Task_Access_US_Data" />
+    <bpmn:task id="Task_Access_BD_Data" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>Flow_BD_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_Branch" sourceRef="Gateway_Split_Datasets" targetRef="Task_Access_BD_Data" />
+    <bpmn:parallelGateway id="Gateway_Split_US_Models">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_MLP</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_RSF</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Access_US_Data" targetRef="Gateway_Split_US_Models" />
+    <bpmn:task id="Task_Run_MLP_US" name="Run mlp_cancer_classifier@2025.py on US Data">
+      <bpmn:incoming>Flow_US_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_MLP</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_MLP" sourceRef="Gateway_Split_US_Models" targetRef="Task_Run_MLP_US" />
+    <bpmn:task id="Task_Run_RSF_US" name="Run random_survival_forest@2025.py on US Data">
+      <bpmn:incoming>Flow_US_RSF</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_RSF</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_RSF" sourceRef="Gateway_Split_US_Models" targetRef="Task_Run_RSF_US" />
+    <bpmn:parallelGateway id="Gateway_Join_US_Models">
+      <bpmn:incoming>Flow_Join_US_MLP</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_US_RSF</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_US_MLP" sourceRef="Task_Run_MLP_US" targetRef="Gateway_Join_US_Models" />
+    <bpmn:sequenceFlow id="Flow_Join_US_RSF" sourceRef="Task_Run_RSF_US" targetRef="Gateway_Join_US_Models" />
+    <bpmn:task id="Task_Generate_US_Results" name="Generate US Prediction Results">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Main_US</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Join_US_Models" targetRef="Task_Generate_US_Results" />
+    <bpmn:parallelGateway id="Gateway_Split_BD_Models">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_MLP</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_RSF</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Access_BD_Data" targetRef="Gateway_Split_BD_Models" />
+    <bpmn:task id="Task_Run_MLP_BD" name="Run mlp_cancer_classifier@2025.py on BD Data">
+      <bpmn:incoming>Flow_BD_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_MLP</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_MLP" sourceRef="Gateway_Split_BD_Models" targetRef="Task_Run_MLP_BD" />
+    <bpmn:task id="Task_Run_RSF_BD" name="Run random_survival_forest@2025.py on BD Data">
+      <bpmn:incoming>Flow_BD_RSF</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_RSF</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_RSF" sourceRef="Gateway_Split_BD_Models" targetRef="Task_Run_RSF_BD" />
+    <bpmn:parallelGateway id="Gateway_Join_BD_Models">
+      <bpmn:incoming>Flow_Join_BD_MLP</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_BD_RSF</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_BD_MLP" sourceRef="Task_Run_MLP_BD" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_Join_BD_RSF" sourceRef="Task_Run_RSF_BD" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:task id="Task_Generate_BD_Results" name="Generate Bangladeshi Prediction Results">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Main_BD</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Gateway_Join_BD_Models" targetRef="Task_Generate_BD_Results" />
+    <bpmn:parallelGateway id="Gateway_Join_Main">
+      <bpmn:incoming>Flow_Join_Main_US</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Main_BD</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_Main_US" sourceRef="Task_Generate_US_Results" targetRef="Gateway_Join_Main" />
+    <bpmn:sequenceFlow id="Flow_Join_Main_BD" sourceRef="Task_Generate_BD_Results" targetRef="Gateway_Join_Main" />
+    <bpmn:task id="Task_Compare_Results" name="Compare US and Bangladeshi Prediction Results">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Gateway_Join_Main" targetRef="Task_Compare_Results" />
+    <bpmn:endEvent id="EndEvent_1" name="End Comparison">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Compare_Results" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

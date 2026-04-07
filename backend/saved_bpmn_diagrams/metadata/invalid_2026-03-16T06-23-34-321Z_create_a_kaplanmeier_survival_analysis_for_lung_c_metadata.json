@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-03-16T06:23:34.322Z",
+  "isValid": false,
+  "filename": "invalid_2026-03-16T06-23-34-321Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2026-03-16T06-23-34-321Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "userQuery": "Create a Kaplan-Meier survival analysis for lung cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": [
+    "Semantic Warning: Task \"Access Cancer Registries\" appears to reference a non-existent dataset."
+  ]
+}

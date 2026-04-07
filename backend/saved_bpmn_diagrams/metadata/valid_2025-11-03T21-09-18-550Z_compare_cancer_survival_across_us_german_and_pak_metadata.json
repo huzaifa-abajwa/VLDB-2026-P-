@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T21:09:18.554Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-09-18-550Z_compare_cancer_survival_across_us_german_and_pak.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-09-18-550Z_compare_cancer_survival_across_us_german_and_pak.xml",
+  "userQuery": "Compare cancer survival across US, German, and Pakistani datasets using Cox model",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

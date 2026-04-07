@@ -1,0 +1,28 @@
+/* layout.css */
+
+/* Main Content Area */
+.main-content {
+    padding-top: 80px; /* Default padding to accommodate NavBar height */
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    background-color: #F5F5F5; /* Light Gray */
+    min-height: 100vh;
+}
+
+/* Adjust padding when NavBar size changes */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 80px; /* Ensure consistency on smaller screens */
+    }
+}
+
+.main-content {
+    padding-top: 80px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+  }

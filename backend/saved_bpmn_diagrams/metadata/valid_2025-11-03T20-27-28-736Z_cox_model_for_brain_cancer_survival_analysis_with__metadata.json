@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T20:27:28.738Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-27-28-736Z_cox_model_for_brain_cancer_survival_analysis_with_.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-27-28-736Z_cox_model_for_brain_cancer_survival_analysis_with_.xml",
+  "userQuery": "Cox model for brain cancer survival analysis with radiation therapy",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

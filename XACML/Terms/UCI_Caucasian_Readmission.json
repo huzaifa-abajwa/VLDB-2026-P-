@@ -1,0 +1,10 @@
+{
+    "datasetAgreementTitle": "UCI Diabetes 130-US Hospitals Dataset — Caucasian Subset",
+    "datasetAgreementGeneral": "This dataset is a race-specific subset of the UCI Diabetes 130-US Hospitals dataset, containing de-identified hospital encounter data for Caucasian diabetic patients. It follows HIPAA guidelines and is intended solely for research purposes.",
+    "term1": "You acknowledge that this dataset is intended solely for diabetes research, clinical studies, and related academic purposes.",
+    "term2": "You agree not to use this dataset for any commercial, non-research, or unauthorised purposes.",
+    "term3": "You agree not to attempt re-identification of patients or linkage with external datasets to compromise patient privacy.",
+    "term4": "You must properly attribute the UCI Machine Learning Repository and original data contributors in all publications and reports.",
+    "term5": "You accept full responsibility for ensuring ethical use in compliance with all applicable regulations including HIPAA and relevant IRB approvals.",
+    "term6": "You agree to use this dataset only for hospital readmission prediction research and will not use it for any discriminatory purpose."
+}

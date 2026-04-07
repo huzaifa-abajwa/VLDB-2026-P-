@@ -1,0 +1,9 @@
+{
+    "datasetAgreementTitle": "Google Health Cancer Prediction Model",
+    "datasetAgreementGeneral": "This model is provided by Google Health for secure partner-based cancer research and is intended exclusively for cancer classification and research purposes.",
+    "term1": "You acknowledge that this model is to be used exclusively for cancer research and classification purposes.",
+    "term2": "You agree not to use this model for any illegal, unethical, or harmful activities.",
+    "term3": "You agree to credit Google Health and the original developers in any publications or presentations.",
+    "term4": "You accept that Google Health is not liable for any outcomes or decisions made based on the results of this model.",
+    "term5": "You agree not to redistribute or share this model to third parties without explicit written permission."
+}

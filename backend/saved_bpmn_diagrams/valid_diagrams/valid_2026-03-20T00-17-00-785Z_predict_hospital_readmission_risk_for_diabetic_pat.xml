@@ -1,0 +1,151 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_1w1s1w1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessData" name="Access Diabetes Datasets (diabetic_data, Pima_Indians_Diabetes_USA, Sylhet_Diabetes_Hospital_Bangladesh)">
+      <bpmn:incoming>Flow_1w1s1w1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0f0x0f0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1w1s1w1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:task id="Task_Preprocess" name="Pre-process Data for Classification">
+      <bpmn:incoming>Flow_0f0x0f0</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m1m1m1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0f0x0f0" sourceRef="Task_AccessData" targetRef="Task_Preprocess" />
+    <bpmn:parallelGateway id="Gateway_Split" name="Select Model">
+      <bpmn:incoming>Flow_1m1m1m1</bpmn:incoming>
+      <bpmn:outgoing>Flow_XGBoost</bpmn:outgoing>
+      <bpmn:outgoing>Flow_LSTM</bpmn:outgoing>
+      <bpmn:outgoing>Flow_MLP</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1m1m1m1" sourceRef="Task_Preprocess" targetRef="Gateway_Split" />
+    <bpmn:task id="Task_XGBoost" name="Execute xgboost_risk_model@2025.py">
+      <bpmn:incoming>Flow_XGBoost</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_1</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_XGBoost" sourceRef="Gateway_Split" targetRef="Task_XGBoost" />
+    <bpmn:task id="Task_LSTM" name="Execute lstm_readmission_model@2026.py">
+      <bpmn:incoming>Flow_LSTM</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_LSTM" sourceRef="Gateway_Split" targetRef="Task_LSTM" />
+    <bpmn:task id="Task_MLP" name="Execute mlp_cancer_classifier@2025.py">
+      <bpmn:incoming>Flow_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_MLP" sourceRef="Gateway_Split" targetRef="Task_MLP" />
+    <bpmn:parallelGateway id="Gateway_Join" name="Combine Results">
+      <bpmn:incoming>Flow_Join_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_2</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p1p1p1</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_1" sourceRef="Task_XGBoost" targetRef="Gateway_Join" />
+    <bpmn:sequenceFlow id="Flow_Join_2" sourceRef="Task_LSTM" targetRef="Gateway_Join" />
+    <bpmn:sequenceFlow id="Flow_Join_3" sourceRef="Task_MLP" targetRef="Gateway_Join" />
+    <bpmn:task id="Task_GenerateOutput" name="Generate Readmission Risk Predictions">
+      <bpmn:incoming>Flow_1p1p1p1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z0z0z0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1p1p1p1" sourceRef="Gateway_Join" targetRef="Task_GenerateOutput" />
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow">
+      <bpmn:incoming>Flow_0z0z0z0</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0z0z0z0" sourceRef="Task_GenerateOutput" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="168" y="375" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v9qg3r_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="270" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1w1s1w1_di" bpmnElement="Flow_1w1s1w1">
+        <di:waypoint x="215" y="350" />
+        <di:waypoint x="270" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1y2f1x3_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="430" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0f0x0f0_di" bpmnElement="Flow_0f0x0f0">
+        <di:waypoint x="370" y="350" />
+        <di:waypoint x="430" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0o5qj3f_di" bpmnElement="Gateway_Split" isMarkerVisible="true">
+        <dc:Bounds x="585" y="325" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="382" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1m1m1m1_di" bpmnElement="Flow_1m1m1m1">
+        <di:waypoint x="530" y="350" />
+        <di:waypoint x="585" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0c5b0g1_di" bpmnElement="Task_XGBoost">
+        <dc:Bounds x="690" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1f1x1f1_di" bpmnElement="Flow_XGBoost">
+        <di:waypoint x="610" y="325" />
+        <di:waypoint x="610" y="230" />
+        <di:waypoint x="690" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1w2f1x3_di" bpmnElement="Task_LSTM">
+        <dc:Bounds x="690" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1g1y1g1_di" bpmnElement="Flow_LSTM">
+        <di:waypoint x="635" y="350" />
+        <di:waypoint x="690" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1z2f1x3_di" bpmnElement="Task_MLP">
+        <dc:Bounds x="690" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1h1z1h1_di" bpmnElement="Flow_MLP">
+        <di:waypoint x="610" y="375" />
+        <di:waypoint x="610" y="470" />
+        <di:waypoint x="690" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1k1l1k1_di" bpmnElement="Gateway_Join" isMarkerVisible="true">
+        <dc:Bounds x="845" y="325" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="828" y="382" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1i1j1i1_di" bpmnElement="Flow_Join_1">
+        <di:waypoint x="790" y="230" />
+        <di:waypoint x="870" y="230" />
+        <di:waypoint x="870" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j1k1j1_di" bpmnElement="Flow_Join_2">
+        <di:waypoint x="790" y="350" />
+        <di:waypoint x="845" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1k1l1k1_di" bpmnElement="Flow_Join_3">
+        <di:waypoint x="790" y="470" />
+        <di:waypoint x="870" y="470" />
+        <di:waypoint x="870" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1m1n1m1_di" bpmnElement="Task_GenerateOutput">
+        <dc:Bounds x="950" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1p1p1p1_di" bpmnElement="Flow_1p1p1p1">
+        <di:waypoint x="895" y="350" />
+        <di:waypoint x="950" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0q0r0q0_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1112" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1095" y="375" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0z0z0z0_di" bpmnElement="Flow_0z0z0z0">
+        <di:waypoint x="1050" y="350" />
+        <di:waypoint x="1112" y="350" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

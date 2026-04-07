@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-03-28T03:49:18.214Z",
+  "isValid": true,
+  "filename": "valid_2026-03-28T03-49-18-210Z_predict_readmission_for_diabetic_patients.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-28T03-49-18-210Z_predict_readmission_for_diabetic_patients.xml",
+  "userQuery": "Predict readmission for diabetic patients",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "lstm_readmission_model@2026.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "validationErrors": []
+}

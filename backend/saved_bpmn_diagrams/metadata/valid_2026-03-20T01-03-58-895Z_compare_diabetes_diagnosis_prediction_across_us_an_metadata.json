@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-03-20T01:03:58.897Z",
+  "isValid": true,
+  "filename": "valid_2026-03-20T01-03-58-895Z_compare_diabetes_diagnosis_prediction_across_us_an.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-20T01-03-58-895Z_compare_diabetes_diagnosis_prediction_across_us_an.xml",
+  "userQuery": "Compare diabetes diagnosis prediction across US and Bangladeshi patient populations using Random Forests and Neural Networks",
+  "recommendedDatasets": [
+    "Pima_Indians_Diabetes_USA.csv",
+    "Sylhet_Diabetes_Hospital_Bangladesh.csv"
+  ],
+  "recommendedModels": [
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

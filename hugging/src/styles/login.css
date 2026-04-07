@@ -1,0 +1,115 @@
+/* General Styles */
+body.login-page {
+    background-image: url('blur.png'); /* Background image for the login page */
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Use a modern font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container Styles */
+#login-container {
+    max-width: 400px; /* Set a maximum width for the form container */
+    width: 100%; /* Ensure the form container is responsive */
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for modern design */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease-out forwards; /* Smooth fade-in effect */
+}
+
+/* Title Styles */
+.form-title {
+    font-size: 2.5rem; /* Slightly larger font size for the title */
+    text-align: center;
+    color: #333; /* Darker gray for the title */
+    margin-bottom: 20px;
+    animation: slideIn 1s ease-out forwards; /* Slide-in effect */
+}
+
+/* Form Styles */
+#login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Input Styles */
+.input {
+    font-size: 1.1rem; /* Slightly larger font size for inputs */
+    padding: 12px; /* Increase padding for larger input fields */
+    margin-bottom: 15px; /* Adequate spacing between inputs */
+    border: 2px solid #3572EF; /* Blue border for inputs */
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f7f9fc; /* Soft white background for inputs */
+    color: #333; /* Darker text color for readability */
+    text-align: left; /* Ensure text starts from the left */
+    animation: fadeIn 1s ease-out forwards; /* Fade-in effect */
+    animation-delay: 0.5s; /* Delay to stagger input animations */
+}
+
+
+/* Button Styles */
+.submit-btn {
+    font-size: 1.1rem; /* Increase font size for the button */
+    padding: 12px; /* Larger padding for the button */
+    background-color: #28a745; /* Modern green button color */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition effects */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1s;
+}
+
+.submit-btn:hover {
+    background-color: #218838; /* Slightly darker green on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Error Message Styles */
+.error-message {
+    font-size: 1rem;
+    color: #dc3545; /* Red for error messages */
+    margin-top: 15px;
+    text-align: center;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1.5s;
+}
+
+/* Signup Link Styles */
+.signup-link {
+    color: #3572EF; /* Blue color for signup link */
+    text-decoration: none;
+    margin-top: 20px;
+    transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+    color: #1a52d8; /* Darker blue on hover */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

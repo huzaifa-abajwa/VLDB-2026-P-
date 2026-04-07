@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-03T20:22:38.316Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-22-38-314Z_cox_proportional_hazards_model_for_breast_cancer_s.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-22-38-314Z_cox_proportional_hazards_model_for_breast_cancer_s.xml",
+  "userQuery": "Cox proportional hazards model for breast cancer survival prediction",
+  "recommendedDatasets": [
+    "German_Cancer_registry"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

@@ -1,0 +1,243 @@
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="start_event" name="Start">
+      <bpmn:outgoing>Flow_1o4t2v1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="user_task_select_data" name="Select Diabetic Readmission Datasets">
+      <bpmn:incoming>Flow_1o4t2v1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0y1x2z3</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1">
+        <bpmn:targetRef>data_object_uci_diabetic</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>data_object_uci_caucasian</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn:targetRef>data_object_uci_asian</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_4">
+        <bpmn:targetRef>data_object_uci_hispanic</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_5">
+        <bpmn:targetRef>data_object_uci_african</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1o4t2v1" sourceRef="start_event" targetRef="user_task_select_data" />
+    <bpmn:exclusiveGateway id="gateway_model_choice" name="Choose Prediction Model">
+      <bpmn:incoming>Flow_0y1x2z3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1a2b3c4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5d6e7f8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0y1x2z3" sourceRef="user_task_select_data" targetRef="gateway_model_choice" />
+    <bpmn:serviceTask id="task_lstm_model" name="Run LSTM Readmission Model">
+      <bpmn:incoming>Flow_1a2b3c4</bpmn:incoming>
+      <bpmn:outgoing>Flow_9g8h7i6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1a2b3c4" name="LSTM Model" sourceRef="gateway_model_choice" targetRef="task_lstm_model" />
+    <bpmn:serviceTask id="task_xgboost_model" name="Run XGBoost Readmission Model">
+      <bpmn:incoming>Flow_5d6e7f8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0j9k8l7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_5d6e7f8" name="XGBoost Model" sourceRef="gateway_model_choice" targetRef="task_xgboost_model" />
+    <bpmn:exclusiveGateway id="gateway_merge_results" name="Merge Results">
+      <bpmn:incoming>Flow_9g8h7i6</bpmn:incoming>
+      <bpmn:incoming>Flow_0j9k8l7</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m2n3b4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_9g8h7i6" sourceRef="task_lstm_model" targetRef="gateway_merge_results" />
+    <bpmn:sequenceFlow id="Flow_0j9k8l7" sourceRef="task_xgboost_model" targetRef="gateway_merge_results" />
+    <bpmn:userTask id="user_task_review_results" name="Review Readmission Predictions">
+      <bpmn:incoming>Flow_1m2n3b4</bpmn:incoming>
+      <bpmn:outgoing>Flow_end</bpmn:outgoing>
+      <bpmn:property id="Property_0x8y9z" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_1">
+        <bpmn:sourceRef>data_output_predictions</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0x8y9z</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1m2n3b4" sourceRef="gateway_merge_results" targetRef="user_task_review_results" />
+    <bpmn:endEvent id="end_event" name="End">
+      <bpmn:incoming>Flow_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_end" sourceRef="user_task_review_results" targetRef="end_event" />
+    <bpmn:dataObjectReference id="data_object_uci_diabetic" name="UCI_diabetic_dataset" dataObjectRef="DataObject_1" />
+    <bpmn:dataObject id="DataObject_1" />
+    <bpmn:dataObjectReference id="data_object_uci_caucasian" name="UCI_Caucasian_Readmission" dataObjectRef="DataObject_2" />
+    <bpmn:dataObject id="DataObject_2" />
+    <bpmn:dataObjectReference id="data_object_uci_asian" name="UCI_Asian_Readmission" dataObjectRef="DataObject_3" />
+    <bpmn:dataObject id="DataObject_3" />
+    <bpmn:dataObjectReference id="data_object_uci_hispanic" name="UCI_Hispanic_Readmission" dataObjectRef="DataObject_4" />
+    <bpmn:dataObject id="DataObject_4" />
+    <bpmn:dataObjectReference id="data_object_uci_african" name="UCI_AfricanAmerican_Readmission" dataObjectRef="DataObject_5" />
+    <bpmn:dataObject id="DataObject_5" />
+    <bpmn:dataObjectReference id="data_object_lstm" name="lstm_readmission_model@2026.py" dataObjectRef="DataObject_6" />
+    <bpmn:dataObject id="DataObject_6" />
+    <bpmn:association id="Association_1" sourceRef="data_object_lstm" targetRef="task_lstm_model" />
+    <bpmn:dataObjectReference id="data_object_xgboost" name="xgboost_risk_model@2025.py" dataObjectRef="DataObject_7" />
+    <bpmn:dataObject id="DataObject_7" />
+    <bpmn:association id="Association_2" sourceRef="data_object_xgboost" targetRef="task_xgboost_model" />
+    <bpmn:dataObject id="data_output_predictions" name="Readmission Prediction Results" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_end_di" bpmnElement="Flow_end">
+        <di:waypoint x="1130" y="250" />
+        <di:waypoint x="1192" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m2n3b4_di" bpmnElement="Flow_1m2n3b4">
+        <di:waypoint x="955" y="250" />
+        <di:waypoint x="1030" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j9k8l7_di" bpmnElement="Flow_0j9k8l7">
+        <di:waypoint x="830" y="350" />
+        <di:waypoint x="930" y="350" />
+        <di:waypoint x="930" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9g8h7i6_di" bpmnElement="Flow_9g8h7i6">
+        <di:waypoint x="830" y="150" />
+        <di:waypoint x="930" y="150" />
+        <di:waypoint x="930" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5d6e7f8_di" bpmnElement="Flow_5d6e7f8">
+        <di:waypoint x="610" y="275" />
+        <di:waypoint x="610" y="350" />
+        <di:waypoint x="730" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="620" y="363" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a2b3c4_di" bpmnElement="Flow_1a2b3c4">
+        <di:waypoint x="610" y="225" />
+        <di:waypoint x="610" y="150" />
+        <di:waypoint x="730" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="625" y="123" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y1x2z3_di" bpmnElement="Flow_0y1x2z3">
+        <di:waypoint x="470" y="250" />
+        <di:waypoint x="585" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1o4t2v1_di" bpmnElement="Flow_1o4t2v1">
+        <di:waypoint x="218" y="250" />
+        <di:waypoint x="370" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="start_event_di" bpmnElement="start_event">
+        <dc:Bounds x="182" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="188" y="275" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="user_task_select_data_di" bpmnElement="user_task_select_data">
+        <dc:Bounds x="370" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_model_choice_di" bpmnElement="gateway_model_choice" isMarkerVisible="true">
+        <dc:Bounds x="585" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="568" y="282" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_lstm_model_di" bpmnElement="task_lstm_model">
+        <dc:Bounds x="730" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_xgboost_model_di" bpmnElement="task_xgboost_model">
+        <dc:Bounds x="730" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_merge_results_di" bpmnElement="gateway_merge_results" isMarkerVisible="true">
+        <dc:Bounds x="905" y="225" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="895" y="201" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="user_task_review_results_di" bpmnElement="user_task_review_results">
+        <dc:Bounds x="1030" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="end_event_di" bpmnElement="end_event">
+        <dc:Bounds x="1192" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1200" y="275" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_uci_diabetic_di" bpmnElement="data_object_uci_diabetic">
+        <dc:Bounds x="282" y="85" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="260" y="142" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_uci_caucasian_di" bpmnElement="data_object_uci_caucasian">
+        <dc:Bounds x="332" y="85" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="310" y="142" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_uci_asian_di" bpmnElement="data_object_uci_asian">
+        <dc:Bounds x="382" y="85" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="360" y="142" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_uci_hispanic_di" bpmnElement="data_object_uci_hispanic">
+        <dc:Bounds x="432" y="85" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="410" y="142" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_uci_african_di" bpmnElement="data_object_uci_african">
+        <dc:Bounds x="482" y="85" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="460" y="142" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_lstm_di" bpmnElement="data_object_lstm">
+        <dc:Bounds x="652" y="25" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="630" y="82" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="data_object_xgboost_di" bpmnElement="data_object_xgboost">
+        <dc:Bounds x="652" y="415" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="630" y="472" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_1qwe3r_di" bpmnElement="data_output_predictions">
+        <dc:Bounds x="1062" y="315" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1040" y="372" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1_di" bpmnElement="DataOutputAssociation_1">
+        <di:waypoint x="370" y="220" />
+        <di:waypoint x="300" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="380" y="215" />
+        <di:waypoint x="350" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_3_di" bpmnElement="DataOutputAssociation_3">
+        <di:waypoint x="420" y="210" />
+        <di:waypoint x="400" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_4_di" bpmnElement="DataOutputAssociation_4">
+        <di:waypoint x="440" y="210" />
+        <di:waypoint x="450" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_5_di" bpmnElement="DataOutputAssociation_5">
+        <di:waypoint x="460" y="215" />
+        <di:waypoint x="500" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1_di" bpmnElement="Association_1">
+        <di:waypoint x="688" y="75" />
+        <di:waypoint x="750" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_2_di" bpmnElement="Association_2">
+        <di:waypoint x="688" y="415" />
+        <di:waypoint x="750" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_1_di" bpmnElement="DataInputAssociation_1">
+        <di:waypoint x="1080" y="315" />
+        <di:waypoint x="1080" y="290" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

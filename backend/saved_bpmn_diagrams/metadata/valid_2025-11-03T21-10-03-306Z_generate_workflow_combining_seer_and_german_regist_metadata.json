@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-11-03T21:10:03.307Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-10-03-306Z_generate_workflow_combining_seer_and_german_regist.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-10-03-306Z_generate_workflow_combining_seer_and_german_regist.xml",
+  "userQuery": "Generate workflow combining SEER and German registries for lung cancer analysis",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA",
+    "German_Cancer_registry"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

@@ -1,0 +1,155 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_CancerResearchWorkflow" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Cancer Research Request Initiated">
+      <bpmn:outgoing>Flow_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="UserTask_DefineParams" name="Define Research Parameters">
+      <bpmn:incoming>Flow_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="Gateway_Fork_Datasets">
+      <bpmn:incoming>Flow_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_German</bpmn:outgoing>
+      <bpmn:outgoing>Flow_To_SEER</bpmn:outgoing>
+      <bpmn:outgoing>Flow_To_Pakistan</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="StartEvent_1" targetRef="UserTask_DefineParams" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="UserTask_DefineParams" targetRef="Gateway_Fork_Datasets" />
+    <bpmn:serviceTask id="Task_Access_German" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>Flow_To_German</bpmn:incoming>
+      <bpmn:outgoing>Flow_German_To_Models</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_Access_SEER" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>Flow_To_SEER</bpmn:incoming>
+      <bpmn:outgoing>Flow_SEER_To_Models</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_Access_Pakistan" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>Flow_To_Pakistan</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pakistan_To_Models</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_To_German" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_German" />
+    <bpmn:sequenceFlow id="Flow_To_SEER" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_SEER" />
+    <bpmn:sequenceFlow id="Flow_To_Pakistan" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_Pakistan" />
+    <bpmn:subProcess id="SubProcess_German_Analysis" name="Perform Analysis on German Data">
+      <bpmn:incoming>Flow_German_To_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_German_Analysis_Done</bpmn:outgoing>
+      <bpmn:parallelGateway id="Gateway_Fork_Models_German">
+        <bpmn:incoming>Flow_Sub_German_Start</bpmn:incoming>
+        <bpmn:outgoing>Flow_German_Cox</bpmn:outgoing>
+        <bpmn:outgoing>Flow_German_KM</bpmn:outgoing>
+        <bpmn:outgoing>Flow_German_XGB</bpmn:outgoing>
+        <bpmn:outgoing>Flow_German_RSF</bpmn:outgoing>
+        <bpmn:outgoing>Flow_German_MLP</bpmn:outgoing>
+        <bpmn:outgoing>Flow_German_Google</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:serviceTask id="Task_German_Cox" name="Run cox_model@2020" />
+      <bpmn:serviceTask id="Task_German_KM" name="Run kaplan_meier_model@2020" />
+      <bpmn:serviceTask id="Task_German_XGB" name="Run xgboost_risk_model@2025" />
+      <bpmn:serviceTask id="Task_German_RSF" name="Run random_survival_forest@2025" />
+      <bpmn:serviceTask id="Task_German_MLP" name="Run mlp_cancer_classifier@2025" />
+      <bpmn:serviceTask id="Task_German_Google" name="Run google_Health_Cancer_Prediction_Model" />
+      <bpmn:parallelGateway id="Gateway_Join_Models_German">
+        <bpmn:incoming>Flow_German_Cox_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_German_KM_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_German_XGB_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_German_RSF_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_German_MLP_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_German_Google_Done</bpmn:incoming>
+        <bpmn:outgoing>Flow_Sub_German_End</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:startEvent id="Start_Sub_German">
+        <bpmn:outgoing>Flow_Sub_German_Start</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="End_Sub_German">
+        <bpmn:incoming>Flow_Sub_German_End</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_Sub_German_Start" sourceRef="Start_Sub_German" targetRef="Gateway_Fork_Models_German" />
+      <bpmn:sequenceFlow id="Flow_German_Cox" sourceRef="Gateway_Fork_Models_German" targetRef="Task_German_Cox" />
+      <bpmn:sequenceFlow id="Flow_German_KM" sourceRef="Gateway_Fork_Models_German" targetRef="Task_German_KM" />
+      <bpmn:sequenceFlow id="Flow_German_XGB" sourceRef="Gateway_Fork_Models_German" targetRef="Task_German_XGB" />
+      <bpmn:sequenceFlow id="Flow_German_RSF" sourceRef="Gateway_Fork_Models_German" targetRef="Task_German_RSF" />
+      <bpmn:sequenceFlow id="Flow_German_MLP" sourceRef="Gateway_Fork_Models_German" targetRef="Task_German_MLP" />
+      <bpmn:sequenceFlow id="Flow_German_Google" sourceRef="Gateway_Fork_Models_German" targetRef="Task_German_Google" />
+      <bpmn:sequenceFlow id="Flow_German_Cox_Done" sourceRef="Task_German_Cox" targetRef="Gateway_Join_Models_German" />
+      <bpmn:sequenceFlow id="Flow_German_KM_Done" sourceRef="Task_German_KM" targetRef="Gateway_Join_Models_German" />
+      <bpmn:sequenceFlow id="Flow_German_XGB_Done" sourceRef="Task_German_XGB" targetRef="Gateway_Join_Models_German" />
+      <bpmn:sequenceFlow id="Flow_German_RSF_Done" sourceRef="Task_German_RSF" targetRef="Gateway_Join_Models_German" />
+      <bpmn:sequenceFlow id="Flow_German_MLP_Done" sourceRef="Task_German_MLP" targetRef="Gateway_Join_Models_German" />
+      <bpmn:sequenceFlow id="Flow_German_Google_Done" sourceRef="Task_German_Google" targetRef="Gateway_Join_Models_German" />
+      <bpmn:sequenceFlow id="Flow_Sub_German_End" sourceRef="Gateway_Join_Models_German" targetRef="End_Sub_German" />
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SubProcess_SEER_Analysis" name="Perform Analysis on SEER Data">
+      <bpmn:incoming>Flow_SEER_To_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_SEER_Analysis_Done</bpmn:outgoing>
+      <bpmn:parallelGateway id="Gateway_Fork_Models_SEER">
+        <bpmn:outgoing>Flow_SEER_Cox</bpmn:outgoing>
+        <bpmn:outgoing>Flow_SEER_KM</bpmn:outgoing>
+        <bpmn:outgoing>Flow_SEER_XGB</bpmn:outgoing>
+        <bpmn:outgoing>Flow_SEER_RSF</bpmn:outgoing>
+        <bpmn:outgoing>Flow_SEER_MLP</bpmn:outgoing>
+        <bpmn:outgoing>Flow_SEER_Google</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:serviceTask id="Task_SEER_Cox" name="Run cox_model@2020" />
+      <bpmn:serviceTask id="Task_SEER_KM" name="Run kaplan_meier_model@2020" />
+      <bpmn:serviceTask id="Task_SEER_XGB" name="Run xgboost_risk_model@2025" />
+      <bpmn:serviceTask id="Task_SEER_RSF" name="Run random_survival_forest@2025" />
+      <bpmn:serviceTask id="Task_SEER_MLP" name="Run mlp_cancer_classifier@2025" />
+      <bpmn:serviceTask id="Task_SEER_Google" name="Run google_Health_Cancer_Prediction_Model" />
+      <bpmn:parallelGateway id="Gateway_Join_Models_SEER">
+        <bpmn:incoming>Flow_SEER_Cox_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_SEER_KM_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_SEER_XGB_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_SEER_RSF_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_SEER_MLP_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_SEER_Google_Done</bpmn:incoming>
+      </bpmn:parallelGateway>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SubProcess_Pakistan_Analysis" name="Perform Analysis on Pakistan Data">
+      <bpmn:incoming>Flow_Pakistan_To_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_Pakistan_Analysis_Done</bpmn:outgoing>
+      <bpmn:parallelGateway id="Gateway_Fork_Models_Pakistan">
+        <bpmn:outgoing>Flow_Pakistan_Cox</bpmn:outgoing>
+        <bpmn:outgoing>Flow_Pakistan_KM</bpmn:outgoing>
+        <bpmn:outgoing>Flow_Pakistan_XGB</bpmn:outgoing>
+        <bpmn:outgoing>Flow_Pakistan_RSF</bpmn:outgoing>
+        <bpmn:outgoing>Flow_Pakistan_MLP</bpmn:outgoing>
+        <bpmn:outgoing>Flow_Pakistan_Google</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:serviceTask id="Task_Pakistan_Cox" name="Run cox_model@2020" />
+      <bpmn:serviceTask id="Task_Pakistan_KM" name="Run kaplan_meier_model@2020" />
+      <bpmn:serviceTask id="Task_Pakistan_XGB" name="Run xgboost_risk_model@2025" />
+      <bpmn:serviceTask id="Task_Pakistan_RSF" name="Run random_survival_forest@2025" />
+      <bpmn:serviceTask id="Task_Pakistan_MLP" name="Run mlp_cancer_classifier@2025" />
+      <bpmn:serviceTask id="Task_Pakistan_Google" name="Run google_Health_Cancer_Prediction_Model" />
+      <bpmn:parallelGateway id="Gateway_Join_Models_Pakistan">
+        <bpmn:incoming>Flow_Pakistan_Cox_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_Pakistan_KM_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_Pakistan_XGB_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_Pakistan_RSF_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_Pakistan_MLP_Done</bpmn:incoming>
+        <bpmn:incoming>Flow_Pakistan_Google_Done</bpmn:incoming>
+      </bpmn:parallelGateway>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_German_To_Models" sourceRef="Task_Access_German" targetRef="SubProcess_German_Analysis" />
+    <bpmn:sequenceFlow id="Flow_SEER_To_Models" sourceRef="Task_Access_SEER" targetRef="SubProcess_SEER_Analysis" />
+    <bpmn:sequenceFlow id="Flow_Pakistan_To_Models" sourceRef="Task_Access_Pakistan" targetRef="SubProcess_Pakistan_Analysis" />
+    <bpmn:parallelGateway id="Gateway_Join_Datasets">
+      <bpmn:incoming>Flow_German_Analysis_Done</bpmn:incoming>
+      <bpmn:incoming>Flow_SEER_Analysis_Done</bpmn:incoming>
+      <bpmn:incoming>Flow_Pakistan_Analysis_Done</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_Review</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_German_Analysis_Done" sourceRef="SubProcess_German_Analysis" targetRef="Gateway_Join_Datasets" />
+    <bpmn:sequenceFlow id="Flow_SEER_Analysis_Done" sourceRef="SubProcess_SEER_Analysis" targetRef="Gateway_Join_Datasets" />
+    <bpmn:sequenceFlow id="Flow_Pakistan_Analysis_Done" sourceRef="SubProcess_Pakistan_Analysis" targetRef="Gateway_Join_Datasets" />
+    <bpmn:userTask id="UserTask_ReviewResults" name="Review and Synthesize Results">
+      <bpmn:incoming>Flow_To_Review</bpmn:incoming>
+      <bpmn:outgoing>Flow_ToEnd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_To_Review" sourceRef="Gateway_Join_Datasets" targetRef="UserTask_ReviewResults" />
+    <bpmn:endEvent id="EndEvent_1" name="Research Concluded">
+      <bpmn:incoming>Flow_ToEnd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_ToEnd" sourceRef="UserTask_ReviewResults" targetRef="EndEvent_1" />
+  </bpmn:process>
+</bpmn:definitions>

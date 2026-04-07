@@ -1,0 +1,10 @@
+{
+    "datasetAgreementTitle": "Random Survival Forest Model 2025",
+    "datasetAgreementGeneral": "This Random Survival Forest model is developed for ensemble-based survival analysis applicable to both oncological and chronic disease research. Access is open to all qualified researchers regardless of domain.",
+    "term1": "You acknowledge that this model is designed exclusively for survival analysis research and must not be applied to clinical decisions without appropriate validation.",
+    "term2": "You agree not to use this model for any illegal, unethical, or harmful activities.",
+    "term3": "You are required to provide proper attribution to the model developers in all publications and presentations.",
+    "term4": "You accept that all outcomes are solely at your discretion and the developers disclaim any liability.",
+    "term5": "You agree not to redistribute this model to third parties without explicit written permission.",
+    "term6": "You acknowledge that the use of this model is governed by all relevant legal, ethical, and regulatory guidelines applicable to health research."
+}

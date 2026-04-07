@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T20:28:46.150Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-28-46-144Z_google_health_cancer_prediction_model_for_earlyst.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-28-46-144Z_google_health_cancer_prediction_model_for_earlyst.xml",
+  "userQuery": "Google Health cancer prediction model for early-stage breast cancer detection",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "validationErrors": []
+}

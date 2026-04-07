@@ -1,0 +1,14 @@
+{
+  "datasets": [
+    "UCI_Caucasian_Readmission.csv",
+    "UCI_Asian_Readmission.csv",
+    "UCI_Hispanic_Readmission.csv",
+    "UCI_AfricanAmerican_Readmission.csv"
+  ],
+  "models": [
+    "lstm_readmission_model@2026.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "timestamp": "2026-03-28T06:41:47.210Z",
+  "validation_applied": true
+}

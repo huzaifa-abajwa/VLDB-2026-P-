@@ -1,0 +1,9 @@
+{
+    "datasetAgreementTitle": "Sylhet Diabetes Hospital Bangladesh Dataset",
+    "datasetAgreementGeneral": "This dataset contains clinical diagnostic data collected from Sylhet Diabetes Hospital, Bangladesh. It is provided for academic and research use only.",
+    "term1": "You acknowledge that this dataset is intended solely for diabetes diagnosis research and related academic purposes.",
+    "term2": "You agree not to use this dataset for any commercial, non-research, or unauthorised purposes.",
+    "term3": "You agree not to attempt re-identification of any individuals within the dataset.",
+    "term4": "You must properly attribute the Sylhet Diabetes Hospital and original data contributors in all publications and presentations.",
+    "term5": "You accept full responsibility for ensuring the ethical use of this dataset in compliance with all applicable institutional and governmental regulations."
+}

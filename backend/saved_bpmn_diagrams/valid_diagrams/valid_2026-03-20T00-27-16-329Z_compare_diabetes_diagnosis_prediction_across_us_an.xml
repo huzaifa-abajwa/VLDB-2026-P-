@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Diagnosis Comparison">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split_Populations">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Branch</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_Branch</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Join_Populations">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Split_Populations"/>
+    <bpmn:sequenceFlow id="Flow_US_Branch" sourceRef="Gateway_Split_Populations" targetRef="Task_Access_US_Data"/>
+    <bpmn:sequenceFlow id="Flow_BD_Branch" sourceRef="Gateway_Split_Populations" targetRef="Task_Access_BD_Data"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Access_US_Data" targetRef="SubProcess_US_Models"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Access_BD_Data" targetRef="SubProcess_BD_Models"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="SubProcess_US_Models" targetRef="Gateway_Join_Populations"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="SubProcess_BD_Models" targetRef="Gateway_Join_Populations"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Gateway_Join_Populations" targetRef="Task_Compare_Results"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Compare_Results" targetRef="Task_Generate_Report"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_Generate_Report" targetRef="EndEvent_1"/>
+    <bpmn:task id="Task_Access_US_Data" name="Access Pima_Indians_Diabetes_USA">
+      <bpmn:incoming>Flow_US_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_BD_Data" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>Flow_BD_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Compare_Results" name="Compare Model Performance">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Generate_Report" name="Generate Comparison Report">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:subProcess id="SubProcess_US_Models" name="Run Models on US Data">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:parallelGateway id="Gateway_Split_US_Models">
+        <bpmn:incoming>Flow_Sub_US_Start</bpmn:incoming>
+        <bpmn:outgoing>Flow_US_XGB</bpmn:outgoing>
+        <bpmn:outgoing>Flow_US_LSTM</bpmn:outgoing>
+        <bpmn:outgoing>Flow_US_MLP</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:parallelGateway id="Gateway_Join_US_Models">
+        <bpmn:incoming>Flow_US_Join_1</bpmn:incoming>
+        <bpmn:incoming>Flow_US_Join_2</bpmn:incoming>
+        <bpmn:incoming>Flow_US_Join_3</bpmn:incoming>
+        <bpmn:outgoing>Flow_Sub_US_End</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:task id="Task_US_XGB" name="Run xgboost_risk_model@2025">
+        <bpmn:incoming>Flow_US_XGB</bpmn:incoming>
+        <bpmn:outgoing>Flow_US_Join_1</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:task id="Task_US_LSTM" name="Run lstm_readmission_model@2026">
+        <bpmn:incoming>Flow_US_LSTM</bpmn:incoming>
+        <bpmn:outgoing>Flow_US_Join_2</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:task id="Task_US_MLP" name="Run mlp_cancer_classifier@2025">
+        <bpmn:incoming>Flow_US_MLP</bpmn:incoming>
+        <bpmn:outgoing>Flow_US_Join_3</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:startEvent id="StartEvent_Sub_US">
+        <bpmn:outgoing>Flow_Sub_US_Start</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="EndEvent_Sub_US">
+        <bpmn:incoming>Flow_Sub_US_End</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_Sub_US_Start" sourceRef="StartEvent_Sub_US" targetRef="Gateway_Split_US_Models"/>
+      <bpmn:sequenceFlow id="Flow_US_XGB" sourceRef="Gateway_Split_US_Models" targetRef="Task_US_XGB"/>
+      <bpmn:sequenceFlow id="Flow_US_LSTM" sourceRef="Gateway_Split_US_Models" targetRef="Task_US_LSTM"/>
+      <bpmn:sequenceFlow id="Flow_US_MLP" sourceRef="Gateway_Split_US_Models" targetRef="Task_US_MLP"/>
+      <bpmn:sequenceFlow id="Flow_US_Join_1" sourceRef="Task_US_XGB" targetRef="Gateway_Join_US_Models"/>
+      <bpmn:sequenceFlow id="Flow_US_Join_2" sourceRef="Task_US_LSTM" targetRef="Gateway_Join_US_Models"/>
+      <bpmn:sequenceFlow id="Flow_US_Join_3" sourceRef="Task_US_MLP" targetRef="Gateway_Join_US_Models"/>
+      <bpmn:sequenceFlow id="Flow_Sub_US_End" sourceRef="Gateway_Join_US_Models" targetRef="EndEvent_Sub_US"/>
+    </bpmn:subProcess>
+    <bpmn:subProcess id="SubProcess_BD_Models" name="Run Models on Bangladeshi Data">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+      <bpmn:parallelGateway id="Gateway_Split_BD_Models">
+        <bpmn:incoming>Flow_Sub_BD_Start</bpmn:incoming>
+        <bpmn:outgoing>Flow_BD_XGB</bpmn:outgoing>
+        <bpmn:outgoing>Flow_BD_LSTM</bpmn:outgoing>
+        <bpmn:outgoing>Flow_BD_MLP</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:parallelGateway id="Gateway_Join_BD_Models">
+        <bpmn:incoming>Flow_BD_Join_1</bpmn:incoming>
+        <bpmn:incoming>Flow_BD_Join_2</bpmn:incoming>
+        <bpmn:incoming>Flow_BD_Join_3</bpmn:incoming>
+        <bpmn:outgoing>Flow_Sub_BD_End</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:task id="Task_BD_XGB" name="Run xgboost_risk_model@2025">
+        <bpmn:incoming>Flow_BD_XGB</bpmn:incoming>
+        <bpmn:outgoing>Flow_BD_Join_1</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:task id="Task_BD_LSTM" name="Run lstm_readmission_model@2026">
+        <bpmn:incoming>Flow_BD_LSTM</bpmn:incoming>
+        <bpmn:outgoing>Flow_BD_Join_2</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:task id="Task_BD_MLP" name="Run mlp_cancer_classifier@2025">
+        <bpmn:incoming>Flow_BD_MLP</bpmn:incoming>
+        <bpmn:outgoing>Flow_BD_Join_3</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:startEvent id="StartEvent_Sub_BD">
+        <bpmn:outgoing>Flow_Sub_BD_Start</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:endEvent id="EndEvent_Sub_BD">
+        <bpmn:incoming>Flow_Sub_BD_End</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_Sub_BD_Start" sourceRef="StartEvent_Sub_BD" targetRef="Gateway_Split_BD_Models"/>
+      <bpmn:sequenceFlow id="Flow_BD_XGB" sourceRef="Gateway_Split_BD_Models" targetRef="Task_BD_XGB"/>
+      <bpmn:sequenceFlow id="Flow_BD_LSTM" sourceRef="Gateway_Split_BD_Models" targetRef="Task_BD_LSTM"/>
+      <bpmn:sequenceFlow id="Flow_BD_MLP" sourceRef="Gateway_Split_BD_Models" targetRef="Task_BD_MLP"/>
+      <bpmn:sequenceFlow id="Flow_BD_Join_1" sourceRef="Task_BD_XGB" targetRef="Gateway_Join_BD_Models"/>
+      <bpmn:sequenceFlow id="Flow_BD_Join_2" sourceRef="Task_BD_LSTM" targetRef="Gateway_Join_BD_Models"/>
+      <bpmn:sequenceFlow id="Flow_BD_Join_3" sourceRef="Task_BD_MLP" targetRef="Gateway_Join_BD_Models"/>
+      <bpmn:sequenceFlow id="Flow_Sub_BD_End" sourceRef="Gateway_Join_BD_Models" targetRef="EndEvent_Sub_BD"/>
+    </bpmn:subProcess>
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1500" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Access_US_Data_di" bpmnElement="Task_Access_US_Data">
+        <dc:Bounds x="500" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Access_BD_Data_di" bpmnElement="Task_Access_BD_Data">
+        <dc:Bounds x="500" y="220" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Compare_Results_di" bpmnElement="Task_Compare_Results">
+        <dc:Bounds x="1100" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Generate_Report_di" bpmnElement="Task_Generate_Report">
+        <dc:Bounds x="1300" y="100" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Split_Populations_di" bpmnElement="Gateway_Split_Populations">
+        <dc:Bounds x="300" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Join_Populations_di" bpmnElement="Gateway_Join_Populations">
+        <dc:Bounds x="900" y="100" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="136" y="118"/>
+        <di:waypoint x="300" y="125"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_Branch_di" bpmnElement="Flow_US_Branch">
+        <di:waypoint x="350" y="125"/>
+        <di:waypoint x="500" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_Branch_di" bpmnElement="Flow_BD_Branch">
+        <di:waypoint x="350" y="125"/>
+        <di:waypoint x="500" y="260"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="950" y="125"/>
+        <di:waypoint x="1100" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1200" y="140"/>
+        <di:waypoint x="1300" y="140"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1400" y="140"/>
+        <di:waypoint x="1500" y="118"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-03T20:30:24.629Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-30-24-623Z_google_health_model_for_colorectal_cancer_screenin.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-30-24-623Z_google_health_model_for_colorectal_cancer_screenin.xml",
+  "userQuery": "Google Health model for colorectal cancer screening and prediction",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "validationErrors": []
+}

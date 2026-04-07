@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-02-02T19:32:23.366Z",
+  "isValid": true,
+  "filename": "valid_2026-02-02T19-32-23-364Z_compare_survival_curves_between_premenopausal_and.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-02-02T19-32-23-364Z_compare_survival_curves_between_premenopausal_and.xml",
+  "userQuery": "Compare survival curves between pre-menopausal and post-menopausal breast cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py",
+    "cox_model@2020.py",
+    "xgboost_risk_model@2025.py",
+    "random_survival_forest@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

@@ -1,0 +1,285 @@
+{
+    "models": [
+        {
+            "model_name": "google_Health_Cancer_Prediction_Model.py",
+            "version": "1.0",
+            "description": "A logistic regression model designed to predict cancer diagnoses using patient data. It processes datasets to generate a confusion matrix and classification report, aiding in evaluating the model's performance.",
+            "author": "Ali Hassan",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Path(s) to the dataset(s) containing cancer patient data. Each dataset should include a 'status' column and relevant features."
+            },
+            "output": {
+                "type": "text",
+                "description": "Displays the confusion matrix and classification report of the model's performance."
+            },
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Load and preprocess dataset(s): read data, standardize column names, verify required columns, remove unnecessary columns, and handle missing values."
+                },
+                {
+                    "step": 2,
+                    "description": "Split the data, apply feature scaling, and train the logistic regression model."
+                },
+                {
+                    "step": 3,
+                    "description": "Make predictions and evaluate performance with a confusion matrix and classification report."
+                }
+            ],
+            "usage": "Execute the script via the command line with dataset file paths.\n\nExample:\n```bash\npython google_Health_Cancer_Prediction_Model.py dataset1.csv dataset2.csv\n```",
+            "error_handling": {
+                "description": "Validates required columns; outputs descriptive errors if columns are missing or datasets are invalid."
+            }
+        },
+        {
+            "model_name": "cox_model@2020.py",
+            "version": "2.0",
+            "description": "A Cox Proportional Hazards model for survival analysis, assessing the impact of covariates on survival time and outputting key statistical metrics in JSON format.",
+            "author": "Ali Hassan",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Path to the dataset containing survival analysis data with 'rfstime', 'status', and relevant covariates."
+            },
+            "output": {
+                "type": "json",
+                "description": "Outputs a JSON summary of the model including coefficients and p-values for each covariate."
+            },
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Parse input, load the dataset, and validate required columns."
+                },
+                {
+                    "step": 2,
+                    "description": "Preprocess the data and fit the Cox Proportional Hazards model."
+                },
+                {
+                    "step": 3,
+                    "description": "Extract and output the statistical summary in JSON format."
+                }
+            ],
+            "usage": "Run the script from the command line with covariates and dataset path.\n\nExample:\n```bash\npython cox_model@2020.py age,sex,treatment dataset.csv\n```",
+            "error_handling": {
+                "description": "Checks for essential columns and proper dataset format; prints errors and exits if validations fail."
+            }
+        },
+        {
+            "model_name": "kaplan_meier_model@2020.py",
+            "version": "1.0",
+            "description": "A Kaplan-Meier model for survival analysis that generates survival curves to visualize the probability of survival over time for different datasets, saving the plot as an image.",
+            "author": "Ali Hassan",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Paths to one or more datasets containing survival analysis data with 'rfstime' and 'status' columns."
+            },
+            "output": {
+                "type": "image",
+                "description": "Saves a Kaplan-Meier survival plot as an image file."
+            },
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Parse input and load dataset(s) using pandas."
+                },
+                {
+                    "step": 2,
+                    "description": "Fit Kaplan-Meier models for each dataset and plot their survival curves."
+                },
+                {
+                    "step": 3,
+                    "description": "Customize the plot (titles, labels, legends) and save the image."
+                }
+            ],
+            "usage": "Execute the script via the command line with dataset file paths followed by the desired output image path.\n\nExample:\n```bash\npython kaplan_meier_model@2020.py dataset1.csv dataset2.csv output.png\n```",
+            "error_handling": {
+                "description": "Checks for required columns; outputs errors and exits if any processing issues occur."
+            }
+        },
+        {
+            "model_name": "xgboost_risk_model@2025.py",
+            "version": "2.0",
+            "description": "Multi-mode XGBoost model: (1) Survival analysis for cancer data with C-index metrics, (2) 3-class readmission classification for diabetic patient data, (3) Binary diabetes diagnosis classification for datasets like Pima Indians and Sylhet Bangladesh with accuracy/AUC metrics. Auto-detects mode from dataset.",
+            "author": "Ibrahim",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Path to dataset(s) containing survival data with time variable (survival_months/rfstime) and event indicator (status/event). Performs group comparison when race_group column is present."
+            },
+            "output": {
+                "type": "json",
+                "description": "Outputs JSON with C-index (concordance index) for each group comparison, sample sizes, event counts, and group labels (e.g., Caucasian vs African-American)."
+            },
+            "libraries": [
+                "xgboost",
+                "scikit-learn",
+                "pandas",
+                "numpy"
+            ],
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Load and combine dataset(s), canonicalize column names, apply filters."
+                },
+                {
+                    "step": 2,
+                    "description": "Prepare features by handling categorical variables, missing values, and zero-variance columns."
+                },
+                {
+                    "step": 3,
+                    "description": "Split data into train/test sets (80/20) and train XGBoost classifier."
+                },
+                {
+                    "step": 4,
+                    "description": "Generate predictions, calculate metrics, extract feature importances, output JSON."
+                }
+            ],
+            "usage": "Run the script from command line with variables and dataset path.\n\nExample:\n```bash\npython xgboost_risk_model@2025.py --vars all --filters age_range=40-50,grade=1-2 dataset.csv\n```",
+            "error_handling": {
+                "description": "Validates presence of target column, handles missing values, checks minimum row requirements. Outputs descriptive errors to stderr."
+            }
+        },
+        {
+            "model_name": "random_survival_forest@2025.py",
+            "version": "2.0",
+            "description": "Multi-mode Random Forest model: (1) Random Survival Forest for cancer survival analysis with C-index metrics, (2) Random Forest classifier for 3-class diabetic readmission prediction with accuracy/AUC metrics, (3) Binary diabetes diagnosis classification for Pima Indians and Sylhet Bangladesh datasets with accuracy/AUC metrics. Despite the 'survival forest' name, this model fully supports binary classification for diabetes diagnosis — not limited to survival analysis. Auto-detects mode from dataset.",
+            "author": "Ibrahim",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Path to dataset(s) containing survival data. Must include time variable (survival_months/rfstime) and event indicator (status/event). Performs group comparison when race_group column is present."
+            },
+            "output": {
+                "type": "json",
+                "description": "Outputs JSON with group comparison results including C-index for each group, sample sizes, event/censored counts per group, and group labels. Falls back to single-group analysis without race_group column."
+            },
+            "libraries": [
+                "scikit-survival",
+                "scikit-learn",
+                "pandas",
+                "numpy"
+            ],
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Load dataset(s), canonicalize columns, apply filters."
+                },
+                {
+                    "step": 2,
+                    "description": "Identify time and event columns, prepare survival data structure."
+                },
+                {
+                    "step": 3,
+                    "description": "Handle categorical variables and missing values, remove zero-variance features."
+                },
+                {
+                    "step": 4,
+                    "description": "Train Random Survival Forest with specified number of trees (default 100)."
+                },
+                {
+                    "step": 5,
+                    "description": "Calculate C-index, extract feature importances, output JSON summary."
+                }
+            ],
+            "usage": "Run the script from command line with number of estimators.\n\nExample:\n```bash\npython random_survival_forest@2025.py --vars all --filters age_range=40-50 --n_estimators 100 dataset1.csv dataset2.csv\n```",
+            "error_handling": {
+                "description": "Checks for scikit-survival installation, validates time/event columns presence, ensures minimum sample size. Outputs errors to stderr."
+            }
+        },
+        {
+            "model_name": "mlp_cancer_classifier@2025.py",
+            "version": "2.0",
+            "description": "Multi-mode MLP neural network: (1) Survival risk prediction for cancer data with C-index metrics, (2) 3-class readmission classification for diabetic patient data with accuracy/AUC metrics, (3) Binary diabetes diagnosis classification for Pima Indians and Sylhet Bangladesh datasets with accuracy/AUC metrics. Despite the 'cancer_classifier' name, this model fully supports binary diabetes diagnosis classification — not limited to cancer tasks. Auto-detects mode from dataset.",
+            "author": "Ibrahim",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Path to dataset(s) containing survival data with time variable (survival_months/rfstime) and event indicator (status/event). Performs group comparison when race_group column is present."
+            },
+            "output": {
+                "type": "json",
+                "description": "Outputs JSON with C-index for each group comparison, sample sizes, event counts, and group labels (e.g., Caucasian vs African-American). Neural network predicts risk scores for survival analysis."
+            },
+            "libraries": [
+                "tensorflow",
+                "keras",
+                "scikit-learn",
+                "pandas",
+                "numpy"
+            ],
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Load and combine dataset(s), canonicalize column names, apply filters."
+                },
+                {
+                    "step": 2,
+                    "description": "Prepare features by handling categorical variables, missing values, and zero-variance columns."
+                },
+                {
+                    "step": 3,
+                    "description": "Scale features using StandardScaler and split data into train/test sets (80/20)."
+                },
+                {
+                    "step": 4,
+                    "description": "Build and train MLP model (64-32-16 architecture) with dropout and early stopping."
+                },
+                {
+                    "step": 5,
+                    "description": "Generate predictions, calculate metrics, output JSON with training history."
+                }
+            ],
+            "usage": "Run the script from command line with variables and dataset path.\n\nExample:\n```bash\npython mlp_cancer_classifier@2025.py --vars all --filters age_range=40-50,grade=1-2 dataset.csv\n```",
+            "error_handling": {
+                "description": "Checks for TensorFlow installation, validates presence of target column, handles missing values, checks minimum row requirements. Outputs descriptive errors to stderr."
+            }
+        },
+        {
+            "model_name": "lstm_readmission_model@2026.py",
+            "version": "1.0",
+            "description": "Bidirectional LSTM for hospital readmission prediction using diabetic patient encounter sequences. Predicts 3-class readmission risk: NO, >30 days, <30 days.",
+            "author": "Ibrahim Murtaza",
+            "input": {
+                "type": "files",
+                "required": true,
+                "description": "Diabetic patient encounter data with sequential visits per patient. Must include time_in_hospital, num_medications, A1Cresult, and readmission status."
+            },
+            "output": {
+                "type": "json",
+                "description": "JSON summary with accuracy, AUC metrics, and group comparison results. Optionally generates readmission prediction plot."
+            },
+            "libraries": [
+                "tensorflow",
+                "keras",
+                "scikit-learn",
+                "pandas",
+                "numpy"
+            ],
+            "process_steps": [
+                {
+                    "step": 1,
+                    "description": "Preprocess diabetic_data.csv into patient sequences grouped by patient_nbr"
+                },
+                {
+                    "step": 2,
+                    "description": "Pad sequences to uniform length with masking for variable encounter counts"
+                },
+                {
+                    "step": 3,
+                    "description": "Train Bidirectional LSTM with dropout regularization and early stopping"
+                },
+                {
+                    "step": 4,
+                    "description": "Evaluate on test set and output accuracy, AUC, and group-specific metrics"
+                }
+            ],
+            "usage": "Run with diabetic dataset, filters, and group comparison.\n\nExample:\n```bash\npython lstm_readmission_model@2026.py --vars all --filters \"\" --group-by readmit_time diabetic_data.csv\n```",
+            "error_handling": {
+                "description": "Checks for TensorFlow installation, validates diabetic dataset presence, and ensures sufficient samples per group for training."
+            }
+        }
+    ]
+}

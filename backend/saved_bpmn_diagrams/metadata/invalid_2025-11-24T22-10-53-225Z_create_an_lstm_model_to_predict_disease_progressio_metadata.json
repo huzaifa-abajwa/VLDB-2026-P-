@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-24T22:10:53.227Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-24T22-10-53-225Z_create_an_lstm_model_to_predict_disease_progressio.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-24T22-10-53-225Z_create_an_lstm_model_to_predict_disease_progressio.xml",
+  "userQuery": "Create an LSTM model to predict disease progression over time for lung cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "lstm_temporal_model@2025.py"
+  ],
+  "validationErrors": [
+    "Semantic Warning: Task \"Access and Pre-process Datasets\" appears to reference a non-existent dataset."
+  ]
+}

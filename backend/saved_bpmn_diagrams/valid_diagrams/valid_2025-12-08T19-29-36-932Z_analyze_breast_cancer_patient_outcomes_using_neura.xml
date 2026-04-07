@@ -1,0 +1,192 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="startEvent" name="Start Analysis">
+      <bpmn:outgoing>flow_start_to_fork_data</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="gateway_fork_data">
+      <bpmn:incoming>flow_start_to_fork_data</bpmn:incoming>
+      <bpmn:outgoing>flow_fork_to_german</bpmn:outgoing>
+      <bpmn:outgoing>flow_fork_to_seer</bpmn:outgoing>
+      <bpmn:outgoing>flow_fork_to_pakistan</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="task_access_german" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>flow_fork_to_german</bpmn:incoming>
+      <bpmn:outgoing>flow_german_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="task_access_seer" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>flow_fork_to_seer</bpmn:incoming>
+      <bpmn:outgoing>flow_seer_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="task_access_pakistan" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>flow_fork_to_pakistan</bpmn:incoming>
+      <bpmn:outgoing>flow_pakistan_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="gateway_join_data">
+      <bpmn:incoming>flow_german_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_seer_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_pakistan_to_join</bpmn:incoming>
+      <bpmn:outgoing>flow_join_to_filter</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="task_filter_data" name="Filter Datasets (Age 40-60, Grade 2-3)">
+      <bpmn:incoming>flow_join_to_filter</bpmn:incoming>
+      <bpmn:outgoing>flow_filter_to_fork_analysis</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="gateway_fork_analysis">
+      <bpmn:incoming>flow_filter_to_fork_analysis</bpmn:incoming>
+      <bpmn:outgoing>flow_fork_to_nn</bpmn:outgoing>
+      <bpmn:outgoing>flow_fork_to_survival</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="task_run_nn" name="Run Neural Network Classification (mlp_cancer_classifier@2025.py)">
+      <bpmn:incoming>flow_fork_to_nn</bpmn:incoming>
+      <bpmn:outgoing>flow_nn_to_join_analysis</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="task_run_survival" name="Compare Survival Rates (kaplan_meier_model@2020.py)">
+      <bpmn:incoming>flow_fork_to_survival</bpmn:incoming>
+      <bpmn:outgoing>flow_survival_to_join_analysis</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="gateway_join_analysis">
+      <bpmn:incoming>flow_nn_to_join_analysis</bpmn:incoming>
+      <bpmn:incoming>flow_survival_to_join_analysis</bpmn:incoming>
+      <bpmn:outgoing>flow_join_to_synthesize</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="task_synthesize_results" name="Synthesize and Report Findings">
+      <bpmn:incoming>flow_join_to_synthesize</bpmn:incoming>
+      <bpmn:outgoing>flow_synthesize_to_end</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="endEvent" name="End Analysis">
+      <bpmn:incoming>flow_synthesize_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_start_to_fork_data" sourceRef="startEvent" targetRef="gateway_fork_data"/>
+    <bpmn:sequenceFlow id="flow_fork_to_german" sourceRef="gateway_fork_data" targetRef="task_access_german"/>
+    <bpmn:sequenceFlow id="flow_fork_to_seer" sourceRef="gateway_fork_data" targetRef="task_access_seer"/>
+    <bpmn:sequenceFlow id="flow_fork_to_pakistan" sourceRef="gateway_fork_data" targetRef="task_access_pakistan"/>
+    <bpmn:sequenceFlow id="flow_german_to_join" sourceRef="task_access_german" targetRef="gateway_join_data"/>
+    <bpmn:sequenceFlow id="flow_seer_to_join" sourceRef="task_access_seer" targetRef="gateway_join_data"/>
+    <bpmn:sequenceFlow id="flow_pakistan_to_join" sourceRef="task_access_pakistan" targetRef="gateway_join_data"/>
+    <bpmn:sequenceFlow id="flow_join_to_filter" sourceRef="gateway_join_data" targetRef="task_filter_data"/>
+    <bpmn:sequenceFlow id="flow_filter_to_fork_analysis" sourceRef="task_filter_data" targetRef="gateway_fork_analysis"/>
+    <bpmn:sequenceFlow id="flow_fork_to_nn" sourceRef="gateway_fork_analysis" targetRef="task_run_nn"/>
+    <bpmn:sequenceFlow id="flow_fork_to_survival" sourceRef="gateway_fork_analysis" targetRef="task_run_survival"/>
+    <bpmn:sequenceFlow id="flow_nn_to_join_analysis" sourceRef="task_run_nn" targetRef="gateway_join_analysis"/>
+    <bpmn:sequenceFlow id="flow_survival_to_join_analysis" sourceRef="task_run_survival" targetRef="gateway_join_analysis"/>
+    <bpmn:sequenceFlow id="flow_join_to_synthesize" sourceRef="gateway_join_analysis" targetRef="task_synthesize_results"/>
+    <bpmn:sequenceFlow id="flow_synthesize_to_end" sourceRef="task_synthesize_results" targetRef="endEvent"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="startEvent_di" bpmnElement="startEvent">
+        <dc:Bounds x="152" y="382" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="134" y="425" width="73" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_fork_data_di" bpmnElement="gateway_fork_data">
+        <dc:Bounds x="235" y="375" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_access_german_di" bpmnElement="task_access_german">
+        <dc:Bounds x="330" y="230" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_access_seer_di" bpmnElement="task_access_seer">
+        <dc:Bounds x="330" y="360" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_access_pakistan_di" bpmnElement="task_access_pakistan">
+        <dc:Bounds x="330" y="490" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_join_data_di" bpmnElement="gateway_join_data">
+        <dc:Bounds x="475" y="375" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_filter_data_di" bpmnElement="task_filter_data">
+        <dc:Bounds x="570" y="360" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_fork_analysis_di" bpmnElement="gateway_fork_analysis">
+        <dc:Bounds x="715" y="375" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_run_nn_di" bpmnElement="task_run_nn">
+        <dc:Bounds x="810" y="270" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_run_survival_di" bpmnElement="task_run_survival">
+        <dc:Bounds x="810" y="450" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gateway_join_analysis_di" bpmnElement="gateway_join_analysis">
+        <dc:Bounds x="955" y="375" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="task_synthesize_results_di" bpmnElement="task_synthesize_results">
+        <dc:Bounds x="1050" y="360" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="endEvent_di" bpmnElement="endEvent">
+        <dc:Bounds x="1192" y="382" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1179" y="425" width="63" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="flow_start_to_fork_data_di" bpmnElement="flow_start_to_fork_data">
+        <di:waypoint x="188" y="400"/>
+        <di:waypoint x="235" y="400"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_fork_to_german_di" bpmnElement="flow_fork_to_german">
+        <di:waypoint x="260" y="375"/>
+        <di:waypoint x="260" y="270"/>
+        <di:waypoint x="330" y="270"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_fork_to_seer_di" bpmnElement="flow_fork_to_seer">
+        <di:waypoint x="285" y="400"/>
+        <di:waypoint x="330" y="400"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_fork_to_pakistan_di" bpmnElement="flow_fork_to_pakistan">
+        <di:waypoint x="260" y="425"/>
+        <di:waypoint x="260" y="530"/>
+        <di:waypoint x="330" y="530"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_german_to_join_di" bpmnElement="flow_german_to_join">
+        <di:waypoint x="430" y="270"/>
+        <di:waypoint x="500" y="270"/>
+        <di:waypoint x="500" y="375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_seer_to_join_di" bpmnElement="flow_seer_to_join">
+        <di:waypoint x="430" y="400"/>
+        <di:waypoint x="475" y="400"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_pakistan_to_join_di" bpmnElement="flow_pakistan_to_join">
+        <di:waypoint x="430" y="530"/>
+        <di:waypoint x="500" y="530"/>
+        <di:waypoint x="500" y="425"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_join_to_filter_di" bpmnElement="flow_join_to_filter">
+        <di:waypoint x="525" y="400"/>
+        <di:waypoint x="570" y="400"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_filter_to_fork_analysis_di" bpmnElement="flow_filter_to_fork_analysis">
+        <di:waypoint x="670" y="400"/>
+        <di:waypoint x="715" y="400"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_fork_to_nn_di" bpmnElement="flow_fork_to_nn">
+        <di:waypoint x="740" y="375"/>
+        <di:waypoint x="740" y="310"/>
+        <di:waypoint x="810" y="310"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_fork_to_survival_di" bpmnElement="flow_fork_to_survival">
+        <di:waypoint x="740" y="425"/>
+        <di:waypoint x="740" y="490"/>
+        <di:waypoint x="810" y="490"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_nn_to_join_analysis_di" bpmnElement="flow_nn_to_join_analysis">
+        <di:waypoint x="910" y="310"/>
+        <di:waypoint x="980" y="310"/>
+        <di:waypoint x="980" y="375"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_survival_to_join_analysis_di" bpmnElement="flow_survival_to_join_analysis">
+        <di:waypoint x="910" y="490"/>
+        <di:waypoint x="980" y="490"/>
+        <di:waypoint x="980" y="425"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_join_to_synthesize_di" bpmnElement="flow_join_to_synthesize">
+        <di:waypoint x="1005" y="400"/>
+        <di:waypoint x="1050" y="400"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="flow_synthesize_to_end_di" bpmnElement="flow_synthesize_to_end">
+        <di:waypoint x="1150" y="400"/>
+        <di:waypoint x="1192" y="400"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

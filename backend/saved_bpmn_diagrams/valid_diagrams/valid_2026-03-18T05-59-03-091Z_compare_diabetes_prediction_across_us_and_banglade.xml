@@ -1,0 +1,220 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_Diabetes_Comparison" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Comparison">
+      <bpmn:outgoing>Flow_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_Populations">
+      <bpmn:incoming>Flow_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Branch</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_Branch</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Access_US_Data" name="Access US Patient Data (diabetic_data)">
+      <bpmn:incoming>Flow_US_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Data_To_Models</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_BD_Data" name="Access Bangladeshi Patient Data (Sylhet_Diabetes_Hospital_Bangladesh)">
+      <bpmn:incoming>Flow_BD_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_Data_To_Models</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Fork_US_Models">
+      <bpmn:incoming>Flow_US_Data_To_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_to_LSTM</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_to_XGBoost</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Run_LSTM_US" name="Run LSTM Readmission Model on US Data">
+      <bpmn:incoming>Flow_US_to_LSTM</bpmn:incoming>
+      <bpmn:outgoing>Flow_LSTM_US_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_XGBoost_US" name="Run XGBoost Risk Model on US Data">
+      <bpmn:incoming>Flow_US_to_XGBoost</bpmn:incoming>
+      <bpmn:outgoing>Flow_XGBoost_US_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_US_Models">
+      <bpmn:incoming>Flow_LSTM_US_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_XGBoost_US_to_Join</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Results_to_Aggregate</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Fork_BD_Models">
+      <bpmn:incoming>Flow_BD_Data_To_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_to_LSTM</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_to_XGBoost</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Run_LSTM_BD" name="Run LSTM Readmission Model on BD Data">
+      <bpmn:incoming>Flow_BD_to_LSTM</bpmn:incoming>
+      <bpmn:outgoing>Flow_LSTM_BD_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_XGBoost_BD" name="Run XGBoost Risk Model on BD Data">
+      <bpmn:incoming>Flow_BD_to_XGBoost</bpmn:incoming>
+      <bpmn:outgoing>Flow_XGBoost_BD_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_BD_Models">
+      <bpmn:incoming>Flow_LSTM_BD_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_XGBoost_BD_to_Join</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_Results_to_Aggregate</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:parallelGateway id="Gateway_Join_Populations">
+      <bpmn:incoming>Flow_US_Results_to_Aggregate</bpmn:incoming>
+      <bpmn:incoming>Flow_BD_Results_to_Aggregate</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_Compare</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Compare_Outcomes" name="Compare Prediction Outcomes">
+      <bpmn:incoming>Flow_To_Compare</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_End</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="Comparison Complete">
+      <bpmn:incoming>Flow_To_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="StartEvent_1" targetRef="Gateway_Fork_Populations" />
+    <bpmn:sequenceFlow id="Flow_US_Branch" sourceRef="Gateway_Fork_Populations" targetRef="Task_Access_US_Data" />
+    <bpmn:sequenceFlow id="Flow_BD_Branch" sourceRef="Gateway_Fork_Populations" targetRef="Task_Access_BD_Data" />
+    <bpmn:sequenceFlow id="Flow_US_Data_To_Models" sourceRef="Task_Access_US_Data" targetRef="Gateway_Fork_US_Models" />
+    <bpmn:sequenceFlow id="Flow_BD_Data_To_Models" sourceRef="Task_Access_BD_Data" targetRef="Gateway_Fork_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_US_to_LSTM" sourceRef="Gateway_Fork_US_Models" targetRef="Task_Run_LSTM_US" />
+    <bpmn:sequenceFlow id="Flow_US_to_XGBoost" sourceRef="Gateway_Fork_US_Models" targetRef="Task_Run_XGBoost_US" />
+    <bpmn:sequenceFlow id="Flow_LSTM_US_to_Join" sourceRef="Task_Run_LSTM_US" targetRef="Gateway_Join_US_Models" />
+    <bpmn:sequenceFlow id="Flow_XGBoost_US_to_Join" sourceRef="Task_Run_XGBoost_US" targetRef="Gateway_Join_US_Models" />
+    <bpmn:sequenceFlow id="Flow_US_Results_to_Aggregate" sourceRef="Gateway_Join_US_Models" targetRef="Gateway_Join_Populations" />
+    <bpmn:sequenceFlow id="Flow_BD_to_LSTM" sourceRef="Gateway_Fork_BD_Models" targetRef="Task_Run_LSTM_BD" />
+    <bpmn:sequenceFlow id="Flow_BD_to_XGBoost" sourceRef="Gateway_Fork_BD_Models" targetRef="Task_Run_XGBoost_BD" />
+    <bpmn:sequenceFlow id="Flow_LSTM_BD_to_Join" sourceRef="Task_Run_LSTM_BD" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_XGBoost_BD_to_Join" sourceRef="Task_Run_XGBoost_BD" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_BD_Results_to_Aggregate" sourceRef="Gateway_Join_BD_Models" targetRef="Gateway_Join_Populations" />
+    <bpmn:sequenceFlow id="Flow_To_Compare" sourceRef="Gateway_Join_Populations" targetRef="Task_Compare_Outcomes" />
+    <bpmn:sequenceFlow id="Flow_To_End" sourceRef="Task_Compare_Outcomes" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_Diabetes_Comparison">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="125" y="425" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0u5x1f1_di" bpmnElement="Gateway_Fork_Populations">
+        <dc:Bounds x="235" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v1g2x1_di" bpmnElement="Task_Access_US_Data">
+        <dc:Bounds x="330" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y9q2a1_di" bpmnElement="Task_Access_BD_Data">
+        <dc:Bounds x="330" y="470" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1o3j3v1_di" bpmnElement="Gateway_Fork_US_Models">
+        <dc:Bounds x="475" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c5k0f2_di" bpmnElement="Task_Run_LSTM_US">
+        <dc:Bounds x="570" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1q8y3f1_di" bpmnElement="Task_Run_XGBoost_US">
+        <dc:Bounds x="570" y="280" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0g4h2k1_di" bpmnElement="Gateway_Join_US_Models">
+        <dc:Bounds x="715" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1f8y3g1_di" bpmnElement="Gateway_Fork_BD_Models">
+        <dc:Bounds x="475" y="485" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m7n2k1_di" bpmnElement="Task_Run_LSTM_BD">
+        <dc:Bounds x="570" y="390" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1x5y3g1_di" bpmnElement="Task_Run_XGBoost_BD">
+        <dc:Bounds x="570" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0p9q2a1_di" bpmnElement="Gateway_Join_BD_Models">
+        <dc:Bounds x="715" y="485" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1w2x1f1_di" bpmnElement="Gateway_Join_Populations">
+        <dc:Bounds x="805" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1k2j3h1_di" bpmnElement="Task_Compare_Outcomes">
+        <dc:Bounds x="900" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0f1g2h1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1052" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1027" y="425" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_01_di" bpmnElement="Flow_01">
+        <di:waypoint x="188" y="400" />
+        <di:waypoint x="235" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_Branch_di" bpmnElement="Flow_US_Branch">
+        <di:waypoint x="260" y="375" />
+        <di:waypoint x="260" y="290" />
+        <di:waypoint x="330" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_Branch_di" bpmnElement="Flow_BD_Branch">
+        <di:waypoint x="260" y="425" />
+        <di:waypoint x="260" y="510" />
+        <di:waypoint x="330" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_Data_To_Models_di" bpmnElement="Flow_US_Data_To_Models">
+        <di:waypoint x="430" y="290" />
+        <di:waypoint x="475" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_Data_To_Models_di" bpmnElement="Flow_BD_Data_To_Models">
+        <di:waypoint x="430" y="510" />
+        <di:waypoint x="475" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_to_LSTM_di" bpmnElement="Flow_US_to_LSTM">
+        <di:waypoint x="500" y="265" />
+        <di:waypoint x="500" y="210" />
+        <di:waypoint x="570" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_to_XGBoost_di" bpmnElement="Flow_US_to_XGBoost">
+        <di:waypoint x="500" y="315" />
+        <di:waypoint x="500" y="320" />
+        <di:waypoint x="570" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LSTM_US_to_Join_di" bpmnElement="Flow_LSTM_US_to_Join">
+        <di:waypoint x="670" y="210" />
+        <di:waypoint x="740" y="210" />
+        <di:waypoint x="740" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_XGBoost_US_to_Join_di" bpmnElement="Flow_XGBoost_US_to_Join">
+        <di:waypoint x="670" y="320" />
+        <di:waypoint x="740" y="320" />
+        <di:waypoint x="740" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_US_Results_to_Aggregate_di" bpmnElement="Flow_US_Results_to_Aggregate">
+        <di:waypoint x="765" y="290" />
+        <di:waypoint x="830" y="290" />
+        <di:waypoint x="830" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_to_LSTM_di" bpmnElement="Flow_BD_to_LSTM">
+        <di:waypoint x="500" y="485" />
+        <di:waypoint x="500" y="430" />
+        <di:waypoint x="570" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_to_XGBoost_di" bpmnElement="Flow_BD_to_XGBoost">
+        <di:waypoint x="500" y="535" />
+        <di:waypoint x="500" y="540" />
+        <di:waypoint x="570" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_LSTM_BD_to_Join_di" bpmnElement="Flow_LSTM_BD_to_Join">
+        <di:waypoint x="670" y="430" />
+        <di:waypoint x="740" y="430" />
+        <di:waypoint x="740" y="485" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_XGBoost_BD_to_Join_di" bpmnElement="Flow_XGBoost_BD_to_Join">
+        <di:waypoint x="670" y="540" />
+        <di:waypoint x="740" y="540" />
+        <di:waypoint x="740" y="535" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BD_Results_to_Aggregate_di" bpmnElement="Flow_BD_Results_to_Aggregate">
+        <di:waypoint x="765" y="510" />
+        <di:waypoint x="830" y="510" />
+        <di:waypoint x="830" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_To_Compare_di" bpmnElement="Flow_To_Compare">
+        <di:waypoint x="855" y="400" />
+        <di:waypoint x="900" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_To_End_di" bpmnElement="Flow_To_End">
+        <di:waypoint x="1000" y="400" />
+        <di:waypoint x="1052" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

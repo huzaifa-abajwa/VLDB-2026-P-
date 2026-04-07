@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-03T21:31:25.350Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-31-25-348Z_generate_google_health_prediction_workflow_for_ski.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-31-25-348Z_generate_google_health_prediction_workflow_for_ski.xml",
+  "userQuery": "Generate Google Health prediction workflow for skin cancer classification",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"End Workflow\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Generate Classification Report\" is a dead end (no outgoing flow).",
+    "Node \"End Workflow\" is not reachable from start event."
+  ]
+}

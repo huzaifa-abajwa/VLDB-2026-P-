@@ -1,0 +1,145 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Cancer Analysis">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_1">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Access_German" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_SEER" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_Pakistan" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_1">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Integrate" name="Integrate and Preprocess Datasets">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Execute_RSF" name="Execute Random Survival Forest Analysis (random_survival_forest@2025.py)">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Generate_Report" name="Generate Ensemble Analysis Report">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End Analysis">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Fork_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Gateway_Fork_1" targetRef="Task_Access_German" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_Fork_1" targetRef="Task_Access_SEER" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Fork_1" targetRef="Task_Access_Pakistan" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_Access_German" targetRef="Gateway_Join_1" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_Access_SEER" targetRef="Gateway_Join_1" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Access_Pakistan" targetRef="Gateway_Join_1" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_Join_1" targetRef="Task_Integrate" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_Integrate" targetRef="Task_Execute_RSF" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Task_Execute_RSF" targetRef="Task_Generate_Report" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_Generate_Report" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="319" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="362" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0v6g1qg_di" bpmnElement="Gateway_Fork_1">
+        <dc:Bounds x="265" y="312" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x3wexf_di" bpmnElement="Task_Access_German">
+        <dc:Bounds x="360" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1v2a78h_di" bpmnElement="Task_Access_SEER">
+        <dc:Bounds x="360" y="297" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0f0x6y3_di" bpmnElement="Task_Access_Pakistan">
+        <dc:Bounds x="360" y="400" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1o2x3y4_di" bpmnElement="Gateway_Join_1">
+        <dc:Bounds x="515" y="312" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c2d3e4_di" bpmnElement="Task_Integrate">
+        <dc:Bounds x="610" y="297" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_2f3g4h5_di" bpmnElement="Task_Execute_RSF">
+        <dc:Bounds x="750" y="297" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_3g4h5i6_di" bpmnElement="Task_Generate_Report">
+        <dc:Bounds x="890" y="297" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0u5v6w7_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1032" y="319" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1014" y="362" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="337" />
+        <di:waypoint x="265" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="290" y="312" />
+        <di:waypoint x="290" y="230" />
+        <di:waypoint x="360" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="315" y="337" />
+        <di:waypoint x="360" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="290" y="362" />
+        <di:waypoint x="290" y="440" />
+        <di:waypoint x="360" y="440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="460" y="230" />
+        <di:waypoint x="540" y="230" />
+        <di:waypoint x="540" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="460" y="337" />
+        <di:waypoint x="515" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="460" y="440" />
+        <di:waypoint x="540" y="440" />
+        <di:waypoint x="540" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="565" y="337" />
+        <di:waypoint x="610" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="710" y="337" />
+        <di:waypoint x="750" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="850" y="337" />
+        <di:waypoint x="890" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="990" y="337" />
+        <di:waypoint x="1032" y="337" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

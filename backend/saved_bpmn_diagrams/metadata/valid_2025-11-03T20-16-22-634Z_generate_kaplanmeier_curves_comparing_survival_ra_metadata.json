@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-03T20:16:22.636Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T20-16-22-634Z_generate_kaplanmeier_curves_comparing_survival_ra.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T20-16-22-634Z_generate_kaplanmeier_curves_comparing_survival_ra.xml",
+  "userQuery": "Generate Kaplan-Meier curves comparing survival rates between US and Pakistani breast cancer patients",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

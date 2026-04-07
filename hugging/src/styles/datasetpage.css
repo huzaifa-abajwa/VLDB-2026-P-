@@ -1,0 +1,398 @@
+/* src/styles/datasetpage.css */
+
+/* Define CSS variables for light and dark themes */
+:root {
+  --primary-color: #4B0082; /* Indigo */
+  --secondary-color: #008080; /* Teal */
+  --background-color: #FFFFFF; /* White */
+  --text-color: #000000; /* Black */
+  --card-background: #FFFFFF; /* For cards and containers */
+  --card-text-color: #333333; /* For text inside cards */
+  --input-background: #E6E6FA; /* Lavender */
+  --input-text-color: #333333;
+  --input-border-color: #4B0082; /* Indigo */
+  --input-hover-background: #D1EEEE; /* Slightly different color on hover */
+  --input-hover-border-color: #008080; /* Teal border on hover */
+  --notification-background: #A7E6FF; /* Light blue background */
+  --notification-text-color: #050C9C; /* Dark blue text */
+  --error-background: #FFCCCC; /* Light red background */
+  --error-text-color: #FF0000; /* Red text */
+  --button-background: #4B0082; /* Indigo */
+  --button-text-color: #FFFFFF;
+  --button-hover-background: #3A0DAB; /* Darker Indigo */
+  --modal-background: #FFFFFF;
+  --modal-text-color: #333333;
+  --modal-overlay-background: rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode {
+  --primary-color: #BB86FC; /* Light Purple */
+  --secondary-color: #03DAC6; /* Teal */
+  --background-color: #121212; /* Almost Black */
+  --text-color: #E0E0E0; /* Light Gray */
+  --card-background: #1E1E1E; /* Dark Gray */
+  --card-text-color: #E0E0E0; /* Light Gray */
+  --input-background: #2C2C2C; /* Darker Gray */
+  --input-text-color: #E0E0E0;
+  --input-border-color: #BB86FC; /* Light Purple */
+  --input-hover-background: #3C3C3C; /* Slightly lighter Gray */
+  --input-hover-border-color: #BB86FC; /* Light Purple */
+  --notification-background: #333333; /* Dark Gray */
+  --notification-text-color: #BB86FC; /* Light Purple */
+  --error-background: #B00020; /* Dark Red */
+  --error-text-color: #FFFFFF;
+  --button-background: #BB86FC; /* Light Purple */
+  --button-text-color: #FFFFFF;
+  --button-hover-background: #985EFF; /* Darker Purple */
+  --modal-background: #1E1E1E;
+  --modal-text-color: #E0E0E0;
+  --modal-overlay-background: rgba(0, 0, 0, 0.8);
+}
+
+/* Container styles */
+.dataset-page-container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 25px;
+  background-color: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  color: var(--card-text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1s ease-in-out;
+  overflow: hidden;
+}
+
+/* Title styles */
+.header-title {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  font-weight: 700;
+  animation: slideIn 1s ease-in-out;
+}
+
+/* Dataset Select Container */
+.dataset-select-container {
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: var(--card-background);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Fields */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--input-border-color);
+  border-radius: 8px;
+  background-color: var(--input-background);
+  color: var(--input-text-color);
+  font-size: 1.1em;
+  transition: border-color 0.3s, background-color 0.3s;
+  text-align: center;
+  cursor: pointer;
+}
+
+.input-field:hover {
+  background-color: var(--input-hover-background);
+  border-color: var(--input-hover-border-color);
+}
+
+.input-field:focus {
+  border-color: var(--input-hover-border-color);
+  background-color: var(--input-background);
+  outline: none;
+}
+
+/* File Details */
+.file-details {
+  background-color: var(--card-background);
+  padding: 25px;
+  border-left: 5px solid var(--primary-color);
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  color: var(--card-text-color);
+}
+
+.file-details h3 {
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.file-details p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.file-details a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.file-details a:hover {
+  text-decoration: underline;
+}
+
+/* Terms Results */
+.terms-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.term-result {
+  background-color: #E0F7FA;
+  color: var(--card-text-color);
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+}
+
+body.dark-mode .term-result {
+  background-color: #2C2C2C;
+}
+
+/* Notification Messages */
+.notification-message {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  background-color: var(--notification-background);
+  color: var(--notification-text-color);
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.error-message {
+  border-color: var(--error-background);
+  background-color: var(--error-background);
+  color: var(--error-text-color);
+}
+
+/* Terms Modal */
+.terms-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--modal-overlay-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+}
+
+.terms-modal-content {
+  background: var(--modal-background);
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  overflow-y: auto;
+  max-height: 80%;
+  color: var(--modal-text-color);
+}
+
+.terms-modal-content h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.terms-intro {
+  font-size: 1em;
+  margin-bottom: 20px;
+  color: var(--modal-text-color);
+}
+
+.term {
+  margin-bottom: 20px;
+}
+
+.term p {
+  margin-bottom: 10px;
+  color: var(--modal-text-color);
+}
+
+.response-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.button-yes,
+.button-no {
+  flex: 1;
+  padding: 12px 20px;
+  border: 2px solid transparent;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  color: var(--button-text-color);
+}
+
+.button-yes {
+  background-color: #90EE90; /* Light Green */
+  margin-right: 10px;
+}
+
+.button-no {
+  background-color: #F08080; /* Light Coral */
+}
+
+.button-yes.selected {
+  background-color: #32CD32; /* Lime Green */
+  border-color: #006400; /* Dark Green */
+}
+
+.button-no.selected {
+  background-color: #DC143C; /* Crimson */
+  border-color: #8B0000; /* Dark Red */
+}
+
+.button-yes:hover:not(.selected),
+.button-no:hover:not(.selected) {
+  opacity: 0.8;
+}
+
+.modal-submit-button {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--button-background);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 30px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-submit-button:hover {
+  background-color: var(--button-hover-background);
+}
+
+.modal-submit-button:disabled {
+  background-color: #CCCCCC;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dataset-page-container {
+      width: 95%;
+  }
+
+  .details-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dataset-page-container {
+      padding: 25px 20px;
+  }
+
+  .header-title {
+      font-size: 2em;
+  }
+
+  .input-field {
+      font-size: 1em;
+      padding: 10px 15px;
+  }
+
+  .file-details {
+      padding: 20px;
+  }
+
+  .details-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+  }
+
+  .term {
+      margin-bottom: 15px;
+  }
+
+  .response-buttons {
+      flex-direction: column;
+  }
+
+  .button-yes,
+  .button-no {
+      padding: 10px 15px;
+      font-size: 0.9em;
+  }
+
+  .modal-submit-button {
+      font-size: 1em;
+      padding: 12px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dataset-page-container {
+      padding: 20px 15px;
+  }
+
+  .header-title {
+      font-size: 1.8em;
+  }
+
+  .input-field {
+      font-size: 0.9em;
+      padding: 8px 12px;
+  }
+
+  .file-details {
+      padding: 15px;
+  }
+
+  .button-yes,
+  .button-no {
+      font-size: 0.8em;
+      padding: 8px 12px;
+  }
+
+  .modal-submit-button {
+      font-size: 0.9em;
+      padding: 10px 16px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

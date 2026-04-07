@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-11-03T21:30:22.887Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-30-22-885Z_create_google_health_cancer_prediction_using_pakis.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-30-22-885Z_create_google_health_cancer_prediction_using_pakis.xml",
+  "userQuery": "Create Google Health cancer prediction using Pakistani registry data",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "validationErrors": [
+    "XML Parsing Error: Invalid characters in closing tag\nLine: 11\nColumn: 35\nChar: i"
+  ]
+}

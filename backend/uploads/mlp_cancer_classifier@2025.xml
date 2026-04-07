@@ -1,0 +1,151 @@
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        PolicyId="MLP_Classifier_2025_Policy"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides">
+    <Target>
+        <AnyOf>
+            <AllOf>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">researcher</AttributeValue>
+                    <AttributeDesignator AttributeId="personRole" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">clinical-researcher</AttributeValue>
+                    <AttributeDesignator AttributeId="personRole" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">medical-scientist</AttributeValue>
+                    <AttributeDesignator AttributeId="personRole" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">data-scientist</AttributeValue>
+                    <AttributeDesignator AttributeId="personRole" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">data-analyst</AttributeValue>
+                    <AttributeDesignator AttributeId="personRole" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">bioinformatics</AttributeValue>
+                    <AttributeDesignator AttributeId="specialization" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">medical-research</AttributeValue>
+                    <AttributeDesignator AttributeId="specialization" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">cancer-research</AttributeValue>
+                    <AttributeDesignator AttributeId="specialization" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">data-analysis</AttributeValue>
+                    <AttributeDesignator AttributeId="specialization" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">researcher</AttributeValue>
+                    <AttributeDesignator AttributeId="designation" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">postdoctoral-fellow</AttributeValue>
+                    <AttributeDesignator AttributeId="designation" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">phd-student</AttributeValue>
+                    <AttributeDesignator AttributeId="designation" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">hospital-network</AttributeValue>
+                    <AttributeDesignator AttributeId="fromNetworks" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">university-network</AttributeValue>
+                    <AttributeDesignator AttributeId="fromNetworks" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">research-institute-network</AttributeValue>
+                    <AttributeDesignator AttributeId="fromNetworks" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">bioinformatics</AttributeValue>
+                    <AttributeDesignator AttributeId="department" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">computer-science</AttributeValue>
+                    <AttributeDesignator AttributeId="department" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">biology</AttributeValue>
+                    <AttributeDesignator AttributeId="department" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">3</AttributeValue>
+                    <AttributeDesignator AttributeId="experienceYears" DataType="http://www.w3.org/2001/XMLSchema#integer"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">undergraduate</AttributeValue>
+                    <AttributeDesignator AttributeId="certifications" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">masters</AttributeValue>
+                    <AttributeDesignator AttributeId="certifications" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PhD</AttributeValue>
+                    <AttributeDesignator AttributeId="certifications" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">board-certified</AttributeValue>
+                    <AttributeDesignator AttributeId="certifications" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">fellowship-trained</AttributeValue>
+                    <AttributeDesignator AttributeId="certifications" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">certified-clinical-researcher</AttributeValue>
+                    <AttributeDesignator AttributeId="certifications" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">bioinformatics</AttributeValue>
+                    <AttributeDesignator AttributeId="researchFocus" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">computer-science</AttributeValue>
+                    <AttributeDesignator AttributeId="researchFocus" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">biomedical-engineering</AttributeValue>
+                    <AttributeDesignator AttributeId="researchFocus" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">faculty-advisor</AttributeValue>
+                    <AttributeDesignator AttributeId="authorizedBy" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">administrator</AttributeValue>
+                    <AttributeDesignator AttributeId="authorizedBy" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">department-head</AttributeValue>
+                    <AttributeDesignator AttributeId="authorizedBy" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">hospital-administrator</AttributeValue>
+                    <AttributeDesignator AttributeId="authorizedBy" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">project-director</AttributeValue>
+                    <AttributeDesignator AttributeId="authorizedBy" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+                <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-at-least-one-member-of">
+                    <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">research-institute-director</AttributeValue>
+                    <AttributeDesignator AttributeId="authorizedBy" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+                </Match>
+            </AllOf>
+        </AnyOf>
+    </Target>
+    <Rule RuleId="PermitRule" Effect="Permit">
+        <Condition>
+            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and"/>
+        </Condition>
+    </Rule>
+</Policy>

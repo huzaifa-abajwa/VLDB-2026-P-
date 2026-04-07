@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-03-20T00:17:00.788Z",
+  "isValid": true,
+  "filename": "valid_2026-03-20T00-17-00-785Z_predict_hospital_readmission_risk_for_diabetic_pat.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-20T00-17-00-785Z_predict_hospital_readmission_risk_for_diabetic_pat.xml",
+  "userQuery": "Predict hospital readmission risk for diabetic patients using classification models",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py",
+    "lstm_readmission_model@2026.py",
+    "mlp_cancer_classifier@2025.py"
+  ],
+  "validationErrors": []
+}

@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-11-24T21:04:16.235Z",
+  "isValid": true,
+  "filename": "valid_2025-11-24T21-04-16-232Z_create_a_risk_stratification_analysis_using_xgboos.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-24T21-04-16-232Z_create_a_risk_stratification_analysis_using_xgboos.xml",
+  "userQuery": "Create a risk stratification analysis using XGBoost to predict high-risk cancer patients from the SEER registry",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py",
+    "cox_model@2020.py",
+    "lstm_temporal_model@2025.py",
+    "kaplan_meier_model@2020.py",
+    "random_survival_forest@2025.py"
+  ],
+  "validationErrors": []
+}

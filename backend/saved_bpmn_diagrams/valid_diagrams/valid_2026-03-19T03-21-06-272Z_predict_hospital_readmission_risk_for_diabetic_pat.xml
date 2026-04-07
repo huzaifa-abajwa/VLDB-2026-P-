@@ -1,0 +1,204 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_DiabetesReadmissionWorkflow" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Prediction Request">
+      <bpmn:outgoing>Flow_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_Data" name="Access Datasets">
+      <bpmn:incoming>Flow_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_02</bpmn:outgoing>
+      <bpmn:outgoing>Flow_03</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Access_diabetic_data" name="Access diabetic_data">
+      <bpmn:incoming>Flow_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_04</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_Sylhet_Data" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>Flow_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_05</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_Data" name="Combine Datasets">
+      <bpmn:incoming>Flow_04</bpmn:incoming>
+      <bpmn:incoming>Flow_05</bpmn:incoming>
+      <bpmn:outgoing>Flow_06</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Preprocess" name="Pre-process Data">
+      <bpmn:incoming>Flow_06</bpmn:incoming>
+      <bpmn:outgoing>Flow_07</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Fork_Models" name="Apply Models">
+      <bpmn:incoming>Flow_07</bpmn:incoming>
+      <bpmn:outgoing>Flow_08</bpmn:outgoing>
+      <bpmn:outgoing>Flow_09</bpmn:outgoing>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Run_LSTM" name="Run lstm_readmission_model@2026.py">
+      <bpmn:incoming>Flow_08</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_XGBoost" name="Run xgboost_risk_model@2025.py">
+      <bpmn:incoming>Flow_09</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_RSF" name="Run random_survival_forest@2025.py">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_Models" name="Aggregate Results">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Synthesize" name="Synthesize Final Prediction">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="Prediction Complete">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="StartEvent_1" targetRef="Gateway_Fork_Data" />
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="Gateway_Fork_Data" targetRef="Task_Access_diabetic_data" />
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="Gateway_Fork_Data" targetRef="Task_Access_Sylhet_Data" />
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="Task_Access_diabetic_data" targetRef="Gateway_Join_Data" />
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="Task_Access_Sylhet_Data" targetRef="Gateway_Join_Data" />
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="Gateway_Join_Data" targetRef="Task_Preprocess" />
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="Task_Preprocess" targetRef="Gateway_Fork_Models" />
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="Gateway_Fork_Models" targetRef="Task_Run_LSTM" />
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="Gateway_Fork_Models" targetRef="Task_Run_XGBoost" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Gateway_Fork_Models" targetRef="Task_Run_RSF" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_Run_LSTM" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_Run_XGBoost" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Task_Run_RSF" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="Gateway_Join_Models" targetRef="Task_Synthesize" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="Task_Synthesize" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_DiabetesReadmissionWorkflow">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="127" y="425" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1k3k8p1_di" bpmnElement="Gateway_Fork_Data">
+        <dc:Bounds x="235" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="218" y="345" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0w1h2a3_di" bpmnElement="Task_Access_diabetic_data">
+        <dc:Bounds x="330" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c2d3e4_di" bpmnElement="Task_Access_Sylhet_Data">
+        <dc:Bounds x="330" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0o5p6q7_di" bpmnElement="Gateway_Join_Data">
+        <dc:Bounds x="475" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="455" y="432" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r8s9t0_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="570" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1u2v3w4_di" bpmnElement="Gateway_Fork_Models">
+        <dc:Bounds x="715" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="705" y="345" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x1y2z3_di" bpmnElement="Task_Run_LSTM">
+        <dc:Bounds x="810" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1a2b3c4_di" bpmnElement="Task_Run_XGBoost">
+        <dc:Bounds x="810" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0d1e2f3_di" bpmnElement="Task_Run_RSF">
+        <dc:Bounds x="810" y="510" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1g2h3i4_di" bpmnElement="Gateway_Join_Models">
+        <dc:Bounds x="955" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="935" y="432" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1j2k3l4_di" bpmnElement="Task_Synthesize">
+        <dc:Bounds x="1050" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1m2n3o4_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1192" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1172" y="425" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_01_di" bpmnElement="Flow_01">
+        <di:waypoint x="188" y="400" />
+        <di:waypoint x="235" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02_di" bpmnElement="Flow_02">
+        <di:waypoint x="260" y="375" />
+        <di:waypoint x="260" y="330" />
+        <di:waypoint x="330" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03_di" bpmnElement="Flow_03">
+        <di:waypoint x="260" y="425" />
+        <di:waypoint x="260" y="470" />
+        <di:waypoint x="330" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_di" bpmnElement="Flow_04">
+        <di:waypoint x="430" y="330" />
+        <di:waypoint x="500" y="330" />
+        <di:waypoint x="500" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05_di" bpmnElement="Flow_05">
+        <di:waypoint x="430" y="470" />
+        <di:waypoint x="500" y="470" />
+        <di:waypoint x="500" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06_di" bpmnElement="Flow_06">
+        <di:waypoint x="525" y="400" />
+        <di:waypoint x="570" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07_di" bpmnElement="Flow_07">
+        <di:waypoint x="670" y="400" />
+        <di:waypoint x="715" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08_di" bpmnElement="Flow_08">
+        <di:waypoint x="740" y="375" />
+        <di:waypoint x="740" y="250" />
+        <di:waypoint x="810" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_09_di" bpmnElement="Flow_09">
+        <di:waypoint x="765" y="400" />
+        <di:waypoint x="810" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="740" y="425" />
+        <di:waypoint x="740" y="550" />
+        <di:waypoint x="810" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="910" y="250" />
+        <di:waypoint x="980" y="250" />
+        <di:waypoint x="980" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="910" y="400" />
+        <di:waypoint x="955" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="910" y="550" />
+        <di:waypoint x="980" y="550" />
+        <di:waypoint x="980" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="1005" y="400" />
+        <di:waypoint x="1050" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="1150" y="400" />
+        <di:waypoint x="1192" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

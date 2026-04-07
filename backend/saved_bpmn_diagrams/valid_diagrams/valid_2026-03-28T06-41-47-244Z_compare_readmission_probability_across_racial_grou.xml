@@ -1,0 +1,213 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Data_Fork">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Load_Caucasian" name="Load UCI_Caucasian_Readmission">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Load_Asian" name="Load UCI_Asian_Readmission">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Load_Hispanic" name="Load UCI_Hispanic_Readmission">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Load_AfricanAmerican" name="Load UCI_AfricanAmerican_Readmission">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Data_Join">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Preprocess" name="Combine and Preprocess Datasets">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Model_Fork">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Run_LSTM" name="Run lstm_readmission_model@2026">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_XGBoost" name="Run xgboost_risk_model@2025">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Model_Join">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Compare_Results" name="Compare and Visualize Cross-Racial Readmission Probabilities">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+      <bpmn:outgoing>Flow_17</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_17</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Data_Fork" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Gateway_Data_Fork" targetRef="Task_Load_Caucasian" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_Data_Fork" targetRef="Task_Load_Asian" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Data_Fork" targetRef="Task_Load_Hispanic" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Gateway_Data_Fork" targetRef="Task_Load_AfricanAmerican" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_Load_Caucasian" targetRef="Gateway_Data_Join" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Load_Asian" targetRef="Gateway_Data_Join" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_Load_Hispanic" targetRef="Gateway_Data_Join" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_Load_AfricanAmerican" targetRef="Gateway_Data_Join" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Gateway_Data_Join" targetRef="Task_Preprocess" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_Preprocess" targetRef="Gateway_Model_Fork" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Gateway_Model_Fork" targetRef="Task_Run_LSTM" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Gateway_Model_Fork" targetRef="Task_Run_XGBoost" />
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="Task_Run_LSTM" targetRef="Gateway_Model_Join" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="Task_Run_XGBoost" targetRef="Gateway_Model_Join" />
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="Gateway_Model_Join" targetRef="Task_Compare_Results" />
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="Task_Compare_Results" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="425" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0v1y2z7_di" bpmnElement="Gateway_Data_Fork">
+        <dc:Bounds x="235" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x3g1z0_di" bpmnElement="Task_Load_Caucasian">
+        <dc:Bounds x="330" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y3g1z0_di" bpmnElement="Task_Load_Asian">
+        <dc:Bounds x="330" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_2x3g1z0_di" bpmnElement="Task_Load_Hispanic">
+        <dc:Bounds x="330" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_3y3g1z0_di" bpmnElement="Task_Load_AfricanAmerican">
+        <dc:Bounds x="330" y="460" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1v1y2z7_di" bpmnElement="Gateway_Data_Join">
+        <dc:Bounds x="475" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_4x3g1z0_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="570" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_2v1y2z7_di" bpmnElement="Gateway_Model_Fork">
+        <dc:Bounds x="715" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_5x3g1z0_di" bpmnElement="Task_Run_LSTM">
+        <dc:Bounds x="810" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_6y3g1z0_di" bpmnElement="Task_Run_XGBoost">
+        <dc:Bounds x="810" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_3v1y2z7_di" bpmnElement="Gateway_Model_Join">
+        <dc:Bounds x="955" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_7x3g1z0_di" bpmnElement="Task_Compare_Results">
+        <dc:Bounds x="1050" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0f6d8e7_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1192" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1200" y="425" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="400" />
+        <di:waypoint x="235" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="260" y="375" />
+        <di:waypoint x="260" y="200" />
+        <di:waypoint x="330" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="260" y="375" />
+        <di:waypoint x="260" y="300" />
+        <di:waypoint x="330" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="285" y="400" />
+        <di:waypoint x="330" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="260" y="425" />
+        <di:waypoint x="260" y="500" />
+        <di:waypoint x="330" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="430" y="200" />
+        <di:waypoint x="500" y="200" />
+        <di:waypoint x="500" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="430" y="300" />
+        <di:waypoint x="500" y="300" />
+        <di:waypoint x="500" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="430" y="400" />
+        <di:waypoint x="475" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="430" y="500" />
+        <di:waypoint x="500" y="500" />
+        <di:waypoint x="500" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="525" y="400" />
+        <di:waypoint x="570" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="670" y="400" />
+        <di:waypoint x="715" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="740" y="375" />
+        <di:waypoint x="740" y="330" />
+        <di:waypoint x="810" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="740" y="425" />
+        <di:waypoint x="740" y="470" />
+        <di:waypoint x="810" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="910" y="330" />
+        <di:waypoint x="980" y="330" />
+        <di:waypoint x="980" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="910" y="470" />
+        <di:waypoint x="980" y="470" />
+        <di:waypoint x="980" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16_di" bpmnElement="Flow_16">
+        <di:waypoint x="1005" y="400" />
+        <di:waypoint x="1050" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_17_di" bpmnElement="Flow_17">
+        <di:waypoint x="1150" y="400" />
+        <di:waypoint x="1192" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

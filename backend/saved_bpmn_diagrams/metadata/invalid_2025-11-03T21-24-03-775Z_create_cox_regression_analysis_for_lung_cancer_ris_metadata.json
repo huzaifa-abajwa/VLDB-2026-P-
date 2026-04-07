@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-03T21:24:03.777Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-24-03-775Z_create_cox_regression_analysis_for_lung_cancer_ris.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-24-03-775Z_create_cox_regression_analysis_for_lung_cancer_ris.xml",
+  "userQuery": "Create Cox regression analysis for lung cancer risk factors",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"Analysis Complete\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Output Statistical Summary\" is a dead end (no outgoing flow).",
+    "Node \"Analysis Complete\" is not reachable from start event."
+  ]
+}

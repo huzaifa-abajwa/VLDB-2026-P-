@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-11-03T21:28:32.951Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-28-32-949Z_cox_proportional_hazards_for_thyroid_cancer_patien.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-28-32-949Z_cox_proportional_hazards_for_thyroid_cancer_patien.xml",
+  "userQuery": "Cox proportional hazards for thyroid cancer patients by demographic factors",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"End Workflow\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Run cox_model@2020.py on German Data\" is a dead end (no outgoing flow).",
+    "Structural Error: Node \"Run cox_model@2020.py on SEER Data\" is a dead end (no outgoing flow).",
+    "Gateway \"Gateway_Fork\" forks into 2 paths but has no join gateway.",
+    "Node \"End Workflow\" is not reachable from start event."
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-03-28T04:43:40.234Z",
+  "isValid": true,
+  "filename": "valid_2026-03-28T04-43-40-231Z_compare_readmission_probability_across_racial_grou.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-28T04-43-40-231Z_compare_readmission_probability_across_racial_grou.xml",
+  "userQuery": "Compare readmission probability across racial groups",
+  "recommendedDatasets": [
+    "UCI_Caucasian_Readmission.csv",
+    "UCI_Asian_Readmission.csv",
+    "UCI_Hispanic_Readmission.csv",
+    "UCI_AfricanAmerican_Readmission.csv"
+  ],
+  "recommendedModels": [
+    "lstm_readmission_model@2026.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "validationErrors": []
+}

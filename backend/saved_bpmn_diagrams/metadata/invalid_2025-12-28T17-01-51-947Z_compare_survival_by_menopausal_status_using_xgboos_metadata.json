@@ -1,0 +1,17 @@
+{
+  "timestamp": "2025-12-28T17:01:51.949Z",
+  "isValid": false,
+  "filename": "invalid_2025-12-28T17-01-51-947Z_compare_survival_by_menopausal_status_using_xgboos.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-12-28T17-01-51-947Z_compare_survival_by_menopausal_status_using_xgboos.xml",
+  "userQuery": "Compare survival by menopausal status using XGBoost on German and Pakistani cancer data",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py"
+  ],
+  "validationErrors": [
+    "Semantic Warning: Task \"Run xgboost_risk_model@2025.py\" appears to reference a non-existent model."
+  ]
+}

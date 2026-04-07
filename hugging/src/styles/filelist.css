@@ -1,0 +1,134 @@
+body.file-list-page {
+  background-image: url('blur.png'); /* Replace with the actual URL of the generated image */
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  padding-top: 70px; /* Adjust padding to accommodate the navbar */
+}
+
+.ConnectMetamask {
+  padding: 10px 20px;
+  align-items: center;
+  margin-left: 43.5%;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.header-title {
+  text-align: center;
+  color: #050C9C; /* Dark blue for the title */
+  margin-bottom: 10px;
+  transform: translateY(-20px);
+  animation: slideIn 1s forwards;
+}
+
+.checkPermission {
+  padding: 10px 20px;
+  margin-left: 25%;
+}
+
+.file-box {
+  padding: 10px 20px;
+  margin-left: 50%;
+  margin-top: 50px;
+  align-items: center;
+}
+
+.file-list-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(167, 230, 255, 0.9); /* Lightest blue with some transparency */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+.header-title h2 {
+  color: #050C9C; /* Dark blue for the title */   
+  margin-bottom: 20px;
+  transform: translateY(-20px);
+  animation: slideIn 1s forwards; 
+  margin-left: 50px;
+}
+
+.CheckPermissions {
+  margin-left: 20%;
+  margin-top: 20px; /* Add margin to move the button lower */
+}
+
+.notification-message {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #3572EF;
+  border-radius: 4px;
+  background-color: #A7E6FF;
+  color: #050C9C;
+  text-align: center;
+  word-wrap: break-word; /* Wrap long text */
+  max-width: 100%; /* Ensure it fits within the container */
+}
+
+.error-message {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #FF4B4B;
+  border-radius: 4px;
+  background-color: #FFCCCC;
+  color: #FF0000;
+  text-align: center;
+}
+
+.file-list {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.file-item {
+  background-color: #A7E6FF; /* Lightest blue for the item background */
+  border: 1px solid #3572EF; /* Medium blue for item borders */
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  color: #050C9C; /* Dark blue for the item text */
+  text-align: center;
+}
+
+.file-item:hover {
+  background-color: #3ABEF9; /* Lighter blue for hover state */
+}
+
+input[type="text"], select {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #3572EF;
+  background-color: #A7E6FF;
+  color: #050C9C;
+  text-align: center;
+  width: 100%; /* Make input and select the same width */
+  box-sizing: border-box;
+}
+
+select:hover {
+  background-color: #3ABEF9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

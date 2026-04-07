@@ -1,0 +1,131 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Comparison Study">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Fork_Datasets">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Branch</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_Branch</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Fork_Datasets" />
+    <bpmn:task id="Task_Access_US_Data" name="Access US Patient Data (diabetic_data)">
+      <bpmn:incoming>Flow_US_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_to_Models</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_Branch" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_US_Data" />
+    <bpmn:task id="Task_Access_BD_Data" name="Access Bangladeshi Patient Data (Sylhet_Diabetes_Hospital_Bangladesh)">
+      <bpmn:incoming>Flow_BD_Branch</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_to_Models</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_Branch" sourceRef="Gateway_Fork_Datasets" targetRef="Task_Access_BD_Data" />
+    <bpmn:parallelGateway id="Gateway_Fork_US_Models">
+      <bpmn:incoming>Flow_US_to_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_XGB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_RF</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_MLP</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_LSTM</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_US_to_Models" sourceRef="Task_Access_US_Data" targetRef="Gateway_Fork_US_Models" />
+    <bpmn:task id="Task_US_XGB" name="Run XGBoost Prediction (xgboost_risk_model@2025)">
+      <bpmn:incoming>Flow_US_XGB</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_XGB_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_XGB" sourceRef="Gateway_Fork_US_Models" targetRef="Task_US_XGB" />
+    <bpmn:task id="Task_US_RF" name="Run Random Forest Prediction (random_survival_forest@2025)">
+      <bpmn:incoming>Flow_US_RF</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_RF_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_RF" sourceRef="Gateway_Fork_US_Models" targetRef="Task_US_RF" />
+    <bpmn:task id="Task_US_MLP" name="Run MLP Prediction (mlp_cancer_classifier@2025)">
+      <bpmn:incoming>Flow_US_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_MLP_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_MLP" sourceRef="Gateway_Fork_US_Models" targetRef="Task_US_MLP" />
+    <bpmn:task id="Task_US_LSTM" name="Run LSTM Prediction (lstm_readmission_model@2026)">
+      <bpmn:incoming>Flow_US_LSTM</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_LSTM_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_LSTM" sourceRef="Gateway_Fork_US_Models" targetRef="Task_US_LSTM" />
+    <bpmn:parallelGateway id="Gateway_Join_US_Models">
+      <bpmn:incoming>Flow_US_XGB_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_US_RF_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_US_MLP_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_US_LSTM_to_Join</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_Store</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_US_XGB_to_Join" sourceRef="Task_US_XGB" targetRef="Gateway_Join_US_Models" />
+    <bpmn:sequenceFlow id="Flow_US_RF_to_Join" sourceRef="Task_US_RF" targetRef="Gateway_Join_US_Models" />
+    <bpmn:sequenceFlow id="Flow_US_MLP_to_Join" sourceRef="Task_US_MLP" targetRef="Gateway_Join_US_Models" />
+    <bpmn:sequenceFlow id="Flow_US_LSTM_to_Join" sourceRef="Task_US_LSTM" targetRef="Gateway_Join_US_Models" />
+    <bpmn:task id="Task_Store_US_Results" name="Store US Prediction Results">
+      <bpmn:incoming>Flow_US_Store</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_to_Final_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_US_Store" sourceRef="Gateway_Join_US_Models" targetRef="Task_Store_US_Results" />
+    <bpmn:parallelGateway id="Gateway_Fork_BD_Models">
+      <bpmn:incoming>Flow_BD_to_Models</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_XGB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_RF</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_MLP</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_LSTM</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_BD_to_Models" sourceRef="Task_Access_BD_Data" targetRef="Gateway_Fork_BD_Models" />
+    <bpmn:task id="Task_BD_XGB" name="Run XGBoost Prediction (xgboost_risk_model@2025)">
+      <bpmn:incoming>Flow_BD_XGB</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_XGB_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_XGB" sourceRef="Gateway_Fork_BD_Models" targetRef="Task_BD_XGB" />
+    <bpmn:task id="Task_BD_RF" name="Run Random Forest Prediction (random_survival_forest@2025)">
+      <bpmn:incoming>Flow_BD_RF</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_RF_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_RF" sourceRef="Gateway_Fork_BD_Models" targetRef="Task_BD_RF" />
+    <bpmn:task id="Task_BD_MLP" name="Run MLP Prediction (mlp_cancer_classifier@2025)">
+      <bpmn:incoming>Flow_BD_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_MLP_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_MLP" sourceRef="Gateway_Fork_BD_Models" targetRef="Task_BD_MLP" />
+    <bpmn:task id="Task_BD_LSTM" name="Run LSTM Prediction (lstm_readmission_model@2026)">
+      <bpmn:incoming>Flow_BD_LSTM</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_LSTM_to_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_LSTM" sourceRef="Gateway_Fork_BD_Models" targetRef="Task_BD_LSTM" />
+    <bpmn:parallelGateway id="Gateway_Join_BD_Models">
+      <bpmn:incoming>Flow_BD_XGB_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_BD_RF_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_BD_MLP_to_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_BD_LSTM_to_Join</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_Store</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_BD_XGB_to_Join" sourceRef="Task_BD_XGB" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_BD_RF_to_Join" sourceRef="Task_BD_RF" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_BD_MLP_to_Join" sourceRef="Task_BD_MLP" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:sequenceFlow id="Flow_BD_LSTM_to_Join" sourceRef="Task_BD_LSTM" targetRef="Gateway_Join_BD_Models" />
+    <bpmn:task id="Task_Store_BD_Results" name="Store Bangladeshi Prediction Results">
+      <bpmn:incoming>Flow_BD_Store</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_to_Final_Join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_BD_Store" sourceRef="Gateway_Join_BD_Models" targetRef="Task_Store_BD_Results" />
+    <bpmn:parallelGateway id="Gateway_Final_Join">
+      <bpmn:incoming>Flow_US_to_Final_Join</bpmn:incoming>
+      <bpmn:incoming>Flow_BD_to_Final_Join</bpmn:incoming>
+      <bpmn:outgoing>Flow_to_Analyze</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_US_to_Final_Join" sourceRef="Task_Store_US_Results" targetRef="Gateway_Final_Join" />
+    <bpmn:sequenceFlow id="Flow_BD_to_Final_Join" sourceRef="Task_Store_BD_Results" targetRef="Gateway_Final_Join" />
+    <bpmn:task id="Task_Analyze" name="Compare and Analyze Results">
+      <bpmn:incoming>Flow_to_Analyze</bpmn:incoming>
+      <bpmn:outgoing>Flow_to_End</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_to_Analyze" sourceRef="Gateway_Final_Join" targetRef="Task_Analyze" />
+    <bpmn:endEvent id="EndEvent_1" name="End Study">
+      <bpmn:incoming>Flow_to_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_to_End" sourceRef="Task_Analyze" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

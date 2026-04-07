@@ -1,0 +1,271 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Workflow">
+      <bpmn:outgoing>SequenceFlow_0a5jxyu</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="ParallelGateway_1" name="Fork for Data Access">
+      <bpmn:incoming>SequenceFlow_0a5jxyu</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1a</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1b</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1c</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_1a" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>SequenceFlow_1a</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_2a</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1a">
+        <bpmn:targetRef>DataObjectReference_1a</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_1b" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>SequenceFlow_1b</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_2b</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1b">
+        <bpmn:targetRef>DataObjectReference_1b</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_1c" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>SequenceFlow_1c</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_2c</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_1c">
+        <bpmn:targetRef>DataObjectReference_1c</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:parallelGateway id="ParallelGateway_2" name="Join Data Streams">
+      <bpmn:incoming>SequenceFlow_2a</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_2b</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_2c</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_3</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_2" name="Pre-process and Combine Datasets">
+      <bpmn:incoming>SequenceFlow_3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_4</bpmn:outgoing>
+      <bpmn:property id="Property_0qj3f5g" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_2a">
+        <bpmn:sourceRef>DataObjectReference_1a</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0qj3f5g</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_2b">
+        <bpmn:sourceRef>DataObjectReference_1b</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0qj3f5g</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataInputAssociation id="DataInputAssociation_2c">
+        <bpmn:sourceRef>DataObjectReference_1c</bpmn:sourceRef>
+        <bpmn:targetRef>Property_0qj3f5g</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_2">
+        <bpmn:targetRef>DataObjectReference_2</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_3" name="Execute XGBoost Survival Analysis using xgboost_risk_model@2025.py">
+      <bpmn:incoming>SequenceFlow_4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_5</bpmn:outgoing>
+      <bpmn:property id="Property_1y2g3h4" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_3">
+        <bpmn:sourceRef>DataObjectReference_2</bpmn:sourceRef>
+        <bpmn:targetRef>Property_1y2g3h4</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_3">
+        <bpmn:targetRef>DataObjectReference_3</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:task>
+    <bpmn:task id="Task_4" name="Generate Survival Outcome Comparison Report">
+      <bpmn:incoming>SequenceFlow_5</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_6</bpmn:outgoing>
+      <bpmn:property id="Property_2z3x4c5" name="__targetRef_placeholder" />
+      <bpmn:dataInputAssociation id="DataInputAssociation_4">
+        <bpmn:sourceRef>DataObjectReference_3</bpmn:sourceRef>
+        <bpmn:targetRef>Property_2z3x4c5</bpmn:targetRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow">
+      <bpmn:incoming>SequenceFlow_6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:dataObjectReference id="DataObjectReference_1a" name="German_Cancer_registry@2020" dataObjectRef="DataObject_1a" />
+    <bpmn:dataObject id="DataObject_1a" />
+    <bpmn:dataObjectReference id="DataObjectReference_1b" name="SEER_Cancer_Registry_of_USA" dataObjectRef="DataObject_1b" />
+    <bpmn:dataObject id="DataObject_1b" />
+    <bpmn:dataObjectReference id="DataObjectReference_1c" name="National_Cancer_Registry_of_Pakistan" dataObjectRef="DataObject_1c" />
+    <bpmn:dataObject id="DataObject_1c" />
+    <bpmn:dataObjectReference id="DataObjectReference_2" name="Combined_Cancer_Data.csv" dataObjectRef="DataObject_2" />
+    <bpmn:dataObject id="DataObject_2" />
+    <bpmn:dataObjectReference id="DataObjectReference_3" name="Analysis_Results.json" dataObjectRef="DataObject_3" />
+    <bpmn:dataObject id="DataObject_3" />
+    <bpmn:sequenceFlow id="SequenceFlow_0a5jxyu" sourceRef="StartEvent_1" targetRef="ParallelGateway_1" />
+    <bpmn:sequenceFlow id="SequenceFlow_1a" sourceRef="ParallelGateway_1" targetRef="Task_1a" />
+    <bpmn:sequenceFlow id="SequenceFlow_1b" sourceRef="ParallelGateway_1" targetRef="Task_1b" />
+    <bpmn:sequenceFlow id="SequenceFlow_1c" sourceRef="ParallelGateway_1" targetRef="Task_1c" />
+    <bpmn:sequenceFlow id="SequenceFlow_2a" sourceRef="Task_1a" targetRef="ParallelGateway_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_2b" sourceRef="Task_1b" targetRef="ParallelGateway_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_2c" sourceRef="Task_1c" targetRef="ParallelGateway_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_3" sourceRef="ParallelGateway_2" targetRef="Task_2" />
+    <bpmn:sequenceFlow id="SequenceFlow_4" sourceRef="Task_2" targetRef="Task_3" />
+    <bpmn:sequenceFlow id="SequenceFlow_5" sourceRef="Task_3" targetRef="Task_4" />
+    <bpmn:sequenceFlow id="SequenceFlow_6" sourceRef="Task_4" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="375" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_1_di" bpmnElement="ParallelGateway_1">
+        <dc:Bounds x="259" y="325" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="239" y="382" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0a5jxyu_di" bpmnElement="SequenceFlow_0a5jxyu">
+        <di:waypoint x="209" y="350" />
+        <di:waypoint x="259" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1a_di" bpmnElement="Task_1a">
+        <dc:Bounds x="359" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1a_di" bpmnElement="SequenceFlow_1a">
+        <di:waypoint x="284" y="325" />
+        <di:waypoint x="284" y="230" />
+        <di:waypoint x="359" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1b_di" bpmnElement="Task_1b">
+        <dc:Bounds x="359" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1b_di" bpmnElement="SequenceFlow_1b">
+        <di:waypoint x="309" y="350" />
+        <di:waypoint x="359" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_1c_di" bpmnElement="Task_1c">
+        <dc:Bounds x="359" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1c_di" bpmnElement="SequenceFlow_1c">
+        <di:waypoint x="284" y="375" />
+        <di:waypoint x="284" y="470" />
+        <di:waypoint x="359" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ParallelGateway_2_di" bpmnElement="ParallelGateway_2">
+        <dc:Bounds x="509" y="325" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="492" y="382" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_2a_di" bpmnElement="SequenceFlow_2a">
+        <di:waypoint x="459" y="230" />
+        <di:waypoint x="534" y="230" />
+        <di:waypoint x="534" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_2b_di" bpmnElement="SequenceFlow_2b">
+        <di:waypoint x="459" y="350" />
+        <di:waypoint x="509" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_2c_di" bpmnElement="SequenceFlow_2c">
+        <di:waypoint x="459" y="470" />
+        <di:waypoint x="534" y="470" />
+        <di:waypoint x="534" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_2_di" bpmnElement="Task_2">
+        <dc:Bounds x="609" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_3_di" bpmnElement="SequenceFlow_3">
+        <di:waypoint x="559" y="350" />
+        <di:waypoint x="609" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_3_di" bpmnElement="Task_3">
+        <dc:Bounds x="759" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_4_di" bpmnElement="SequenceFlow_4">
+        <di:waypoint x="709" y="350" />
+        <di:waypoint x="759" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Task_4_di" bpmnElement="Task_4">
+        <dc:Bounds x="909" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_5_di" bpmnElement="SequenceFlow_5">
+        <di:waypoint x="859" y="350" />
+        <di:waypoint x="909" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1059" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1042" y="375" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_6_di" bpmnElement="SequenceFlow_6">
+        <di:waypoint x="1009" y="350" />
+        <di:waypoint x="1059" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_1a_di" bpmnElement="DataObjectReference_1a">
+        <dc:Bounds x="482" y="125" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="462" y="182" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1a_di" bpmnElement="DataOutputAssociation_1a">
+        <di:waypoint x="409" y="190" />
+        <di:waypoint x="409" y="150" />
+        <di:waypoint x="482" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_1b_di" bpmnElement="DataObjectReference_1b">
+        <dc:Bounds x="482" y="245" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="462" y="302" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1b_di" bpmnElement="DataOutputAssociation_1b">
+        <di:waypoint x="459" y="310" />
+        <di:waypoint x="482" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_1c_di" bpmnElement="DataObjectReference_1c">
+        <dc:Bounds x="482" y="525" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="462" y="582" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_1c_di" bpmnElement="DataOutputAssociation_1c">
+        <di:waypoint x="409" y="510" />
+        <di:waypoint x="409" y="550" />
+        <di:waypoint x="482" y="550" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_2a_di" bpmnElement="DataInputAssociation_2a">
+        <di:waypoint x="518" y="175" />
+        <di:waypoint x="659" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_2b_di" bpmnElement="DataInputAssociation_2b">
+        <di:waypoint x="518" y="295" />
+        <di:waypoint x="609" y="337" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_2c_di" bpmnElement="DataInputAssociation_2c">
+        <di:waypoint x="518" y="525" />
+        <di:waypoint x="659" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_2_di" bpmnElement="DataObjectReference_2">
+        <dc:Bounds x="641" y="225" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="621" y="282" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_2_di" bpmnElement="DataOutputAssociation_2">
+        <di:waypoint x="659" y="310" />
+        <di:waypoint x="659" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataObjectReference_3_di" bpmnElement="DataObjectReference_3">
+        <dc:Bounds x="791" y="225" width="36" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="771" y="282" width="77" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="DataInputAssociation_3_di" bpmnElement="DataInputAssociation_3">
+        <di:waypoint x="677" y="250" />
+        <di:waypoint x="759" y="321" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_3_di" bpmnElement="DataOutputAssociation_3">
+        <di:waypoint x="809" y="310" />
+        <di:waypoint x="809" y="275" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataInputAssociation_4_di" bpmnElement="DataInputAssociation_4">
+        <di:waypoint x="827" y="275" />
+        <di:waypoint x="909" y="321" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

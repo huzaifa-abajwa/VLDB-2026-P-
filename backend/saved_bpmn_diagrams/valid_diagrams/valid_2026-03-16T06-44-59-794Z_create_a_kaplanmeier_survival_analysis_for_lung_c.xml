@@ -1,0 +1,214 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="start_event" name="Start Lung Cancer Survival Analysis">
+      <bpmn:outgoing>flow_start_to_split</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="task_kaplan_meier" name="Execute kaplan_meier_model@2020.py">
+      <bpmn:incoming>flow_model_split_to_km</bpmn:incoming>
+      <bpmn:outgoing>flow_km_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="end_event" name="Analysis Complete">
+      <bpmn:incoming>flow_join_to_end</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:parallelGateway id="gateway_data_split" name="Access Compliant Datasets">
+      <bpmn:incoming>flow_start_to_split</bpmn:incoming>
+      <bpmn:outgoing>flow_split_to_german</bpmn:outgoing>
+      <bpmn:outgoing>flow_split_to_seer</bpmn:outgoing>
+      <bpmn:outgoing>flow_split_to_pakistan</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow_start_to_split" sourceRef="start_event" targetRef="gateway_data_split" />
+    <bpmn:task id="task_access_german" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>flow_split_to_german</bpmn:incoming>
+      <bpmn:outgoing>flow_german_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_split_to_german" sourceRef="gateway_data_split" targetRef="task_access_german" />
+    <bpmn:task id="task_access_seer" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>flow_split_to_seer</bpmn:incoming>
+      <bpmn:outgoing>flow_seer_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_split_to_seer" sourceRef="gateway_data_split" targetRef="task_access_seer" />
+    <bpmn:task id="task_access_pakistan" name="Access National_Cancer_Registry_of_Pakistan">
+      <bpmn:incoming>flow_split_to_pakistan</bpmn:incoming>
+      <bpmn:outgoing>flow_pakistan_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_split_to_pakistan" sourceRef="gateway_data_split" targetRef="task_access_pakistan" />
+    <bpmn:parallelGateway id="gateway_data_join">
+      <bpmn:incoming>flow_german_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_seer_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_pakistan_to_join</bpmn:incoming>
+      <bpmn:outgoing>flow_data_join_to_model_split</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow_german_to_join" sourceRef="task_access_german" targetRef="gateway_data_join" />
+    <bpmn:sequenceFlow id="flow_seer_to_join" sourceRef="task_access_seer" targetRef="gateway_data_join" />
+    <bpmn:sequenceFlow id="flow_pakistan_to_join" sourceRef="task_access_pakistan" targetRef="gateway_data_join" />
+    <bpmn:parallelGateway id="gateway_model_split" name="Execute Compliant Models">
+      <bpmn:incoming>flow_data_join_to_model_split</bpmn:incoming>
+      <bpmn:outgoing>flow_model_split_to_km</bpmn:outgoing>
+      <bpmn:outgoing>flow_model_split_to_cox</bpmn:outgoing>
+      <bpmn:outgoing>flow_model_split_to_xgb</bpmn:outgoing>
+      <bpmn:outgoing>flow_model_split_to_rsf</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow_data_join_to_model_split" sourceRef="gateway_data_join" targetRef="gateway_model_split" />
+    <bpmn:sequenceFlow id="flow_model_split_to_km" sourceRef="gateway_model_split" targetRef="task_kaplan_meier" />
+    <bpmn:task id="task_cox_model" name="Execute cox_model@2020.py">
+      <bpmn:incoming>flow_model_split_to_cox</bpmn:incoming>
+      <bpmn:outgoing>flow_cox_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_model_split_to_cox" sourceRef="gateway_model_split" targetRef="task_cox_model" />
+    <bpmn:task id="task_xgboost_model" name="Execute xgboost_risk_model@2025.py">
+      <bpmn:incoming>flow_model_split_to_xgb</bpmn:incoming>
+      <bpmn:outgoing>flow_xgb_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_model_split_to_xgb" sourceRef="gateway_model_split" targetRef="task_xgboost_model" />
+    <bpmn:task id="task_rsf_model" name="Execute random_survival_forest@2025.py">
+      <bpmn:incoming>flow_model_split_to_rsf</bpmn:incoming>
+      <bpmn:outgoing>flow_rsf_to_join</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="flow_model_split_to_rsf" sourceRef="gateway_model_split" targetRef="task_rsf_model" />
+    <bpmn:parallelGateway id="gateway_model_join">
+      <bpmn:incoming>flow_km_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_cox_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_xgb_to_join</bpmn:incoming>
+      <bpmn:incoming>flow_rsf_to_join</bpmn:incoming>
+      <bpmn:outgoing>flow_join_to_end</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="flow_km_to_join" sourceRef="task_kaplan_meier" targetRef="gateway_model_join" />
+    <bpmn:sequenceFlow id="flow_cox_to_join" sourceRef="task_cox_model" targetRef="gateway_model_join" />
+    <bpmn:sequenceFlow id="flow_xgb_to_join" sourceRef="task_xgboost_model" targetRef="gateway_model_join" />
+    <bpmn:sequenceFlow id="flow_rsf_to_join" sourceRef="task_rsf_model" targetRef="gateway_model_join" />
+    <bpmn:sequenceFlow id="flow_join_to_end" sourceRef="gateway_model_join" targetRef="end_event" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start_event">
+        <dc:Bounds x="179" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="425" width="80" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_task_kaplan_meier" bpmnElement="task_kaplan_meier">
+        <dc:Bounds x="830" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_EndEvent_2" bpmnElement="end_event">
+        <dc:Bounds x="1132" y="382" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1107" y="425" width="87" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_parallel_gateway_data_split" bpmnElement="gateway_data_split">
+        <dc:Bounds x="265" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="246" y="338" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_start_to_split" bpmnElement="flow_start_to_split">
+        <di:waypoint x="215" y="400" />
+        <di:waypoint x="265" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_task_access_german" bpmnElement="task_access_german">
+        <dc:Bounds x="380" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_split_to_german" bpmnElement="flow_split_to_german">
+        <di:waypoint x="290" y="375" />
+        <di:waypoint x="290" y="270" />
+        <di:waypoint x="380" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_task_access_seer" bpmnElement="task_access_seer">
+        <dc:Bounds x="380" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_split_to_seer" bpmnElement="flow_split_to_seer">
+        <di:waypoint x="315" y="400" />
+        <di:waypoint x="380" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_task_access_pakistan" bpmnElement="task_access_pakistan">
+        <dc:Bounds x="380" y="490" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_split_to_pakistan" bpmnElement="flow_split_to_pakistan">
+        <di:waypoint x="290" y="425" />
+        <di:waypoint x="290" y="530" />
+        <di:waypoint x="380" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_parallel_gateway_data_join" bpmnElement="gateway_data_join">
+        <dc:Bounds x="535" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_german_to_join" bpmnElement="flow_german_to_join">
+        <di:waypoint x="480" y="270" />
+        <di:waypoint x="560" y="270" />
+        <di:waypoint x="560" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_seer_to_join" bpmnElement="flow_seer_to_join">
+        <di:waypoint x="480" y="400" />
+        <di:waypoint x="535" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_pakistan_to_join" bpmnElement="flow_pakistan_to_join">
+        <di:waypoint x="480" y="530" />
+        <di:waypoint x="560" y="530" />
+        <di:waypoint x="560" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_parallel_gateway_model_split" bpmnElement="gateway_model_split">
+        <dc:Bounds x="685" y="375" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="668" y="432" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_data_join_to_model_split" bpmnElement="flow_data_join_to_model_split">
+        <di:waypoint x="585" y="400" />
+        <di:waypoint x="685" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_model_split_to_km" bpmnElement="flow_model_split_to_km">
+        <di:waypoint x="710" y="375" />
+        <di:waypoint x="710" y="120" />
+        <di:waypoint x="830" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_task_cox_model" bpmnElement="task_cox_model">
+        <dc:Bounds x="830" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_model_split_to_cox" bpmnElement="flow_model_split_to_cox">
+        <di:waypoint x="710" y="375" />
+        <di:waypoint x="710" y="260" />
+        <di:waypoint x="830" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_task_xgboost_model" bpmnElement="task_xgboost_model">
+        <dc:Bounds x="830" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_model_split_to_xgb" bpmnElement="flow_model_split_to_xgb">
+        <di:waypoint x="735" y="400" />
+        <di:waypoint x="830" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_task_rsf_model" bpmnElement="task_rsf_model">
+        <dc:Bounds x="830" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_model_split_to_rsf" bpmnElement="flow_model_split_to_rsf">
+        <di:waypoint x="710" y="425" />
+        <di:waypoint x="710" y="540" />
+        <di:waypoint x="830" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="BPMNShape_parallel_gateway_model_join" bpmnElement="gateway_model_join">
+        <dc:Bounds x="985" y="375" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_km_to_join" bpmnElement="flow_km_to_join">
+        <di:waypoint x="930" y="120" />
+        <di:waypoint x="1010" y="120" />
+        <di:waypoint x="1010" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_cox_to_join" bpmnElement="flow_cox_to_join">
+        <di:waypoint x="930" y="260" />
+        <di:waypoint x="1010" y="260" />
+        <di:waypoint x="1010" y="375" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_xgb_to_join" bpmnElement="flow_xgb_to_join">
+        <di:waypoint x="930" y="400" />
+        <di:waypoint x="985" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_rsf_to_join" bpmnElement="flow_rsf_to_join">
+        <di:waypoint x="930" y="540" />
+        <di:waypoint x="1010" y="540" />
+        <di:waypoint x="1010" y="425" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_flow_join_to_end" bpmnElement="flow_join_to_end">
+        <di:waypoint x="1035" y="400" />
+        <di:waypoint x="1132" y="400" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

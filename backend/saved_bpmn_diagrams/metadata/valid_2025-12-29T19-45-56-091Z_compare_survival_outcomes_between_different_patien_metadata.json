@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-12-29T19:45:56.093Z",
+  "isValid": true,
+  "filename": "valid_2025-12-29T19-45-56-091Z_compare_survival_outcomes_between_different_patien.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-12-29T19-45-56-091Z_compare_survival_outcomes_between_different_patien.xml",
+  "userQuery": "Compare survival outcomes between different patient groups across all available cancer datasets using XGBoost",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "xgboost_risk_model@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

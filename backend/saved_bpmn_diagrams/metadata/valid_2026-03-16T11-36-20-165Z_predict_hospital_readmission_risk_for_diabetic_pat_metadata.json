@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-03-16T11:36:20.167Z",
+  "isValid": true,
+  "filename": "valid_2026-03-16T11-36-20-165Z_predict_hospital_readmission_risk_for_diabetic_pat.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-16T11-36-20-165Z_predict_hospital_readmission_risk_for_diabetic_pat.xml",
+  "userQuery": "Predict hospital readmission risk for diabetic patients using Random Forests and MLP",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "lstm_readmission_model@2026.py",
+    "xgboost_risk_model@2025.py",
+    "mlp_cancer_classifier@2025.py",
+    "random_survival_forest@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

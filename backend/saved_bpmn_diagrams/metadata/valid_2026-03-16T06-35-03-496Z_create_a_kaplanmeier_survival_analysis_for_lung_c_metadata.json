@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-03-16T06:35:03.498Z",
+  "isValid": true,
+  "filename": "valid_2026-03-16T06-35-03-496Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-03-16T06-35-03-496Z_create_a_kaplanmeier_survival_analysis_for_lung_c.xml",
+  "userQuery": "Create a Kaplan-Meier survival analysis for lung cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry@2020.csv",
+    "SEER_Cancer_Registry_of_USA.csv",
+    "National_Cancer_Registry_of_Pakistan.csv"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "xgboost_risk_model@2025.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

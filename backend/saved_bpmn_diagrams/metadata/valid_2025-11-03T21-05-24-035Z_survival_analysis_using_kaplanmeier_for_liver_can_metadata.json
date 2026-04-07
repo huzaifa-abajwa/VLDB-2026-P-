@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T21:05:24.036Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-05-24-035Z_survival_analysis_using_kaplanmeier_for_liver_can.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-05-24-035Z_survival_analysis_using_kaplanmeier_for_liver_can.xml",
+  "userQuery": "Survival analysis using Kaplan-Meier for liver cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}

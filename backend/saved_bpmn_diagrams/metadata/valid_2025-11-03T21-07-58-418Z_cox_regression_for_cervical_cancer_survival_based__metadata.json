@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-03T21:07:58.420Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-07-58-418Z_cox_regression_for_cervical_cancer_survival_based_.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-07-58-418Z_cox_regression_for_cervical_cancer_survival_based_.xml",
+  "userQuery": "Cox regression for cervical cancer survival based on treatment type",
+  "recommendedDatasets": [
+    "German_Cancer_registry"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py"
+  ],
+  "validationErrors": []
+}

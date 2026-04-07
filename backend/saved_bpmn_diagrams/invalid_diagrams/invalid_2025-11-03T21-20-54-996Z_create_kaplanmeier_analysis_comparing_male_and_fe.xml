@@ -1,0 +1,96 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_AccessData" name="Access SEER Cancer Registry">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_AccessData" />
+    <bpmn:parallelGateway id="Gateway_Fork">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Male</bpmn:outgoing>
+      <bpmn:outgoing>Flow_Female</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_AccessData" targetRef="Gateway_Fork" />
+    <bpmn:task id="Task_FilterMale" name="Filter Male Patients">
+      <bpmn:incoming>Flow_Male</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Male</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Male" sourceRef="Gateway_Fork" targetRef="Task_FilterMale" />
+    <bpmn:task id="Task_FilterFemale" name="Filter Female Patients">
+      <bpmn:incoming>Flow_Female</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Female</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Female" sourceRef="Gateway_Fork" targetRef="Task_FilterFemale" />
+    <bpmn:task id="Task_RunAnalysis" name="Run Kaplan-Meier Analysis on kaplan_meier_model@2020.py">
+      <bpmn:incoming>Flow_Join_Male</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Female</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_Join_Male" sourceRef="Task_FilterMale" targetRef="Task_RunAnalysis" />
+    <bpmn:sequenceFlow id="Flow_Join_Female" sourceRef="Task_FilterFemale" targetRef="Task_RunAnalysis" />
+    <bpmn:endEvent id="EndEvent_1" name="Analysis Complete" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="169" y="202" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x5a9f1_di" bpmnElement="Task_AccessData">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0o5p1q1_di" bpmnElement="Gateway_Fork">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1y2f0d1_di" bpmnElement="Task_FilterMale">
+        <dc:Bounds x="530" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Male_di" bpmnElement="Flow_Male">
+        <di:waypoint x="450" y="152" />
+        <di:waypoint x="450" y="117" />
+        <di:waypoint x="530" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0b1i3c4_di" bpmnElement="Task_FilterFemale">
+        <dc:Bounds x="530" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Female_di" bpmnElement="Flow_Female">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="240" />
+        <di:waypoint x="530" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1q8b2v3_di" bpmnElement="Task_RunAnalysis">
+        <dc:Bounds x="700" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Join_Male_di" bpmnElement="Flow_Join_Male">
+        <di:waypoint x="630" y="117" />
+        <di:waypoint x="665" y="117" />
+        <di:waypoint x="665" y="177" />
+        <di:waypoint x="700" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Join_Female_di" bpmnElement="Flow_Join_Female">
+        <di:waypoint x="630" y="240" />
+        <di:waypoint x="665" y="240" />
+        <di:waypoint x="665" y="177" />
+        <di:waypoint x="700" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0f8q3z7_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="872" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="850" y="202" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

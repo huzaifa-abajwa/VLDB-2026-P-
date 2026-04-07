@@ -1,0 +1,182 @@
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Diagnosis Comparison">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split" name="Split Population Data">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_US</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Split"/>
+    <bpmn:dataStoreReference id="DataStore_US" name="Pima_Indians_Diabetes_USA"/>
+    <bpmn:dataStoreReference id="DataStore_BD" name="Sylhet_Diabetes_Hospital_Bangladesh"/>
+    <bpmn:serviceTask id="Task_Contract_US" name="Execute smart-contract-Pima_Indians_Diabetes_USA.sol">
+      <bpmn:incoming>Flow_US</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_US" sourceRef="Gateway_Split" targetRef="Task_Contract_US"/>
+    <bpmn:scriptTask id="Task_Model_US" name="Run xgboost_risk_model@2025.py on US Data">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:dataObjectReference id="DataObject_US" name="US Prediction Results" dataObjectRef="DataObject_US_obj"/>
+    <bpmn:dataObject id="DataObject_US_obj"/>
+    <bpmn:association id="Association_1" sourceRef="Task_Model_US" targetRef="DataObject_US"/>
+    <bpmn:serviceTask id="Task_Contract_BD" name="Execute smart-contract-Sylhet_Diabetes_Hospital_Bangladesh.sol">
+      <bpmn:incoming>Flow_BD</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_BD" sourceRef="Gateway_Split" targetRef="Task_Contract_BD"/>
+    <bpmn:scriptTask id="Task_Model_BD" name="Run xgboost_risk_model@2025.py on Bangladeshi Data">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:dataObjectReference id="DataObject_BD" name="Bangladeshi Prediction Results" dataObjectRef="DataObject_BD_obj"/>
+    <bpmn:dataObject id="DataObject_BD_obj"/>
+    <bpmn:association id="Association_2" sourceRef="Task_Model_BD" targetRef="DataObject_BD"/>
+    <bpmn:parallelGateway id="Gateway_Join" name="Join Results">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Model_US" targetRef="Gateway_Join"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_Model_BD" targetRef="Gateway_Join"/>
+    <bpmn:userTask id="Task_Compare" name="Compare US and Bangladeshi Prediction Results">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Gateway_Join" targetRef="Task_Compare"/>
+    <bpmn:endEvent id="EndEvent_1" name="End Comparison">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Compare" targetRef="EndEvent_1"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Contract_US" targetRef="Task_Model_US"/>
+    <bpmn:association id="Association_3" sourceRef="DataStore_US" targetRef="Task_Model_US"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_Contract_BD" targetRef="Task_Model_BD"/>
+    <bpmn:association id="Association_4" sourceRef="DataStore_BD" targetRef="Task_Model_BD"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="319" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="152" y="362" width="90" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0vj4x4q_di" bpmnElement="Gateway_Split">
+        <dc:Bounds x="265" y="312" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="248" y="282" width="84" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1r1b1q1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="337"/>
+        <di:waypoint x="265" y="337"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="DataStoreReference_0w3k3f3_di" bpmnElement="DataStore_US">
+        <dc:Bounds x="485" y="165" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="222" width="90" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_1h3g3f3_di" bpmnElement="DataStore_BD">
+        <dc:Bounds x="485" y="435" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="492" width="90" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1f5g5h5_di" bpmnElement="Task_Contract_US">
+        <dc:Bounds x="370" y="210" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0c0d0e0_di" bpmnElement="Flow_US">
+        <di:waypoint x="290" y="312"/>
+        <di:waypoint x="290" y="250"/>
+        <di:waypoint x="370" y="250"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0g0h0i0_di" bpmnElement="Task_Model_US">
+        <dc:Bounds x="520" y="210" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0j0k0l0_di" bpmnElement="DataObject_US">
+        <dc:Bounds x="652" y="145" width="36" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="632" y="108" width="76" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1_di" bpmnElement="Association_1">
+        <di:waypoint x="620" y="210"/>
+        <di:waypoint x="652" y="181"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1m1n1o1_di" bpmnElement="Task_Contract_BD">
+        <dc:Bounds x="370" y="380" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1p1q1r1_di" bpmnElement="Flow_BD">
+        <di:waypoint x="290" y="362"/>
+        <di:waypoint x="290" y="420"/>
+        <di:waypoint x="370" y="420"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0s0t0u0_di" bpmnElement="Task_Model_BD">
+        <dc:Bounds x="520" y="380" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataObjectReference_0v0w0x0_di" bpmnElement="DataObject_BD">
+        <dc:Bounds x="652" y="475" width="36" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="632" y="532" width="84" height="27"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_2_di" bpmnElement="Association_2">
+        <di:waypoint x="620" y="460"/>
+        <di:waypoint x="652" y="489"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1y1z1a1_di" bpmnElement="Gateway_Join">
+        <dc:Bounds x="725" y="312" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="718" y="282" width="64" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0b0c0d0_di" bpmnElement="Flow_3">
+        <di:waypoint x="620" y="250"/>
+        <di:waypoint x="750" y="250"/>
+        <di:waypoint x="750" y="312"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e0f0g0_di" bpmnElement="Flow_5">
+        <di:waypoint x="620" y="420"/>
+        <di:waypoint x="750" y="420"/>
+        <di:waypoint x="750" y="362"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0h0i0j0_di" bpmnElement="Task_Compare">
+        <dc:Bounds x="820" y="297" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0k0l0m0_di" bpmnElement="Flow_6">
+        <di:waypoint x="775" y="337"/>
+        <di:waypoint x="820" y="337"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0n0o0p0_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="972" y="319" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="951" y="362" width="78" height="14"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0q0r0s0_di" bpmnElement="Flow_7">
+        <di:waypoint x="920" y="337"/>
+        <di:waypoint x="972" y="337"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t0u0v0_di" bpmnElement="Flow_2">
+        <di:waypoint x="470" y="250"/>
+        <di:waypoint x="520" y="250"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_3_di" bpmnElement="Association_3">
+        <di:waypoint x="535" y="215"/>
+        <di:waypoint x="570" y="210"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w0x0y0_di" bpmnElement="Flow_4">
+        <di:waypoint x="470" y="420"/>
+        <di:waypoint x="520" y="420"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_4_di" bpmnElement="Association_4">
+        <di:waypoint x="535" y="435"/>
+        <di:waypoint x="570" y="460"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

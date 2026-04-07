@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-11-25T10:45:17.910Z",
+  "isValid": true,
+  "filename": "valid_2025-11-25T10-45-17-907Z_create_a_random_survival_forest_ensemble_analysis_.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-25T10-45-17-907Z_create_a_random_survival_forest_ensemble_analysis_.xml",
+  "userQuery": "Create a Random Survival Forest ensemble analysis for cancer patients across all registries",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA",
+    "National_Cancer_Registry_of_Pakistan"
+  ],
+  "recommendedModels": [
+    "random_survival_forest@2025.py"
+  ],
+  "validationErrors": []
+}

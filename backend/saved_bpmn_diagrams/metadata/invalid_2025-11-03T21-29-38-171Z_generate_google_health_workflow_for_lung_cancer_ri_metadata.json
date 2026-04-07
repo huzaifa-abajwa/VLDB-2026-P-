@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-11-03T21:29:38.172Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-29-38-171Z_generate_google_health_workflow_for_lung_cancer_ri.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-29-38-171Z_generate_google_health_workflow_for_lung_cancer_ri.xml",
+  "userQuery": "Generate Google Health workflow for lung cancer risk prediction",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"Workflow Complete\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Output Prediction Results\" is a dead end (no outgoing flow).",
+    "Node \"Workflow Complete\" is not reachable from start event."
+  ]
+}

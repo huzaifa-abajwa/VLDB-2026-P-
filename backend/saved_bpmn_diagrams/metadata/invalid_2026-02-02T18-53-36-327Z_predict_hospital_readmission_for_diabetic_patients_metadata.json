@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-02-02T18:53:36.328Z",
+  "isValid": false,
+  "filename": "invalid_2026-02-02T18-53-36-327Z_predict_hospital_readmission_for_diabetic_patients.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2026-02-02T18-53-36-327Z_predict_hospital_readmission_for_diabetic_patients.xml",
+  "userQuery": "Predict hospital readmission for diabetic patients using temporal encounter data",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "google_Health_Cancer_Prediction_Model.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "FAIL",
+    "score": 0,
+    "errors": 1,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

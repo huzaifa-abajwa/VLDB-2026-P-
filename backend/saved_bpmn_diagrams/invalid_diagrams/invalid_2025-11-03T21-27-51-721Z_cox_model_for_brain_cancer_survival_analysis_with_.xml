@@ -1,0 +1,137 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_1" name="Identify Compliant Datasets">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_1" />
+    <bpmn:exclusiveGateway id="Gateway_1" name="Select Dataset">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_German</bpmn:outgoing>
+      <bpmn:outgoing>Flow_SEER</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_1" targetRef="Gateway_1" />
+    <bpmn:task id="Task_German" name="Access German_Cancer_registry@2020">
+      <bpmn:incoming>Flow_German</bpmn:incoming>
+      <bpmn:outgoing>Flow_German_Process</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_German" name="German Registry" sourceRef="Gateway_1" targetRef="Task_German" />
+    <bpmn:task id="Task_SEER" name="Access SEER_Cancer_Registry_of_USA">
+      <bpmn:incoming>Flow_SEER</bpmn:incoming>
+      <bpmn:outgoing>Flow_SEER_Process</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_SEER" name="SEER Registry" sourceRef="Gateway_1" targetRef="Task_SEER" />
+    <bpmn:task id="Task_Process_German" name="Pre-process German Data">
+      <bpmn:incoming>Flow_German_Process</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_German_Process" sourceRef="Task_German" targetRef="Task_Process_German" />
+    <bpmn:task id="Task_Process_SEER" name="Pre-process SEER Data">
+      <bpmn:incoming>Flow_SEER_Process</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_SEER_Process" sourceRef="Task_SEER" targetRef="Task_Process_SEER" />
+    <bpmn:task id="Task_Cox" name="Execute cox_model@2020.py">
+      <bpmn:incoming>Flow_From_German_Process</bpmn:incoming>
+      <bpmn:incoming>Flow_From_SEER_Process</bpmn:incoming>
+      <bpmn:outgoing>Flow_To_Review</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_From_German_Process" sourceRef="Task_Process_German" targetRef="Task_Cox" />
+    <bpmn:sequenceFlow id="Flow_From_SEER_Process" sourceRef="Task_Process_SEER" targetRef="Task_Cox" />
+    <bpmn:task id="Task_Review" name="Review Survival Analysis Results">
+      <bpmn:incoming>Flow_To_Review</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_To_Review" sourceRef="Task_Cox" targetRef="Task_Review" />
+    <bpmn:endEvent id="EndEvent_1" name="End Workflow" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="168" y="202" width="59" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0x3y8z1_di" bpmnElement="Task_1">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_0h3g4j5_di" bpmnElement="Gateway_1" isMarkerVisible="true">
+        <dc:Bounds x="425" y="152" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="415" y="122" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="425" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1k2x3l4_di" bpmnElement="Task_German">
+        <dc:Bounds x="530" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_German_di" bpmnElement="Flow_German">
+        <di:waypoint x="450" y="152" />
+        <di:waypoint x="450" y="117" />
+        <di:waypoint x="530" y="117" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="455" y="99" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0p9o8i7_di" bpmnElement="Task_SEER">
+        <dc:Bounds x="530" y="217" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_SEER_di" bpmnElement="Flow_SEER">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="257" />
+        <di:waypoint x="530" y="257" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="460" y="239" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1a2b3c4_di" bpmnElement="Task_Process_German">
+        <dc:Bounds x="680" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_German_Process_di" bpmnElement="Flow_German_Process">
+        <di:waypoint x="630" y="117" />
+        <di:waypoint x="680" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_4d5e6f7_di" bpmnElement="Task_Process_SEER">
+        <dc:Bounds x="680" y="217" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_SEER_Process_di" bpmnElement="Flow_SEER_Process">
+        <di:waypoint x="630" y="257" />
+        <di:waypoint x="680" y="257" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_7g8h9i0_di" bpmnElement="Task_Cox">
+        <dc:Bounds x="830" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_From_German_Process_di" bpmnElement="Flow_From_German_Process">
+        <di:waypoint x="780" y="117" />
+        <di:waypoint x="855" y="117" />
+        <di:waypoint x="855" y="137" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_From_SEER_Process_di" bpmnElement="Flow_From_SEER_Process">
+        <di:waypoint x="780" y="257" />
+        <di:waypoint x="855" y="257" />
+        <di:waypoint x="855" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1j2k3l4_di" bpmnElement="Task_Review">
+        <dc:Bounds x="980" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_To_Review_di" bpmnElement="Flow_To_Review">
+        <di:waypoint x="930" y="177" />
+        <di:waypoint x="980" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0f1g2h3_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1132" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1116" y="202" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

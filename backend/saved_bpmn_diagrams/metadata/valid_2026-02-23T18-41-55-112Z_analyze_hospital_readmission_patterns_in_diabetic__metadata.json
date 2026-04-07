@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-02-23T18:41:55.114Z",
+  "isValid": true,
+  "filename": "valid_2026-02-23T18-41-55-112Z_analyze_hospital_readmission_patterns_in_diabetic_.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2026-02-23T18-41-55-112Z_analyze_hospital_readmission_patterns_in_diabetic_.xml",
+  "userQuery": "Analyze hospital readmission patterns in diabetic patients",
+  "recommendedDatasets": [
+    "diabetic_data.csv"
+  ],
+  "recommendedModels": [
+    "lstm_readmission_model@2026.py"
+  ],
+  "structuralValidation": true,
+  "semanticValidation": {
+    "status": "PASS",
+    "score": 1,
+    "errors": 0,
+    "warnings": 0,
+    "verifierConfidence": null,
+    "datasetsAutoDetected": false
+  },
+  "corrected": true
+}

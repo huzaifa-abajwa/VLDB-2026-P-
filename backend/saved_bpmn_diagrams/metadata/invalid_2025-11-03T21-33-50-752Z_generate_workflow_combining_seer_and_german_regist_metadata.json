@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-11-03T21:33:50.754Z",
+  "isValid": false,
+  "filename": "invalid_2025-11-03T21-33-50-752Z_generate_workflow_combining_seer_and_german_regist.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\invalid_diagrams\\invalid_2025-11-03T21-33-50-752Z_generate_workflow_combining_seer_and_german_regist.xml",
+  "userQuery": "Generate workflow combining SEER and German registries for lung cancer analysis",
+  "recommendedDatasets": [
+    "SEER_Cancer_Registry_of_USA",
+    "German_Cancer_registry"
+  ],
+  "recommendedModels": [
+    "cox_model@2020.py",
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": [
+    "Structural Error: Node \"End Workflow\" is an orphan (no incoming flow).",
+    "Structural Error: Node \"Run cox_model@2020.py\" is a dead end (no outgoing flow).",
+    "Structural Error: Node \"Run kaplan_meier_model@2020.py\" is a dead end (no outgoing flow).",
+    "Gateway \"Gateway_Fork\" forks into 2 paths but has no join gateway.",
+    "Node \"End Workflow\" is not reachable from start event."
+  ]
+}

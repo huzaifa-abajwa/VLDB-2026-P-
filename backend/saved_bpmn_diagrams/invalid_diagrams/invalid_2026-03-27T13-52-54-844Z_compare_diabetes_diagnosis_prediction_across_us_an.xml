@@ -1,0 +1,115 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_1" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Diabetes Diagnosis Comparison">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split_Populations">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_US</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_Split_Populations" />
+    <bpmn:serviceTask id="Task_Access_Pima" name="Access Pima_Indians_Diabetes_USA via smart-contract-Pima_Indians_Diabetes_USA.sol">
+      <bpmn:incoming>Flow_US</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_US" sourceRef="Gateway_Split_Populations" targetRef="Task_Access_Pima" />
+    <bpmn:serviceTask id="Task_Access_Sylhet" name="Access Sylhet_Diabetes_Hospital_Bangladesh via smart-contract-Sylhet_Diabetes_Hospital_Bangladesh.sol">
+      <bpmn:incoming>Flow_BD</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_BD" sourceRef="Gateway_Split_Populations" targetRef="Task_Access_Sylhet" />
+    <bpmn:parallelGateway id="Gateway_Split_Models_US">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_US_XGB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_MLP</bpmn:outgoing>
+      <bpmn:outgoing>Flow_US_RSF</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Access_Pima" targetRef="Gateway_Split_Models_US" />
+    <bpmn:parallelGateway id="Gateway_Split_Models_BD">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_BD_XGB</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_MLP</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BD_RSF</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Access_Sylhet" targetRef="Gateway_Split_Models_BD" />
+    <bpmn:serviceTask id="Task_Run_XGB_US" name="Run xgboost_risk_model@2025.py">
+      <bpmn:incoming>Flow_US_XGB</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_US_XGB" sourceRef="Gateway_Split_Models_US" targetRef="Task_Run_XGB_US" />
+    <bpmn:serviceTask id="Task_Run_MLP_US" name="Run mlp_cancer_classifier@2025.py">
+      <bpmn:incoming>Flow_US_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_US_MLP" sourceRef="Gateway_Split_Models_US" targetRef="Task_Run_MLP_US" />
+    <bpmn:serviceTask id="Task_Run_RSF_US" name="Run random_survival_forest@2025.py">
+      <bpmn:incoming>Flow_US_RSF</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_US_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_US_RSF" sourceRef="Gateway_Split_Models_US" targetRef="Task_Run_RSF_US" />
+    <bpmn:serviceTask id="Task_Run_XGB_BD" name="Run xgboost_risk_model@2025.py">
+      <bpmn:incoming>Flow_BD_XGB</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_1</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_BD_XGB" sourceRef="Gateway_Split_Models_BD" targetRef="Task_Run_XGB_BD" />
+    <bpmn:serviceTask id="Task_Run_MLP_BD" name="Run mlp_cancer_classifier@2025.py">
+      <bpmn:incoming>Flow_BD_MLP</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_BD_MLP" sourceRef="Gateway_Split_Models_BD" targetRef="Task_Run_MLP_BD" />
+    <bpmn:serviceTask id="Task_Run_RSF_BD" name="Run random_survival_forest@2025.py">
+      <bpmn:incoming>Flow_BD_RSF</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_BD_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_BD_RSF" sourceRef="Gateway_Split_Models_BD" targetRef="Task_Run_RSF_BD" />
+    <bpmn:parallelGateway id="Gateway_Join_Models_US">
+      <bpmn:incoming>Flow_Join_US_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_US_2</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_US_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Collect_US</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_US_1" sourceRef="Task_Run_XGB_US" targetRef="Gateway_Join_Models_US" />
+    <bpmn:sequenceFlow id="Flow_Join_US_2" sourceRef="Task_Run_MLP_US" targetRef="Gateway_Join_Models_US" />
+    <bpmn:sequenceFlow id="Flow_Join_US_3" sourceRef="Task_Run_RSF_US" targetRef="Gateway_Join_Models_US" />
+    <bpmn:parallelGateway id="Gateway_Join_Models_BD">
+      <bpmn:incoming>Flow_Join_BD_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_BD_2</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_BD_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_Collect_BD</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_BD_1" sourceRef="Task_Run_XGB_BD" targetRef="Gateway_Join_Models_BD" />
+    <bpmn:sequenceFlow id="Flow_Join_BD_2" sourceRef="Task_Run_MLP_BD" targetRef="Gateway_Join_Models_BD" />
+    <bpmn:sequenceFlow id="Flow_Join_BD_3" sourceRef="Task_Run_RSF_BD" targetRef="Gateway_Join_Models_BD" />
+    <bpmn:userTask id="Task_Collect_US" name="Collect US Population Results">
+      <bpmn:incoming>Flow_Collect_US</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Populations_1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_Collect_US" sourceRef="Gateway_Join_Models_US" targetRef="Task_Collect_US" />
+    <bpmn:userTask id="Task_Collect_BD" name="Collect Bangladeshi Population Results">
+      <bpmn:incoming>Flow_Collect_BD</bpmn:incoming>
+      <bpmn:outgoing>Flow_Join_Populations_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_Collect_BD" sourceRef="Gateway_Join_Models_BD" targetRef="Task_Collect_BD" />
+    <bpmn:parallelGateway id="Gateway_Join_Populations">
+      <bpmn:incoming>Flow_Join_Populations_1</bpmn:incoming>
+      <bpmn:incoming>Flow_Join_Populations_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_Compare</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_Join_Populations_1" sourceRef="Task_Collect_US" targetRef="Gateway_Join_Populations" />
+    <bpmn:sequenceFlow id="Flow_Join_Populations_2" sourceRef="Task_Collect_BD" targetRef="Gateway_Join_Populations" />
+    <bpmn:userTask id="Task_Compare_Results" name="Compare Prediction Results">
+      <bpmn:incoming>Flow_Compare</bpmn:incoming>
+      <bpmn:outgoing>Flow_End</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_Compare" sourceRef="Gateway_Join_Populations" targetRef="Task_Compare_Results" />
+    <bpmn:endEvent id="EndEvent_1" name="End">
+      <bpmn:incoming>Flow_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_End" sourceRef="Task_Compare_Results" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

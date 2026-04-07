@@ -1,0 +1,240 @@
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="Process_Diabetes_Comparison" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_1" name="Start Request">
+      <bpmn:outgoing>Flow_0o8p1z1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_Split_Data" name="Access Datasets in Parallel">
+      <bpmn:incoming>Flow_0o8p1z1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1a2b3c4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5d6e7f8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_9g0h1i2</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Access_Pima" name="Access Pima_Indians_Diabetes_USA">
+      <bpmn:incoming>Flow_1a2b3c4</bpmn:incoming>
+      <bpmn:outgoing>Flow_3j4k5l6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_Sylhet" name="Access Sylhet_Diabetes_Hospital_Bangladesh">
+      <bpmn:incoming>Flow_5d6e7f8</bpmn:incoming>
+      <bpmn:outgoing>Flow_7m8n9o0</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Access_Diabetic" name="Access diabetic_data">
+      <bpmn:incoming>Flow_9g0h1i2</bpmn:incoming>
+      <bpmn:outgoing>Flow_p1q2r3s</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_Data">
+      <bpmn:incoming>Flow_3j4k5l6</bpmn:incoming>
+      <bpmn:incoming>Flow_7m8n9o0</bpmn:incoming>
+      <bpmn:incoming>Flow_p1q2r3s</bpmn:incoming>
+      <bpmn:outgoing>Flow_t4u5v6w</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Preprocess" name="Pre-process and Harmonize Datasets">
+      <bpmn:incoming>Flow_t4u5v6w</bpmn:incoming>
+      <bpmn:outgoing>Flow_x7y8z9a</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Split_Models" name="Run Models in Parallel">
+      <bpmn:incoming>Flow_x7y8z9a</bpmn:incoming>
+      <bpmn:outgoing>Flow_b1c2d3e</bpmn:outgoing>
+      <bpmn:outgoing>Flow_f4g5h6i</bpmn:outgoing>
+      <bpmn:outgoing>Flow_j7k8l9m</bpmn:outgoing>
+      <bpmn:outgoing>Flow_n0o1p2q</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Run_XGBoost" name="Run xgboost_risk_model@2025.py">
+      <bpmn:incoming>Flow_b1c2d3e</bpmn:incoming>
+      <bpmn:outgoing>Flow_r3s4t5u</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_LSTM" name="Run lstm_readmission_model@2026.py">
+      <bpmn:incoming>Flow_f4g5h6i</bpmn:incoming>
+      <bpmn:outgoing>Flow_v6w7x8y</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_MLP" name="Run mlp_cancer_classifier@2025.py">
+      <bpmn:incoming>Flow_j7k8l9m</bpmn:incoming>
+      <bpmn:outgoing>Flow_z9a0b1c</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Run_RSF" name="Run random_survival_forest@2025.py">
+      <bpmn:incoming>Flow_n0o1p2q</bpmn:incoming>
+      <bpmn:outgoing>Flow_d2e3f4g</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:parallelGateway id="Gateway_Join_Models">
+      <bpmn:incoming>Flow_r3s4t5u</bpmn:incoming>
+      <bpmn:incoming>Flow_v6w7x8y</bpmn:incoming>
+      <bpmn:incoming>Flow_z9a0b1c</bpmn:incoming>
+      <bpmn:incoming>Flow_d2e3f4g</bpmn:incoming>
+      <bpmn:outgoing>Flow_h5i6j7k</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:task id="Task_Compare_Results" name="Compare Model Predictions Across Populations">
+      <bpmn:incoming>Flow_h5i6j7k</bpmn:incoming>
+      <bpmn:outgoing>Flow_l8m9n0o</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="Comparison Complete">
+      <bpmn:incoming>Flow_l8m9n0o</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0o8p1z1" sourceRef="StartEvent_1" targetRef="Gateway_Split_Data" />
+    <bpmn:sequenceFlow id="Flow_1a2b3c4" sourceRef="Gateway_Split_Data" targetRef="Task_Access_Pima" />
+    <bpmn:sequenceFlow id="Flow_5d6e7f8" sourceRef="Gateway_Split_Data" targetRef="Task_Access_Sylhet" />
+    <bpmn:sequenceFlow id="Flow_9g0h1i2" sourceRef="Gateway_Split_Data" targetRef="Task_Access_Diabetic" />
+    <bpmn:sequenceFlow id="Flow_3j4k5l6" sourceRef="Task_Access_Pima" targetRef="Gateway_Join_Data" />
+    <bpmn:sequenceFlow id="Flow_7m8n9o0" sourceRef="Task_Access_Sylhet" targetRef="Gateway_Join_Data" />
+    <bpmn:sequenceFlow id="Flow_p1q2r3s" sourceRef="Task_Access_Diabetic" targetRef="Gateway_Join_Data" />
+    <bpmn:sequenceFlow id="Flow_t4u5v6w" sourceRef="Gateway_Join_Data" targetRef="Task_Preprocess" />
+    <bpmn:sequenceFlow id="Flow_x7y8z9a" sourceRef="Task_Preprocess" targetRef="Gateway_Split_Models" />
+    <bpmn:sequenceFlow id="Flow_b1c2d3e" sourceRef="Gateway_Split_Models" targetRef="Task_Run_XGBoost" />
+    <bpmn:sequenceFlow id="Flow_f4g5h6i" sourceRef="Gateway_Split_Models" targetRef="Task_Run_LSTM" />
+    <bpmn:sequenceFlow id="Flow_j7k8l9m" sourceRef="Gateway_Split_Models" targetRef="Task_Run_MLP" />
+    <bpmn:sequenceFlow id="Flow_n0o1p2q" sourceRef="Gateway_Split_Models" targetRef="Task_Run_RSF" />
+    <bpmn:sequenceFlow id="Flow_r3s4t5u" sourceRef="Task_Run_XGBoost" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_v6w7x8y" sourceRef="Task_Run_LSTM" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_z9a0b1c" sourceRef="Task_Run_MLP" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_d2e3f4g" sourceRef="Task_Run_RSF" targetRef="Gateway_Join_Models" />
+    <bpmn:sequenceFlow id="Flow_h5i6j7k" sourceRef="Gateway_Join_Models" targetRef="Task_Compare_Results" />
+    <bpmn:sequenceFlow id="Flow_l8m9n0o" sourceRef="Task_Compare_Results" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_Diabetes_Comparison">
+      <bpmndi:BPMNEdge id="Flow_l8m9n0o_di" bpmnElement="Flow_l8m9n0o">
+        <di:waypoint x="1410" y="370" />
+        <di:waypoint x="1472" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_h5i6j7k_di" bpmnElement="Flow_h5i6j7k">
+        <di:waypoint x="1255" y="370" />
+        <di:waypoint x="1310" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_d2e3f4g_di" bpmnElement="Flow_d2e3f4g">
+        <di:waypoint x="1150" y="530" />
+        <di:waypoint x="1230" y="530" />
+        <di:waypoint x="1230" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_z9a0b1c_di" bpmnElement="Flow_z9a0b1c">
+        <di:waypoint x="1150" y="430" />
+        <di:waypoint x="1230" y="430" />
+        <di:waypoint x="1230" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_v6w7x8y_di" bpmnElement="Flow_v6w7x8y">
+        <di:waypoint x="1150" y="330" />
+        <di:waypoint x="1230" y="330" />
+        <di:waypoint x="1230" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_r3s4t5u_di" bpmnElement="Flow_r3s4t5u">
+        <di:waypoint x="1150" y="230" />
+        <di:waypoint x="1230" y="230" />
+        <di:waypoint x="1230" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n0o1p2q_di" bpmnElement="Flow_n0o1p2q">
+        <di:waypoint x="955" y="395" />
+        <di:waypoint x="955" y="530" />
+        <di:waypoint x="1050" y="530" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_j7k8l9m_di" bpmnElement="Flow_j7k8l9m">
+        <di:waypoint x="955" y="395" />
+        <di:waypoint x="955" y="430" />
+        <di:waypoint x="1050" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_f4g5h6i_di" bpmnElement="Flow_f4g5h6i">
+        <di:waypoint x="955" y="345" />
+        <di:waypoint x="955" y="330" />
+        <di:waypoint x="1050" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_b1c2d3e_di" bpmnElement="Flow_b1c2d3e">
+        <di:waypoint x="955" y="345" />
+        <di:waypoint x="955" y="230" />
+        <di:waypoint x="1050" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_x7y8z9a_di" bpmnElement="Flow_x7y8z9a">
+        <di:waypoint x="850" y="370" />
+        <di:waypoint x="930" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_t4u5v6w_di" bpmnElement="Flow_t4u5v6w">
+        <di:waypoint x="655" y="370" />
+        <di:waypoint x="750" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p1q2r3s_di" bpmnElement="Flow_p1q2r3s">
+        <di:waypoint x="550" y="470" />
+        <di:waypoint x="630" y="470" />
+        <di:waypoint x="630" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7m8n9o0_di" bpmnElement="Flow_7m8n9o0">
+        <di:waypoint x="550" y="370" />
+        <di:waypoint x="605" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3j4k5l6_di" bpmnElement="Flow_3j4k5l6">
+        <di:waypoint x="550" y="270" />
+        <di:waypoint x="630" y="270" />
+        <di:waypoint x="630" y="345" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9g0h1i2_di" bpmnElement="Flow_9g0h1i2">
+        <di:waypoint x="355" y="395" />
+        <di:waypoint x="355" y="470" />
+        <di:waypoint x="450" y="470" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5d6e7f8_di" bpmnElement="Flow_5d6e7f8">
+        <di:waypoint x="380" y="370" />
+        <di:waypoint x="450" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a2b3c4_di" bpmnElement="Flow_1a2b3c4">
+        <di:waypoint x="355" y="345" />
+        <di:waypoint x="355" y="270" />
+        <di:waypoint x="450" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o8p1z1_di" bpmnElement="Flow_0o8p1z1">
+        <di:waypoint x="258" y="370" />
+        <di:waypoint x="330" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="222" y="352" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="209" y="395" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1q6k8c2_di" bpmnElement="Gateway_Split_Data">
+        <dc:Bounds x="330" y="345" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="313" y="402" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0w5j2x3_di" bpmnElement="Task_Access_Pima">
+        <dc:Bounds x="450" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y3x4z5_di" bpmnElement="Task_Access_Sylhet">
+        <dc:Bounds x="450" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0a1b2c3_di" bpmnElement="Task_Access_Diabetic">
+        <dc:Bounds x="450" y="430" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0f7g8h9_di" bpmnElement="Gateway_Join_Data">
+        <dc:Bounds x="605" y="345" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1i2j3k4_di" bpmnElement="Task_Preprocess">
+        <dc:Bounds x="750" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0l1m2n3_di" bpmnElement="Gateway_Split_Models">
+        <dc:Bounds x="930" y="345" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="912" y="402" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p4q5r6_di" bpmnElement="Task_Run_XGBoost">
+        <dc:Bounds x="1050" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1s7t8u9_di" bpmnElement="Task_Run_LSTM">
+        <dc:Bounds x="1050" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v0w1x2_di" bpmnElement="Task_Run_MLP">
+        <dc:Bounds x="1050" y="390" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1y3z4a5_di" bpmnElement="Task_Run_RSF">
+        <dc:Bounds x="1050" y="490" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0b6c7d8_di" bpmnElement="Gateway_Join_Models">
+        <dc:Bounds x="1205" y="345" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1e9f0g1_di" bpmnElement="Task_Compare_Results">
+        <dc:Bounds x="1310" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0h2i3j4_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1472" y="352" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1450" y="395" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

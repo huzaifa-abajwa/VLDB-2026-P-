@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-03T21:02:30.247Z",
+  "isValid": true,
+  "filename": "valid_2025-11-03T21-02-30-246Z_compare_survival_outcomes_using_kaplanmeier_for_s.xml",
+  "diagramPath": "D:\\Coursework That I Don't Want to Backup to Drive\\sproj\\backend\\saved_bpmn_diagrams\\valid_diagrams\\valid_2025-11-03T21-02-30-246Z_compare_survival_outcomes_using_kaplanmeier_for_s.xml",
+  "userQuery": "Compare survival outcomes using Kaplan-Meier for stage 1 vs stage 4 cancer patients",
+  "recommendedDatasets": [
+    "German_Cancer_registry",
+    "SEER_Cancer_Registry_of_USA"
+  ],
+  "recommendedModels": [
+    "kaplan_meier_model@2020.py"
+  ],
+  "validationErrors": []
+}
